@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>XYCTF</title>
+    <url>/2024/06/28/XYCTF/</url>
+    <content><![CDATA[<h1 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h1><h4 id="签到"><a href="#签到" class="headerlink" title="签到"></a>签到</h4><p>公众号flag</p>
+<p>XYCTF{22L_7311_y0u_c5f701de1be3}</p>
+<span id="more"></span>
+
+<h4 id="game"><a href="#game" class="headerlink" title="game"></a>game</h4><p>直接抖音识图或者Google识图</p>
+<p>XYCTF{Papers Please}</p>
+<h4 id="zzl的护理小课堂"><a href="#zzl的护理小课堂" class="headerlink" title="zzl的护理小课堂"></a>zzl的护理小课堂</h4><p>查看js代码 发现要分数大于100分 </p>
+<p>bp抓包拦截响应  修改响应包再发</p>
+<p>得到flag</p>
+<p>XYCTF{22L_7311_y0u_c5f701de1be3}</p>
+<h4 id="ez-隐写"><a href="#ez-隐写" class="headerlink" title="ez_隐写"></a>ez_隐写</h4><p>010查看被锁了   发现是伪加密</p>
+<p>然后binwalk -e       –run-as&#x3D;root分离出来</p>
+<p>（这里提一句   binwalk 无视伪加密）</p>
+<p>然后得到一个压缩包  要密码  真加密</p>
+<p>和一个看不清的png 图片  用crc爆破修复好</p>
+<p>看到hint   密码是比赛开始的日期</p>
+<p>打开压缩包  得到一个图片  看图片名字是盲水印   打开盲水印提取工具  调整亮度</p>
+<p>试了几次   XYCTF{159-WSX-IJN-852}</p>
+<h4 id="熊博士"><a href="#熊博士" class="headerlink" title="熊博士"></a>熊博士</h4><p>Atbash解码:		</p>
+<p>XYCTF{liu_ye_mei_you_xiao_jj}</p>
+<h4 id="ZIP神之套"><a href="#ZIP神之套" class="headerlink" title="ZIP神之套"></a>ZIP神之套</h4><p>解压出来俩文件  </p>
+<p>其中一个要密码   还要一个.exe可执行文件 无法执行</p>
+<p>ida打开看见提示了  xyctf？？？？？ftcyc</p>
+<p>很明显是掩码攻击   选择掩码攻击  纯数字  攻击压缩包</p>
+<p>中间的密码就是比赛的日期</p>
+<p>打开压缩包之后  两个zip压缩包  里面很多xxctf{xxxx}命名的文件 里面是aabbaa  这种字符</p>
+<p>另一个压缩包的flag打开显示还要密码  两个压缩包 里面内容还很接近</p>
+<p>明文攻击    攻击后打开 flag.md文件在一堆16进制中间得到flag</p>
+<p>XYCTF{1A4B8-C9D2F3E-6A4B8C-9D2F3E7F}</p>
+<h4 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋?"></a>彩蛋?</h4><p>第一段彩蛋  130131103124106173164150151163137141137 8进制解密  </p>
+<p>XYCTF{this_a_</p>
+<p>第二段彩蛋</p>
+<p>11001101101001110111011001001011111110100111101001111101</p>
+<p>每七个01前补一个0  凑齐8位   二进制转asic </p>
+<p>find_it}  直接分七个一组也行</p>
+<p>第三段彩蛋</p>
+<p>在图片里</p>
+<p>右键 复制图片 发送微信 再保存 或者直接粘贴到桌面   </p>
+<p>不要直接再网页选择另存图片 改png是不行的</p>
+<p><img src="/2024/06/28/XYCTF/Users\zyh\Desktop\微信图片_20240404164909.png"></p>
+<p>zsteg  得到键盘密码  </p>
+<p>是一种特殊的键盘的密码</p>
+<p>德沃夏克键盘   网站解码 <a href="https://www.geocachingtoolbox.com/index.php?lang=en">https://www.geocachingtoolbox.com/index.php?lang=en</a></p>
+<p>得到第三段  bl0ckbuster_for_png_and_i_think_yon_can_ 	结束</p>
+<p>XYCTF{this_a_bl0ckbuster_for_png_and_i_think_yon_can_find_it}</p>
+<h1 id="web"><a href="#web" class="headerlink" title="web"></a>web</h1><h4 id="ezmd5"><a href="#ezmd5" class="headerlink" title="ezmd5"></a>ezmd5</h4><p>要求上传两张图片并且比较   先随便上传两张图片  返回值是让上传两个图片   图片数据不同 但是md5的值是相同的</p>
+<p>如果上传同一张图片  md5的值肯定是相同的   而且数据也相同  那么一个true 一个false  </p>
+<p>只有两个都是true才能返回flag</p>
+<p>利用fastcoll 碰撞  命令</p>
+<p>打开终端  拖入.exe   -p  2.jpg -o 3.jpg 4.jpg 回车</p>
+<p>XYCTF{246f3d1e-a290-4927-ace2-39d34ca518a3}</p>
+<h4 id="ezhttp"><a href="#ezhttp" class="headerlink" title="ezhttp"></a>ezhttp</h4><p>打开后提示登陆  御剑扫  打开robots.txt</p>
+<p>提示访问  &#x2F;l0g1n.txt</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">username:</span> XYCTF</span><br><span class="line"><span class="symbol">password:</span> @JOILha!wuigqi123$</span><br></pre></td></tr></table></figure>
+
+<p>得到用户名和密码</p>
+<p>登录后</p>
+<p><img src="/2024/06/28/XYCTF/Users\zyh\AppData\Roaming\Typora\typora-user-images\image-20240404215959852.png" alt="image-20240404215959852"></p>
+<p>要求是从yuanshen.com来访问的</p>
+<p>打开hackBar</p>
+<p>修改Referer  为yuanshen.com</p>
+<p>又提示你</p>
+<p>你用的不是XYCTF的浏览器</p>
+<p>修改 User-Agent  为XYCTF</p>
+<p>又提示你  非本地用户进制访问</p>
+<p>本地访问  我们一般用 xff（X-Forwarded-For）  在这里用xff提示你达咩   于是想换种方式</p>
+<p>还可以用 client-ip和x-real-ip（但是本题我试了只能用client-ip）</p>
+<p>不是从 ymzx.qq.com 代理来的我不玩</p>
+<p>代理 via </p>
+<p>有点饿，想吃点XYCTF的小饼干</p>
+<p>cookie</p>
+<p>得到flag</p>
+<p>XYCTF{a51d6c68-bca2-4cdf-b698-4b9b209f405e}</p>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+</search>
