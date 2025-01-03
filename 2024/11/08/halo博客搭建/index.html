@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="halo博客搭建​	这是一篇halo博客搭建的指南（然而没过多久我又回归到hexo了），我是采用1Panel+halo搭建的。 下面说具体步骤，具体还是很简单的。 ​	首先打开1Panel的官网找到使用手册，地址如下 1https:&#x2F;&#x2F;1panel.cn&#x2F;docs&#x2F;installation&#x2F;online_installation&#x2F;  选择自己对应的版本，执行命令，然后一路y即可（也可以自己设定端口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="halo博客搭建">
+<meta property="og:url" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="halo博客搭建​	这是一篇halo博客搭建的指南（然而没过多久我又回归到hexo了），我是采用1Panel+halo搭建的。 下面说具体步骤，具体还是很简单的。 ​	首先打开1Panel的官网找到使用手册，地址如下 1https:&#x2F;&#x2F;1panel.cn&#x2F;docs&#x2F;installation&#x2F;online_installation&#x2F;  选择自己对应的版本，执行命令，然后一路y即可（也可以自己设定端口">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103402532.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103517727.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103627138.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104028437.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104400981.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109110539717.png">
+<meta property="article:published_time" content="2024-11-08T02:52:59.000Z">
+<meta property="article:modified_time" content="2024-11-10T07:46:49.666Z">
+<meta property="article:author" content="CrispSheep">
+<meta property="article:tag" content="Foo">
+<meta property="article:tag" content="Bar">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103402532.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>halo博客搭建</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&text=halo博客搭建"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&is_video=false&description=halo博客搭建"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=halo博客搭建&body=Check out this article: http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&name=halo博客搭建&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&t=halo博客搭建"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">halo博客搭建</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        halo博客搭建
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-08T02:52:59.000Z" class="dt-published" itemprop="datePublished">2024-11-08</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/Bar/" rel="tag">Bar</a>, <a class="p-category" href="/tags/Foo/" rel="tag">Foo</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="halo博客搭建"><a href="#halo博客搭建" class="headerlink" title="halo博客搭建"></a>halo博客搭建</h1><p>​	这是一篇halo博客搭建的指南（然而没过多久我又回归到hexo了），我是采用1Panel+halo搭建的。</p>
+<p>下面说具体步骤，具体还是很简单的。</p>
+<p>​	首先打开1Panel的官网找到使用手册，地址如下</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="regexp">//</span><span class="number">1</span>panel.cn<span class="regexp">/docs/i</span>nstallation<span class="regexp">/online_installation/</span></span><br></pre></td></tr></table></figure>
+
+<p>选择自己对应的版本，执行命令，然后一路y即可（也可以自己设定端口用户名密码什么的）</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103402532.png" alt="image-20241109103402532"></p>
+<p>我开放的是33333端口，用浏览器打开外网地址，如果你是阿里云腾讯云的服务器记得去放行安全组</p>
+<p>来到这里</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103517727.png" alt="image-20241109103517727"></p>
+<p>打开应用商店先选择安装MySQL（其他数据库也行）和OpenResty</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103627138.png" alt="image-20241109103627138"></p>
+<p>安装完成后再安装halo，选择你安装的数据库，这里的外部访问地址有域名填写域名，没域名就填写你的服务器ip加端口</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104028437.png" alt="image-20241109104028437"></p>
+<p>安装完成后，打开halo，输入你的用户名和初始密码，进行初始化会自动跳转到console</p>
+<p>选择主题即可，点击左上角halo的图标或者输入ip端口即可访问了</p>
+<p>如果有域名的话来到网站这里创建新的网站，程序选择halo，域名就选择你的域名</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104400981.png" alt="image-20241109104400981"></p>
+<p>一般来说这里就已经完成了，可以访问了</p>
+<hr>
+<p>​	但是由于我服务器安装了长亭的雷池waf，加上之前的一些程序，我的80端口8080，443似乎都被占用了</p>
+<p>直接访问域名总是会跳转到welcome-nginx的页面，同时我想给我的博客加上雷池waf，还需要在雷池上设置防护</p>
+<p>雷池的防护原理就是用反向代理实现的，之前学习了反向代理的原理，但是对于各种程序的应用还是不熟悉。</p>
+<p>​	借着这次，我会把反向代理的原理说清楚。</p>
+<p>反向代理就是代理服务器接受到用户的访问后，然后代理服务器再去访问你所设置的地址。</p>
+<p>先说如何用雷池实现</p>
+<p>点击防护站点，右侧创建站点，设置你用的域名，端口，上游服务器</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109110539717.png" alt="image-20241109110539717"></p>
+<p>​	下面我会着重说关于端口这个问题，这里的雷池能实现代理服务器的功能，设置80端口之后，上游服务器填写127.0.0.1:8090（halo的端口）</p>
+<p>​	当别人输入域名访问的时候，会先经过代理服务器，也就是雷池，然后雷池会转发到127.0.0.1:8090，也就让你成功访问到了halo我的博客。这就实现了反向代理。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA"><span class="toc-number">1.</span> <span class="toc-text">halo博客搭建</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&text=halo博客搭建"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&is_video=false&description=halo博客搭建"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=halo博客搭建&body=Check out this article: http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&title=halo博客搭建"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&name=halo博客搭建&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/&t=halo博客搭建"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+      
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
