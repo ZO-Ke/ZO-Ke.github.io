@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考 本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正 先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。 附上nginx的简介，我们可以看到nginx是一个非常强大的web服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx反向代理的原理以及雷池waf的设置">
+<meta property="og:url" content="http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考 本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正 先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。 附上nginx的简介，我们可以看到nginx是一个非常强大的web服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113170235217.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113171117358.png">
+<meta property="article:published_time" content="2024-11-13T09:52:00.000Z">
+<meta property="article:modified_time" content="2024-11-13T09:53:01.236Z">
+<meta property="article:author" content="CrispSheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>nginx反向代理的原理以及雷池waf的设置</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/11/14/getshell%5Bmimikyu%5D/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&text=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&is_video=false&description=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=nginx反向代理的原理以及雷池waf的设置&body=Check out this article: http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&name=nginx反向代理的原理以及雷池waf的设置&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&t=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">Nginx 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">nginx和反向代理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B7%E6%B1%A0WAF"><span class="toc-number">2.</span> <span class="toc-text">雷池WAF</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        nginx反向代理的原理以及雷池waf的设置
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-13T09:52:00.000Z" class="dt-published" itemprop="datePublished">2024-11-13</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考</p>
+<p>本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正</p>
+<p>先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。</p>
+<p>附上nginx的简介，我们可以看到nginx是一个非常强大的web服务器，有很多功能，反向代理，负载均衡……我主要讲nginx的反向代理功能，一文说懂什么是反向代理</p>
+<h2 id="Nginx-简介"><a href="#Nginx-简介" class="headerlink" title="Nginx 简介"></a>Nginx 简介</h2><p>Nginx（发音同engine x）是一个异步框架的 Web 服务器，也可以用作反向代理，负载平衡器 和 HTTP 缓存。该软件由 <a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E4%BC%8A%E6%88%88%E7%88%BE%C2%B7%E8%B3%BD%E7%B4%A2%E8%80%B6%E5%A4%AB">Igor Sysoev</a> 创建，并于2004年首次公开发布。同名公司成立于2011年，以提供支持。Nginx 是一款免费的开源软件，根据类 BSD 许可证的条款发布。一大部分Web服务器使用 Nginx ，通常作为负载均衡器。</p>
+<h3 id="nginx和反向代理"><a href="#nginx和反向代理" class="headerlink" title="nginx和反向代理"></a>nginx和反向代理</h3><p>直接说反向代理是什么，举例说明我也感觉很抽象，没有直接拿实例说的明白，这里我将会用nginx和雷池waf的反向代理来说</p>
+<p>基于hexo的搭建，nginx的配置我是照搬参考博客的<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<p>在那里我也有提到，说实话对于nginx我只知道它能实现一些功能，但是具体到底是什么，怎么实现的，我不知道。文章给了两个配置文件</p>
+<p>nginx.conf</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>conf.d-&gt;default.conf</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先看下面default.conf的配置信息，监听IPV4和IPV6的80端口，然后指定虚拟主机的域名&#x2F;IP，然后再指向指定文档根目录，从而实现访问</p>
+<p>访问crispsheep.icu–&gt;发送请求–&gt;服务器接受请求–&gt;nginx处理–&gt;指向指定的文件–&gt;返回响应</p>
+<p>这样你就能看到我的博客内容了</p>
+<p>上面nginx.conf的内容</p>
+<p>我们看这里，这里有个include，是一个文件包含，意思是包含这个目录下所有.conf的文件</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png" alt="image-20241113161140396"></p>
+<p>conf.d-&gt;default.conf的文件内容就被包含进去了</p>
+<p>再说nginx的反向代理，反向代理和上面的default.conf内的一些信息有些类似，下面是一个反向代理的配置信息</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向代理配置</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:9999;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 错误页面配置</span></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>127.0.0.1是本地回环地址，当访问example.com的时候，它会指向proxy_pass后面的服务，也就是你本地的9999端口的服务</p>
+<p>这就是反向代理，在客户端和服务端之间有个服务器负责完成这个操作，这里完成这个操作的就是nginx。</p>
+<p>反向代理的原理是，在客户端和服务器之间添加一个代理服务器，客户端将请求发送给代理服务器，代理服务器将请求转发给服务器，服务器处理请求并返回响应，代理服务器再将响应转发给客户端。</p>
+<p>这里我说两个点</p>
+<p>1、有人可能会问为什么nginx总是监听80端口，这是因为http协议默认的就是80端口，所以访问网页进行通讯走的就是80端口，https则是443端口。</p>
+<p>2、带端口的问题，假设你在服务器上开启了一个web应用服务，端口是9586，如果你没有域名，你每次访问都需要用公网IP+端口才能访问到，如果你有一个域名，就可以通过反向代理的方式，让域名指向这个端口，这样直接域名访问即可。如果服务器上就一个服务，可以直接把公网IP反向代理到这个端口服务，就不需要域名了（IP地址还是没有域名好记忆）</p>
+<p>再说我上面的目标，用二级域名把服务器上的另一个端口服务绑定上去，用nginx的反向代理完全可以实现。</p>
+<p>由于上次被挖矿的原因，我选择了雷池waf</p>
+<h2 id="雷池WAF"><a href="#雷池WAF" class="headerlink" title="雷池WAF"></a>雷池WAF</h2><p>雷池waf安装很方便，一条命令，遇到选项y即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(curl -fsSLk https://waf-ce.chaitin.cn/release/latest/setup.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113170235217.png" alt="image-20241113170235217"></p>
+<p>雷池是基于nginx开发的，作为反向代理接入网络，我之前安装nginx和雷池，一直显示80端口被占用，就是我之前开启nginx的服务导致的，nginx占用了80端口，导致我之前用雷池添加站点80端口不能用，选择其他端口后，如果想经过雷池保护，就需要在域名添加端口号了，雷池添加站点保护的原理就是反向代理，选择需要被保护站点的域名或者IP，然后选择端口，如果这时候不是80端口，比如是666端口，那么只有你输入域名+666端口才能经由雷池，然后再代理到你的上游服务器。</p>
+<p>设置雷池前，由于我的博客的配置文件是监听80端口的，我们需要先停止nginx的服务，让80端口空闲出来</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
+
+<p>然后再修改我博客的配置文件</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>把之前的80端口改成，81（只要是没被占有的端口皆可）</p>
+<p>然后再设置雷池端口（http-80，https-443）</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113171117358.png" alt="image-20241113171117358"></p>
+<p>这里我都是http服务，443那个端口删掉就行</p>
+<p>设置好后再启动nginx</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用的是雷池作为代理服务器进行转发的</p>
+<p>由于雷池和我的web服务都在一个服务器，下面的上游服务器，就填写<a href="http://127.0.0.1:81即可">http://127.0.0.1:81即可</a></p>
+<p>我们来捋一下访问我博客的流程</p>
+<p>基于nginx</p>
+<p>配置文件</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;nginx服务器接受–&gt;指向到指定的文档–&gt;返回响应</p>
+<p>通俗点说就是你访问我博客域名，默认的http协议走80端口，我的配置文件就监听80端口，我收到你的请求之后，指向我本地的博客文件，这样你就能看到了</p>
+<p>基于雷池的反向代理</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;雷池–&gt;雷池反向代理到指定上游服务器的端口服务（127.0.0.1:81）–&gt;上游服务器接收–&gt;指向我的博客的文件</p>
+<p>上面的配置信息修改成81端口，我加了waf之后，你访问我的博客，会先经过雷池，然后雷池把你的请求指向本地的81端口（因为waf和博客在同一台服务器）相当于你访问了我本地的81端口，然后我的配置文件监听的就是81端口，再指向我的博客文件</p>
+<p>至此你应该对反向代理，nginx，雷池waf有了一定的了解，今天我也算是彻底说明白了到底什么是反向代理和具体的原理，希望能帮到你~</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Nginx-%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">Nginx 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">nginx和反向代理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9B%B7%E6%B1%A0WAF"><span class="toc-number">2.</span> <span class="toc-text">雷池WAF</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&text=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&is_video=false&description=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=nginx反向代理的原理以及雷池waf的设置&body=Check out this article: http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&title=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&name=nginx反向代理的原理以及雷池waf的设置&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/&t=nginx反向代理的原理以及雷池waf的设置"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+      
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

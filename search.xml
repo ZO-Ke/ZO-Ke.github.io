@@ -1,0 +1,455 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>mimikyu靶场</title>
+    <url>/2024/11/14/getshell%5Bmimikyu%5D/</url>
+    <content><![CDATA[<h1 id="靶机类型：CTF-WEB入门靶场"><a href="#靶机类型：CTF-WEB入门靶场" class="headerlink" title="靶机类型：CTF-WEB入门靶场"></a>靶机类型：CTF-WEB入门靶场</h1><h3 id="Pass01-Source"><a href="#Pass01-Source" class="headerlink" title="Pass01 Source"></a>Pass01 Source</h3><p>F12查看源码得到flag</p>
+<p>常见查看源码方式  F12  右键查看  Ctrl+U  </p>
+<p>网页地址栏前面加上入view-source</p>
+<h3 id="Pass02-Response"><a href="#Pass02-Response" class="headerlink" title="Pass02 Response"></a>Pass02 Response</h3><p>点击去显示Homepage 类似起始页面的意思</p>
+<p>仔细看URL是</p>
+<p><a href="http://node.hackhub.get-shell.com:49198/Pass02/inbex.php">http://node.hackhub.get-shell.com:49198/Pass02/inbex.php</a></p>
+<p>是inbex   索引页是index.php  直接访问还不行 会重定向到inbex  抓包 拦截响应即可获得flag</p>
+<h3 id="Pass03-GET"><a href="#Pass03-GET" class="headerlink" title="Pass03 GET"></a>Pass03 GET</h3><p>请用GET方式提交一个名为1,值为2的变量</p>
+<p>?1&#x3D;2</p>
+<p>即可</p>
+<h3 id="Pass04-robots"><a href="#Pass04-robots" class="headerlink" title="Pass04 robots"></a>Pass04 robots</h3><p>爬虫协议  访问robots.txt 然后看到disallow 访问f1ag_1s_h3re.php即可</p>
+<h3 id="Pass05-Backup"><a href="#Pass05-Backup" class="headerlink" title="Pass05 Backup"></a>Pass05 Backup</h3><p>考查网站的备份文件</p>
+<p>dirsearch开扫即可</p>
+<p>dirsearch -u url</p>
+<p>扫到个 <a href="http://www.zip/">www.zip</a></p>
+<p>访问即可下载下来源码  成功得到flag</p>
+<h3 id="Pass06-Cookie"><a href="#Pass06-Cookie" class="headerlink" title="Pass06 Cookie"></a>Pass06 Cookie</h3><p>访问  老师上课讲的夹心饼干 就说cookie</p>
+<p>查看cookie  发现个参数  look&#x3D;cookie.php</p>
+<p>提示我们查看cookie.php  到了cookie.php界面</p>
+<p>又提示我们看response 查看响应  发现有个叫Flag的响应头 得到flag</p>
+<h3 id="Pass07-HTML"><a href="#Pass07-HTML" class="headerlink" title="Pass07 HTML"></a>Pass07 HTML</h3><p>为什么这个按钮不能按</p>
+<p>F12  修改input标签的内容   删掉disabled 按钮即可点击 点击获得flag</p>
+<h3 id="Pass08-XFF-Referer"><a href="#Pass08-XFF-Referer" class="headerlink" title="Pass08 XFF_Referer"></a>Pass08 XFF_Referer</h3><p>ip地址必须为123.123.123.123</p>
+<p>X-Forwarded-For 设置为123.123.123.123</p>
+<p>X-Forwarded-For用于识别客户端的原始IP地址</p>
+<p>必须来自<a href="https://www.google.com/">https://www.google.com</a></p>
+<p>修改Referer</p>
+<p><a href="https://www.google.com/">https://www.google.com</a></p>
+<p>得到flag</p>
+<h3 id="Pass09-PHP"><a href="#Pass09-PHP" class="headerlink" title="Pass09 PHP"></a>Pass09 PHP</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;config.php&quot;</span>);</span><br><span class="line"><span class="variable">$a</span>=@<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="variable">$b</span>=@<span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$a</span>==<span class="number">0</span> <span class="keyword">and</span> <span class="variable">$a</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">is_numeric</span>(<span class="variable">$b</span>))&#123;</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$b</span>&gt;<span class="number">1234</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>get传入?a&#x3D;’1’</p>
+<p>字符串在和数字比较的时，会将字符串转化为数字，如a转换成False，False又和0弱类型比较是相等的</p>
+<p>get再传入b</p>
+<p>b是数字和字符串时，就退出此脚本，另外还要求b的值还得大于1234，因为不能等于数字和字符串还得大于指定的1234,那么就在数字1234后添加字符串，所以构造的payload为：a&#x3D;&#x3D;a&amp;b&#x3D;9999a</p>
+<h3 id="Pass10-weak-auth"><a href="#Pass10-weak-auth" class="headerlink" title="Pass10 weak_auth"></a>Pass10 weak_auth</h3><p>弱口令爆破</p>
+<p>用户名admin</p>
+<p>爆破密码  如果用户名也不确定 直接集束炸弹爆破用户名和密码</p>
+<h3 id="Pass11-Webshell"><a href="#Pass11-Webshell" class="headerlink" title="Pass11 Webshell"></a>Pass11 Webshell</h3><p>已经传入一句话木马了  直接利用</p>
+<p>shell&#x3D;system(ls);  得到flag.txt  然后读取</p>
+<p>shell&#x3D;system(‘tac flag.txt’);</p>
+<h3 id="Pass12-Rce"><a href="#Pass12-Rce" class="headerlink" title="Pass12 Rce"></a>Pass12 Rce</h3><p>远程命令执行 审计代码  发现能执行系统命令的代码</p>
+<p>管道符命令利用即可    </p>
+<p>127.0.0.1 | ls</p>
+<p>得到flag.txt</p>
+<p>127.0.0.1 | tac flag.txt</p>
+<p>得到flag</p>
+<p>使用此管道符“|”可以将两个命令分隔开，“|”左边命令的输出就会作为“|”右边命令的输入，此命令可连续使用，第一个命令的输出会作为第二个命令的输入，第二个命令的输出又会作为第三个命令的输入，依此类推。</p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">多命令执行符              格式                        作用</span><br><span class="line">     ;               命令<span class="number">1</span>;命令<span class="number">2</span>             多个命令顺序执行，命令之间无任何逻辑关系</span><br><span class="line">    <span class="meta">&amp;&amp;               命令1&amp;&amp;命令2            逻辑与：当命令1正确执行后，命令2才会正确执行，否则命令2不会执行</span></span><br><span class="line">    <span class="string">||               命令1||命令2            逻辑或：当命令1不正确执行后，命令2才会正确执行，否则命令2不会执行</span></span><br></pre></td></tr></table></figure>
+
+<p>地址<a href="https://blog.csdn.net/zqg4919/article/details/75417919">https://blog.csdn.net/zqg4919/article/details/75417919</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>halo博客搭建</title>
+    <url>/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="halo博客搭建"><a href="#halo博客搭建" class="headerlink" title="halo博客搭建"></a>halo博客搭建</h1><p>​	这是一篇halo博客搭建的指南（然而没过多久我又回归到hexo了），我是采用1Panel+halo搭建的。</p>
+<p>下面说具体步骤，具体还是很简单的。</p>
+<p>​	首先打开1Panel的官网找到使用手册，地址如下</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span><span class="number">1</span>panel.cn<span class="regexp">/docs/i</span>nstallation<span class="regexp">/online_installation/</span></span><br></pre></td></tr></table></figure>
+
+<p>选择自己对应的版本，执行命令，然后一路y即可（也可以自己设定端口用户名密码什么的）</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103402532.png" alt="image-20241109103402532"></p>
+<p>我开放的是33333端口，用浏览器打开外网地址，如果你是阿里云腾讯云的服务器记得去放行安全组</p>
+<p>来到这里</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103517727.png" alt="image-20241109103517727"></p>
+<p>打开应用商店先选择安装MySQL（其他数据库也行）和OpenResty</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103627138.png" alt="image-20241109103627138"></p>
+<p>安装完成后再安装halo，选择你安装的数据库，这里的外部访问地址有域名填写域名，没域名就填写你的服务器ip加端口</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104028437.png" alt="image-20241109104028437"></p>
+<p>安装完成后，打开halo，输入你的用户名和初始密码，进行初始化会自动跳转到console</p>
+<p>选择主题即可，点击左上角halo的图标或者输入ip端口即可访问了</p>
+<p>如果有域名的话来到网站这里创建新的网站，程序选择halo，域名就选择你的域名</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104400981.png" alt="image-20241109104400981"></p>
+<p>一般来说这里就已经完成了，可以访问了</p>
+<hr>
+<p>​	但是由于我服务器安装了长亭的雷池waf，加上之前的一些程序，我的80端口8080，443似乎都被占用了</p>
+<p>直接访问域名总是会跳转到welcome-nginx的页面，同时我想给我的博客加上雷池waf，还需要在雷池上设置防护</p>
+<p>雷池的防护原理就是用反向代理实现的，之前学习了反向代理的原理，但是对于各种程序的应用还是不熟悉。</p>
+<p>​	借着这次，我会把反向代理的原理说清楚。</p>
+<p>反向代理就是代理服务器接受到用户的访问后，然后代理服务器再去访问你所设置的地址。</p>
+<p>先说如何用雷池实现</p>
+<p>点击防护站点，右侧创建站点，设置你用的域名，端口，上游服务器</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109110539717.png" alt="image-20241109110539717"></p>
+<p>​	下面我会着重说关于端口这个问题，这里的雷池能实现代理服务器的功能，设置80端口之后，上游服务器填写127.0.0.1:8090（halo的端口）</p>
+<p>​	当别人输入域名访问的时候，会先经过代理服务器，也就是雷池，然后雷池会转发到127.0.0.1:8090，也就让你成功访问到了halo我的博客。这就实现了反向代理。</p>
+]]></content>
+      <tags>
+        <tag>Foo</tag>
+        <tag>Bar</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从halo跑路再次到hexo</title>
+    <url>/2024/11/10/hexo%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="从halo跑路再次到hexo"><a href="#从halo跑路再次到hexo" class="headerlink" title="从halo跑路再次到hexo"></a>从halo跑路再次到hexo</h1><p>​	用了一天的halo，我选择跑路，回归到了hexo，由于个人习惯的原因，hexo更适合我。</p>
+<p>​	下面说一下我的搭建过程（包含常见的问题，不能免密git，服务器ssh端口非22……）</p>
+<p>参考文章:<a href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<h2 id="一、本地环境的搭建"><a href="#一、本地环境的搭建" class="headerlink" title="一、本地环境的搭建"></a>一、本地环境的搭建</h2><h3 id="1、安装node-js和git"><a href="#1、安装node-js和git" class="headerlink" title="1、安装node.js和git"></a>1、安装node.js和git</h3><p>安装node.js，下面是链接</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>//nodejs<span class="meta">.org</span>/<span class="built_in">zh</span>-cn/download/package-manager</span><br></pre></td></tr></table></figure>
+
+<p>安装教程，很详细了，我就不过多赘述了，跟着下面这个链接操作</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>developer.aliyun.com<span class="regexp">/article/</span><span class="number">1433726</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后cmd查看node安装情况</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="keyword">node</span> <span class="title">-v</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本信息就安装成功了</p>
+<p>安装git</p>
+<p>链接</p>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span><span class="comment">//git-scm.com/</span></span><br></pre></td></tr></table></figure>
+
+<p>cmd查看git安装情况</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">git <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本就安装好了，同时鼠标右键会出现Open Git Bash here</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162016545.png" alt="image-20241110162016545"></p>
+<h3 id="2、安装hexo"><a href="#2、安装hexo" class="headerlink" title="2、安装hexo"></a>2、安装hexo</h3><p>1、新建一个文件夹用来存储个人博客 D:\hexo</p>
+<p>进入该文件夹右键选择Open Git Bash here输入</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<p>把Hexo命令行工具安装到系统的全局环境中</p>
+<p>再输入以下命令创建一个新的hexo的项目</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>最后会在hexo目录下面生成这些文件</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162853037.png" alt="image-20241110162853037"></p>
+<p>继续在Open Git Bash here输入命令（还是在hexo目录内打开Open Git Bash here）</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">hexo s</span></span><br></pre></td></tr></table></figure>
+
+<p>然后访问<a href="http://localhost:4000/">http://localhost:4000/</a></p>
+<p>注意不要直接在Open Git Bash here里ctrl+c，这样会直接停掉服务</p>
+<p>右键copy复制（在Open Git Bash here里复制粘贴都用右键完成）</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163124960.png" alt="image-20241110163124960"></p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163153750.png" alt="image-20241110163153750"></p>
+<p>出现这个界面就成功了</p>
+<h3 id="3、安装主题"><a href="#3、安装主题" class="headerlink" title="3、安装主题"></a>3、安装主题</h3><p>我的主题是cactus</p>
+<p>还是在hexo目录下的themes目录打开Open Git Bash here，执行下面的命令（我以cactus主题为例）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/probberechts/hexo-theme-cactus.git themes/cactus</span><br></pre></td></tr></table></figure>
+
+<p>如果想选择其他主题请看</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>blog.lixiaomu.fun<span class="regexp">/posts/</span><span class="number">43857</span>/</span><br></pre></td></tr></table></figure>
+
+<p>这些主题各具特色，而且具有一定用户量，出现什么问题上网搜也好搜一点</p>
+<p>安装好主题之后打开根目录的 _config.yml（hexo目录下的_config.yml）</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163649769.png" alt="image-20241110163649769"></p>
+<p>找到theme，改成你下载的主题即可，主题其他设置去网上搜对应主题美化的博客即可，这里我只说如何选择主题</p>
+<h2 id="二、服务器环境准备"><a href="#二、服务器环境准备" class="headerlink" title="二、服务器环境准备"></a>二、服务器环境准备</h2><h3 id="1、安装nginx"><a href="#1、安装nginx" class="headerlink" title="1、安装nginx"></a>1、安装nginx</h3><p>我的服务器系统是Ubuntu（如果是centos自行去搜索安装命令，很容易找到的）</p>
+<p>命令如下</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">apt-<span class="built_in">get</span> install nginx</span><br></pre></td></tr></table></figure>
+
+<p>查看版本号</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nginx -v</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本号安装成功</p>
+<h3 id="2、修改nginx配置"><a href="#2、修改nginx配置" class="headerlink" title="2、修改nginx配置"></a>2、修改nginx配置</h3><p>创建一个文件用来存放 hexo 的部署文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /data/hexo   </span><br></pre></td></tr></table></figure>
+
+<p>然后找到nginx安装目录</p>
+<p>一般在&#x2F;etc&#x2F;nginx</p>
+<p>切换到nginx的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/nginx</span><br></pre></td></tr></table></figure>
+
+<p>修改nginx目录下面的配置文件即nginx.conf</p>
+<p>删掉文件内的全部内容换成下面的这些</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>推荐使用finashell工具，直接双击两下就可以直接打开了，不用再使用vim编辑器了</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164655941.png" alt="image-20241110164655941"></p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164640055.png" alt="image-20241110164640055"></p>
+<p>复制进去后ctrl+s自动上传到服务器</p>
+<p>然后再进入到&#x2F;etc&#x2F;nginx&#x2F;conf.d</p>
+<p>打开default.conf文件</p>
+<p>如果没有vim创建一个</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">vim</span> default.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<p>然后和上面的方法一样把下面这些内容复制进去</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP或者你的域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>公网IP或者你的域名修改成你的IP或者域名就行</p>
+<p>然后启动nginx</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> nginx</span><br></pre></td></tr></table></figure>
+
+<p>查看nginx的状态</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">systemctl status nginx</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意：新服务器可以跳过我下面说的这些直接去3"><a href="#注意：新服务器可以跳过我下面说的这些直接去3" class="headerlink" title="注意：新服务器可以跳过我下面说的这些直接去3"></a>注意：新服务器可以跳过我下面说的这些直接去3</h4><p>在这里由于我之前搞的服务不知道哪里出问题，80端口被占用，而且nginx启动失败</p>
+<p>启动失败的原因之一是我这个服务器没有nginx账户</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo useradd -r nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>创建一个即可，下面说端口的问题</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">lsof</span> -i:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>查看80端口占用情况</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo pkill -f nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>清除nginx的进程</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241109213843786.png" alt="image-20241109213843786"></p>
+<p>然后再执行</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">lsof</span> -i:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候应该就没有进程了，再开启nginx就好了</p>
+<h3 id="3、Node-js-环境配置"><a href="#3、Node-js-环境配置" class="headerlink" title="3、Node.js 环境配置"></a>3、Node.js 环境配置</h3><p>切换到根目录cd 或者 cd ~都可</p>
+<p>安装node.js</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt <span class="keyword">install</span> nodejs npm</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">nodejs <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本号即成功</p>
+<h3 id="4、Git-环境配置"><a href="#4、Git-环境配置" class="headerlink" title="4、Git 环境配置"></a>4、Git 环境配置</h3><p>安装git，遇到yes写yes</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> update</span><br><span class="line">sudo apt-<span class="built_in">get</span> install git</span><br></pre></td></tr></table></figure>
+
+<p>查看版本号</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">git <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>创建git用户</p>
+<p>依次执行下面指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建git用户</span></span><br><span class="line">adduser git   </span><br><span class="line"><span class="comment"># 修改git用户的权限</span></span><br><span class="line"><span class="built_in">chmod</span> 740 /etc/sudoers</span><br><span class="line"><span class="comment"># 进入 sudo 命令文件</span></span><br><span class="line">vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170217619.png" alt="image-20241110170217619"></p>
+<p>在root下面添加git 后面的ALL&#x3D;(ALL:ALL) ALL  </p>
+<p>和上面的root用户的保存一致即可</p>
+<p>继续执行下面指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改文件权限</span></span><br><span class="line"><span class="built_in">chmod</span> 400 /etc/sudoers</span><br><span class="line"><span class="comment"># 设置 git 用户的密码</span></span><br><span class="line">sudo passwd git</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、配置SSH免密登录"><a href="#5、配置SSH免密登录" class="headerlink" title="5、配置SSH免密登录"></a>5、配置SSH免密登录</h3><p>这里我先说明一下，默认的ssh服务端口是22端口，但是我买的这台服务器端口随机不是22端口</p>
+<p>你需要修改ssh的配置文件</p>
+<p>cd &#x2F;etc&#x2F;ssh</p>
+<p>找到ssh目录下的sshd_config文件修改端口为22<img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170555314.png" alt="image-20241110170555314"></p>
+<p>当然也可以不修改，但是如果不修改，根目录下的_config.yml</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line">  <span class="symbol">type:</span> git</span><br><span class="line">  <span class="symbol">repo:</span> <span class="symbol">ssh:</span>//git<span class="variable">@IP</span><span class="symbol">:port/home/git/hexo</span>.git</span><br><span class="line">  <span class="symbol">branch:</span> master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>就要修改成这样，这里大家还是跟我修改一下吧，以免下面的步骤还出现问题</p>
+<p>下面我们继续说SSH免密登录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 切换到 git 用户</span></span><br><span class="line">su git</span><br><span class="line"><span class="comment"># 在根目录创建.ssh文件夹，存放公钥</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> .ssh</span><br></pre></td></tr></table></figure>
+
+<p>打开本地计算机的C盘然后选择用户选择你的用户名文件找到.ssh</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110171012001.png" alt="image-20241110171012001"></p>
+<p>打开.ssh文件夹，右键打开Open Git Bash here</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ssh-keygen -t rsa</span></span><br></pre></td></tr></table></figure>
+
+<p>生成RSA密钥对</p>
+<p>给私钥设置权限，执行以下指令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/id_rsa </span><br></pre></td></tr></table></figure>
+
+<p>然后把本地的的id_rsa.pub文件上传到&#x2F;home&#x2F;git&#x2F;.ssh目录下</p>
+<p>然后到&#x2F;home&#x2F;git&#x2F;.ssh目录下新建authorized_keys文件双击打开，把id_rsa.pub文件内容全选复制到authorized_keys文件里</p>
+<p>CTRL+S上传到服务器</p>
+<p>上面的操作命令执行也可以，命令如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.ssh</span><br><span class="line"><span class="built_in">cp</span> id_rsa.pub authorized_keys</span><br><span class="line"><span class="built_in">cat</span> id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>然后设置权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/authorized_keys</span><br><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br></pre></td></tr></table></figure>
+
+<p>然后测试免密登录</p>
+<p>到本地的hexo目录或者任意目录下，右键打开Open Git Bash here</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ssh</span> -v git<span class="variable">@ip</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作"><a href="#注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作" class="headerlink" title="注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作"></a>注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作</h4><p>如果还是让你输入密码连接，exit，退出git用户回到root用户</p>
+<p>切换到  cd &#x2F;etc&#x2F;ssh目录下，打开sshd_config</p>
+<p>找到</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">AuthorizedKeysFile</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110173204021.png" alt="image-20241110173204021"></p>
+<p>看一下你的这个前面是不是带#被注释了，如果是就删掉前面的#</p>
+<p>然后再找到PermitRootLogin和PasswordAuthentication设置成yes  </p>
+<p>保存 ctrl+s上传，再次尝试ssh -v git@ip，正常来说就不需要再输入git用户的密码了</p>
+<h3 id="6、配置-Git-仓库"><a href="#6、配置-Git-仓库" class="headerlink" title="6、配置 Git 仓库"></a>6、配置 Git 仓库</h3><p>依然是在git用户下进行</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~</span><br><span class="line">git init <span class="params">--bare</span> hexo.git</span><br><span class="line">vim ~<span class="string">/hexo.git/hooks/post-receive</span></span><br></pre></td></tr></table></figure>
+
+<p>输入</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">git <span class="attribute">--work-tree</span>=/data/hexo <span class="attribute">--git-dir</span>=/home/git/hexo.git checkout -f</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出（ESC+:wq）</p>
+<p>授予钩子文件可执行权限</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">chmod +x ~<span class="regexp">/hexo.git/</span>hooks/post-receive</span><br><span class="line">cd ~</span><br><span class="line">sudo chmod -R <span class="number">777</span> <span class="regexp">/data/</span>hexo</span><br><span class="line"><span class="keyword">exit</span> <span class="comment"># 退出到 root 登录</span></span><br><span class="line">chown -R git:git <span class="regexp">/home/gi</span>t/hexo.git <span class="comment">#设置权限</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、部署Hexo博客到服务器"><a href="#三、部署Hexo博客到服务器" class="headerlink" title="三、部署Hexo博客到服务器"></a>三、部署Hexo博客到服务器</h2><figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line"><span class="symbol">  type:</span> git</span><br><span class="line"><span class="symbol">  repo:</span> git@公网ip:<span class="keyword">/home/</span>git/hexo.git</span><br><span class="line"><span class="symbol">  branch:</span> master</span><br></pre></td></tr></table></figure>
+
+<p>安装插件hexo-deployer-git 和 hexo-server（在hexo目录下打开cmd安装）</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用于将 Hexo 生成的静态文件推送到指定的 Git 仓库</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于在本地启动一个 Hexo 服务器，方便在本地预览博客</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-server</span><br></pre></td></tr></table></figure>
+
+<p>配置全局变量</p>
+<p>打开Open Git Bash here</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">git config <span class="attr">--global</span> user<span class="selector-class">.email</span> <span class="string">&quot;xxxxxxxxxx@xx.com&quot;</span></span><br><span class="line">git config <span class="attr">--global</span> user<span class="selector-class">.name</span> <span class="string">&quot;xxx&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>用户名和邮箱随便填即可</p>
+<p>如果部署到购买的云服务器（阿里云）上，可能出现访问服务器IP没有响应的情况</p>
+<p>点击云服务器，在安全组规则中手动添加一条80端口的规则</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>nginx反向代理的原理以及雷池waf的设置</title>
+    <url>/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/</url>
+    <content><![CDATA[<p>鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考</p>
+<p>本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正</p>
+<p>先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。</p>
+<p>附上nginx的简介，我们可以看到nginx是一个非常强大的web服务器，有很多功能，反向代理，负载均衡……我主要讲nginx的反向代理功能，一文说懂什么是反向代理</p>
+<h2 id="Nginx-简介"><a href="#Nginx-简介" class="headerlink" title="Nginx 简介"></a>Nginx 简介</h2><p>Nginx（发音同engine x）是一个异步框架的 Web 服务器，也可以用作反向代理，负载平衡器 和 HTTP 缓存。该软件由 <a href="https://zh.wikipedia.org/wiki/%E4%BC%8A%E6%88%88%E7%88%BE%C2%B7%E8%B3%BD%E7%B4%A2%E8%80%B6%E5%A4%AB">Igor Sysoev</a> 创建，并于2004年首次公开发布。同名公司成立于2011年，以提供支持。Nginx 是一款免费的开源软件，根据类 BSD 许可证的条款发布。一大部分Web服务器使用 Nginx ，通常作为负载均衡器。</p>
+<h3 id="nginx和反向代理"><a href="#nginx和反向代理" class="headerlink" title="nginx和反向代理"></a>nginx和反向代理</h3><p>直接说反向代理是什么，举例说明我也感觉很抽象，没有直接拿实例说的明白，这里我将会用nginx和雷池waf的反向代理来说</p>
+<p>基于hexo的搭建，nginx的配置我是照搬参考博客的<a href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<p>在那里我也有提到，说实话对于nginx我只知道它能实现一些功能，但是具体到底是什么，怎么实现的，我不知道。文章给了两个配置文件</p>
+<p>nginx.conf</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>conf.d-&gt;default.conf</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先看下面default.conf的配置信息，监听IPV4和IPV6的80端口，然后指定虚拟主机的域名&#x2F;IP，然后再指向指定文档根目录，从而实现访问</p>
+<p>访问crispsheep.icu–&gt;发送请求–&gt;服务器接受请求–&gt;nginx处理–&gt;指向指定的文件–&gt;返回响应</p>
+<p>这样你就能看到我的博客内容了</p>
+<p>上面nginx.conf的内容</p>
+<p>我们看这里，这里有个include，是一个文件包含，意思是包含这个目录下所有.conf的文件</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png" alt="image-20241113161140396"></p>
+<p>conf.d-&gt;default.conf的文件内容就被包含进去了</p>
+<p>再说nginx的反向代理，反向代理和上面的default.conf内的一些信息有些类似，下面是一个反向代理的配置信息</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向代理配置</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:9999;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 错误页面配置</span></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>127.0.0.1是本地回环地址，当访问example.com的时候，它会指向proxy_pass后面的服务，也就是你本地的9999端口的服务</p>
+<p>这就是反向代理，在客户端和服务端之间有个服务器负责完成这个操作，这里完成这个操作的就是nginx。</p>
+<p>反向代理的原理是，在客户端和服务器之间添加一个代理服务器，客户端将请求发送给代理服务器，代理服务器将请求转发给服务器，服务器处理请求并返回响应，代理服务器再将响应转发给客户端。</p>
+<p>这里我说两个点</p>
+<p>1、有人可能会问为什么nginx总是监听80端口，这是因为http协议默认的就是80端口，所以访问网页进行通讯走的就是80端口，https则是443端口。</p>
+<p>2、带端口的问题，假设你在服务器上开启了一个web应用服务，端口是9586，如果你没有域名，你每次访问都需要用公网IP+端口才能访问到，如果你有一个域名，就可以通过反向代理的方式，让域名指向这个端口，这样直接域名访问即可。如果服务器上就一个服务，可以直接把公网IP反向代理到这个端口服务，就不需要域名了（IP地址还是没有域名好记忆）</p>
+<p>再说我上面的目标，用二级域名把服务器上的另一个端口服务绑定上去，用nginx的反向代理完全可以实现。</p>
+<p>由于上次被挖矿的原因，我选择了雷池waf</p>
+<h2 id="雷池WAF"><a href="#雷池WAF" class="headerlink" title="雷池WAF"></a>雷池WAF</h2><p>雷池waf安装很方便，一条命令，遇到选项y即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(curl -fsSLk https://waf-ce.chaitin.cn/release/latest/setup.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113170235217.png" alt="image-20241113170235217"></p>
+<p>雷池是基于nginx开发的，作为反向代理接入网络，我之前安装nginx和雷池，一直显示80端口被占用，就是我之前开启nginx的服务导致的，nginx占用了80端口，导致我之前用雷池添加站点80端口不能用，选择其他端口后，如果想经过雷池保护，就需要在域名添加端口号了，雷池添加站点保护的原理就是反向代理，选择需要被保护站点的域名或者IP，然后选择端口，如果这时候不是80端口，比如是666端口，那么只有你输入域名+666端口才能经由雷池，然后再代理到你的上游服务器。</p>
+<p>设置雷池前，由于我的博客的配置文件是监听80端口的，我们需要先停止nginx的服务，让80端口空闲出来</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
+
+<p>然后再修改我博客的配置文件</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>把之前的80端口改成，81（只要是没被占有的端口皆可）</p>
+<p>然后再设置雷池端口（http-80，https-443）</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113171117358.png" alt="image-20241113171117358"></p>
+<p>这里我都是http服务，443那个端口删掉就行</p>
+<p>设置好后再启动nginx</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用的是雷池作为代理服务器进行转发的</p>
+<p>由于雷池和我的web服务都在一个服务器，下面的上游服务器，就填写<a href="http://127.0.0.1:81即可">http://127.0.0.1:81即可</a></p>
+<p>我们来捋一下访问我博客的流程</p>
+<p>基于nginx</p>
+<p>配置文件</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;nginx服务器接受–&gt;指向到指定的文档–&gt;返回响应</p>
+<p>通俗点说就是你访问我博客域名，默认的http协议走80端口，我的配置文件就监听80端口，我收到你的请求之后，指向我本地的博客文件，这样你就能看到了</p>
+<p>基于雷池的反向代理</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;雷池–&gt;雷池反向代理到指定上游服务器的端口服务（127.0.0.1:81）–&gt;上游服务器接收–&gt;指向我的博客的文件</p>
+<p>上面的配置信息修改成81端口，我加了waf之后，你访问我的博客，会先经过雷池，然后雷池把你的请求指向本地的81端口（因为waf和博客在同一台服务器）相当于你访问了我本地的81端口，然后我的配置文件监听的就是81端口，再指向我的博客文件</p>
+<p>至此你应该对反向代理，nginx，雷池waf有了一定的了解，今天我也算是彻底说明白了到底什么是反向代理和具体的原理，希望能帮到你~</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>一次挖矿病毒的应急响应</title>
+    <url>/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/</url>
+    <content><![CDATA[<p>搭建好的博客第二天被挖矿了，先说结论弱口令密码害死人</p>
+<p>说一下我整个发现过程，博客是昨天也就是11月10号彻底弄完的，结果11号凌晨就打进来了下面是我溯源查日志查到的，SSH爆破进来的，我的git用户密码是123456（搭建hexo创建git账户图方便就设置了123456）</p>
+<p>PASS:下面是关于一些SSH配置的说明，不想看的可以跳到下面看应急响应和溯源</p>
+<p>前面我说的博客的sshd文件的配置也有些问题下面我深入学习了一下这几个设置</p>
+<h3 id="PermitRootLogin选项"><a href="#PermitRootLogin选项" class="headerlink" title="PermitRootLogin选项"></a>PermitRootLogin选项</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PermitRootLogin</span> <span class="literal">no</span></span><br></pre></td></tr></table></figure>
+
+<p>可以限定root用户通过ssh的登录方式，如禁止登陆、禁止密码登录、仅允许密钥登陆和开放登陆，以下是对可选项的概括：</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111213421149.png" alt="image-20241111213421149"></p>
+<p>这个推荐设置成no，然后使用RSA公私钥连接，这个我是开着的还是用账户和密码登录的，不过要注意把密码修改成强密码，不然一爆破就进来了（就和我这次一样）</p>
+<h3 id="PasswordAuthentication选项"><a href="#PasswordAuthentication选项" class="headerlink" title="PasswordAuthentication选项"></a>PasswordAuthentication选项</h3><p>PasswordAuthentication yes 可以允许远程用密码登录认证</p>
+<p>PermitRootLogin yes 是允许远程root登录   一般买服务器给的就是root</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PasswordAuthentication</span> <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PubkeyAuthentication选项"><a href="#PubkeyAuthentication选项" class="headerlink" title="PubkeyAuthentication选项"></a>PubkeyAuthentication选项</h3><p>是允许公私钥连接的，以为我设置的git免密上次这个是要开启的，设置的</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PubkeyAuthentication</span> <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
+
+<p>设置好后重启ssh服务</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart sshd</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这些要是都设置成yes了，尤其是前两个，千万不要使用弱密码！！！！！！</p>
+<p>推荐使用密钥连接，然后PermitRootLogin设置成without-password，PasswordAuthentication设置成no</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111211315344.png" alt="image-20241111211315344"></p>
+<p>好了下面说应急响应</p>
+<h2 id="应急篇"><a href="#应急篇" class="headerlink" title="应急篇"></a>应急篇</h2><p>今天下午突然发现博客打不开了，然后去林枫云看，服务器的状态是停止的，设置也没用，找DK设置才好。连接一看CPU占用率100%了</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111222152873.png" alt="image-20241111222152873"></p>
+<p>开始我也没往挖矿上想，我先看一下当前进程</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ps</span> aux      <span class="comment">#该命令用于查看当前所有运行的进程。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">top</span>       <span class="comment">#按照CPU占用率的高低依次排序</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我看到git用户下有一个程序占用CPU很高很高</p>
+<p>然后我尝试杀死这个程序，当时是这样的，CPU占用率达到了惊人的392.7</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">1277</span> git       <span class="number">20</span>   <span class="number">0</span> <span class="number">2879980</span>   <span class="number">2</span>.<span class="number">3</span>g      <span class="number">4</span> S <span class="number">392</span>.<span class="number">7</span>  <span class="number">29</span>.<span class="number">6</span>  <span class="number">13</span>:<span class="number">37</span>.<span class="number">87</span> .<span class="number">5</span>VwLGQT   </span><br></pre></td></tr></table></figure>
+
+<p>于是我</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">kill</span> -<span class="number">9</span> <span class="number">1277</span></span><br></pre></td></tr></table></figure>
+
+<p>强制杀死这个程序，一会我的CPU占用率就降低下来了，但是没完，没过一会又飙升到了100%，但是这时候了，我还是没想到我中病毒被挖矿了…….</p>
+<p>然后我就又去找程序，这次程序ID变成1302了</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">1302</span> git       <span class="number">20</span>   <span class="number">0</span> <span class="number">2879980</span>   <span class="number">2</span>.<span class="number">3</span>g      <span class="number">4</span> S <span class="number">392</span>.<span class="number">7</span>  <span class="number">29</span>.<span class="number">6</span>   <span class="number">3</span>:<span class="number">11</span>.<span class="number">63</span> .<span class="number">1</span>eBiR8I</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cos"><table><tr><td class="code"><pre><span class="line">ps -p <span class="number">1302</span> -o pid,ppid,cmd,<span class="built_in">%cpu</span>,<span class="built_in">%mem</span>,etime</span><br></pre></td></tr></table></figure>
+
+<p>显示 PID 为 1302 的进程的 PID、父进程 PID、命令、CPU 使用率、内存使用率和运行时间</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ps</span> -ef | <span class="keyword">grep</span> <span class="number">1302</span></span><br></pre></td></tr></table></figure>
+
+<p>然后用这个命令去找1302这个程序允许的位置</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"><span class="symbol">1302 </span>      <span class="number">1</span> /tmp/./.<span class="number">1</span>eBiR8I              <span class="number">388</span> <span class="number">29.6</span>       <span class="number">01</span>:<span class="number">49</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我就去到tmp目录下的</p>
+<p>我看到了个.init文件，顿感大事不妙，打开一看</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241112181324552.png" alt="image-20241112181324552"></p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111202107720.png" alt="image-20241111202107720"></p>
+<p>看到这个ip这些内容，我就知道变成矿工了（之前做知攻善防公众号的应急响应做到过一个挖矿程序的）</p>
+<p>赶紧把tmp文件下的这些东西删掉</p>
+<p>然后用命令查看定时任务</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">crontab -l</span></span><br></pre></td></tr></table></figure>
+
+<p>中招无疑了</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111200231847.png" alt="image-20241111200231847"></p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">crontab -e</span></span><br></pre></td></tr></table></figure>
+
+<p>这些定时任务都删掉</p>
+<p>对于nano编辑器</p>
+<p>Ctrl+O  #保存文件</p>
+<p>Enter确认保存</p>
+<p>Ctrl+X退出编辑器</p>
+<p>然后再删除&#x2F;home&#x2F;git&#x2F;.cache&#x2F;.system&#x2F;下的文件</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo rm -rf <span class="regexp">/home/gi</span>t<span class="regexp">/.cache/</span>.system/</span><br></pre></td></tr></table></figure>
+
+<p>然后我就开始看系统日志，究竟是怎么入侵的，由于就是今天发生的，我就先看的今天的日志，命令如下</p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line"><span class="string">journalctl</span> <span class="built_in">--since</span> <span class="string">&quot;2024-11-11 00:00:00&quot;</span> <span class="built_in">--until</span> <span class="string">&quot;2024-11-11 23:59:59&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111205848162.png" alt="image-20241111205848162"></p>
+<p>一分析日志，爆破我git用户密码进来的</p>
+<p>赶紧修改git用户密码</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd git</span></span><br></pre></td></tr></table></figure>
+
+<p>至此算是告一段落了，CPU占用率也变回正常了，一次真实的应急响应，附上微步</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241112185608938.png" alt="image-20241112185608938"></p>
+]]></content>
+      <tags>
+        <tag>应急响应</tag>
+      </tags>
+  </entry>
+</search>
