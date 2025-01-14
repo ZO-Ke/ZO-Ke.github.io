@@ -57,45 +57,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>halo博客搭建</title>
-    <url>/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="halo博客搭建"><a href="#halo博客搭建" class="headerlink" title="halo博客搭建"></a>halo博客搭建</h1><p>​	这是一篇halo博客搭建的指南（然而没过多久我又回归到hexo了），我是采用1Panel+halo搭建的。</p>
-<p>下面说具体步骤，具体还是很简单的。</p>
-<p>​	首先打开1Panel的官网找到使用手册，地址如下</p>
-<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span><span class="number">1</span>panel.cn<span class="regexp">/docs/i</span>nstallation<span class="regexp">/online_installation/</span></span><br></pre></td></tr></table></figure>
-
-<p>选择自己对应的版本，执行命令，然后一路y即可（也可以自己设定端口用户名密码什么的）</p>
-<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103402532.png" alt="image-20241109103402532"></p>
-<p>我开放的是33333端口，用浏览器打开外网地址，如果你是阿里云腾讯云的服务器记得去放行安全组</p>
-<p>来到这里</p>
-<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103517727.png" alt="image-20241109103517727"></p>
-<p>打开应用商店先选择安装MySQL（其他数据库也行）和OpenResty</p>
-<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103627138.png" alt="image-20241109103627138"></p>
-<p>安装完成后再安装halo，选择你安装的数据库，这里的外部访问地址有域名填写域名，没域名就填写你的服务器ip加端口</p>
-<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104028437.png" alt="image-20241109104028437"></p>
-<p>安装完成后，打开halo，输入你的用户名和初始密码，进行初始化会自动跳转到console</p>
-<p>选择主题即可，点击左上角halo的图标或者输入ip端口即可访问了</p>
-<p>如果有域名的话来到网站这里创建新的网站，程序选择halo，域名就选择你的域名</p>
-<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104400981.png" alt="image-20241109104400981"></p>
-<p>一般来说这里就已经完成了，可以访问了</p>
-<hr>
-<p>​	但是由于我服务器安装了长亭的雷池waf，加上之前的一些程序，我的80端口8080，443似乎都被占用了</p>
-<p>直接访问域名总是会跳转到welcome-nginx的页面，同时我想给我的博客加上雷池waf，还需要在雷池上设置防护</p>
-<p>雷池的防护原理就是用反向代理实现的，之前学习了反向代理的原理，但是对于各种程序的应用还是不熟悉。</p>
-<p>​	借着这次，我会把反向代理的原理说清楚。</p>
-<p>反向代理就是代理服务器接受到用户的访问后，然后代理服务器再去访问你所设置的地址。</p>
-<p>先说如何用雷池实现</p>
-<p>点击防护站点，右侧创建站点，设置你用的域名，端口，上游服务器</p>
-<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109110539717.png" alt="image-20241109110539717"></p>
-<p>​	下面我会着重说关于端口这个问题，这里的雷池能实现代理服务器的功能，设置80端口之后，上游服务器填写127.0.0.1:8090（halo的端口）</p>
-<p>​	当别人输入域名访问的时候，会先经过代理服务器，也就是雷池，然后雷池会转发到127.0.0.1:8090，也就让你成功访问到了halo我的博客。这就实现了反向代理。</p>
-]]></content>
-      <tags>
-        <tag>Foo</tag>
-        <tag>Bar</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>从halo跑路再次到hexo</title>
     <url>/2024/11/10/hexo%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<h1 id="从halo跑路再次到hexo"><a href="#从halo跑路再次到hexo" class="headerlink" title="从halo跑路再次到hexo"></a>从halo跑路再次到hexo</h1><p>​	用了一天的halo，我选择跑路，回归到了hexo，由于个人习惯的原因，hexo更适合我。</p>
@@ -354,6 +315,115 @@
       </tags>
   </entry>
   <entry>
+    <title>halo博客搭建</title>
+    <url>/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="halo博客搭建"><a href="#halo博客搭建" class="headerlink" title="halo博客搭建"></a>halo博客搭建</h1><p>​	这是一篇halo博客搭建的指南（然而没过多久我又回归到hexo了），我是采用1Panel+halo搭建的。</p>
+<p>下面说具体步骤，具体还是很简单的。</p>
+<p>​	首先打开1Panel的官网找到使用手册，地址如下</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span><span class="number">1</span>panel.cn<span class="regexp">/docs/i</span>nstallation<span class="regexp">/online_installation/</span></span><br></pre></td></tr></table></figure>
+
+<p>选择自己对应的版本，执行命令，然后一路y即可（也可以自己设定端口用户名密码什么的）</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103402532.png" alt="image-20241109103402532"></p>
+<p>我开放的是33333端口，用浏览器打开外网地址，如果你是阿里云腾讯云的服务器记得去放行安全组</p>
+<p>来到这里</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103517727.png" alt="image-20241109103517727"></p>
+<p>打开应用商店先选择安装MySQL（其他数据库也行）和OpenResty</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109103627138.png" alt="image-20241109103627138"></p>
+<p>安装完成后再安装halo，选择你安装的数据库，这里的外部访问地址有域名填写域名，没域名就填写你的服务器ip加端口</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104028437.png" alt="image-20241109104028437"></p>
+<p>安装完成后，打开halo，输入你的用户名和初始密码，进行初始化会自动跳转到console</p>
+<p>选择主题即可，点击左上角halo的图标或者输入ip端口即可访问了</p>
+<p>如果有域名的话来到网站这里创建新的网站，程序选择halo，域名就选择你的域名</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109104400981.png" alt="image-20241109104400981"></p>
+<p>一般来说这里就已经完成了，可以访问了</p>
+<hr>
+<p>​	但是由于我服务器安装了长亭的雷池waf，加上之前的一些程序，我的80端口8080，443似乎都被占用了</p>
+<p>直接访问域名总是会跳转到welcome-nginx的页面，同时我想给我的博客加上雷池waf，还需要在雷池上设置防护</p>
+<p>雷池的防护原理就是用反向代理实现的，之前学习了反向代理的原理，但是对于各种程序的应用还是不熟悉。</p>
+<p>​	借着这次，我会把反向代理的原理说清楚。</p>
+<p>反向代理就是代理服务器接受到用户的访问后，然后代理服务器再去访问你所设置的地址。</p>
+<p>先说如何用雷池实现</p>
+<p>点击防护站点，右侧创建站点，设置你用的域名，端口，上游服务器</p>
+<p><img src="/2024/11/08/halo%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/image-20241109110539717.png" alt="image-20241109110539717"></p>
+<p>​	下面我会着重说关于端口这个问题，这里的雷池能实现代理服务器的功能，设置80端口之后，上游服务器填写127.0.0.1:8090（halo的端口）</p>
+<p>​	当别人输入域名访问的时候，会先经过代理服务器，也就是雷池，然后雷池会转发到127.0.0.1:8090，也就让你成功访问到了halo我的博客。这就实现了反向代理。</p>
+]]></content>
+      <tags>
+        <tag>Foo</tag>
+        <tag>Bar</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx反向代理的原理以及雷池waf的设置</title>
+    <url>/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/</url>
+    <content><![CDATA[<p>鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考</p>
+<p>本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正</p>
+<p>先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。</p>
+<p>附上nginx的简介，我们可以看到nginx是一个非常强大的web服务器，有很多功能，反向代理，负载均衡……我主要讲nginx的反向代理功能，一文说懂什么是反向代理</p>
+<h2 id="Nginx-简介"><a href="#Nginx-简介" class="headerlink" title="Nginx 简介"></a>Nginx 简介</h2><p>Nginx（发音同engine x）是一个异步框架的 Web 服务器，也可以用作反向代理，负载平衡器 和 HTTP 缓存。该软件由 <a href="https://zh.wikipedia.org/wiki/%E4%BC%8A%E6%88%88%E7%88%BE%C2%B7%E8%B3%BD%E7%B4%A2%E8%80%B6%E5%A4%AB">Igor Sysoev</a> 创建，并于2004年首次公开发布。同名公司成立于2011年，以提供支持。Nginx 是一款免费的开源软件，根据类 BSD 许可证的条款发布。一大部分Web服务器使用 Nginx ，通常作为负载均衡器。</p>
+<h3 id="nginx和反向代理"><a href="#nginx和反向代理" class="headerlink" title="nginx和反向代理"></a>nginx和反向代理</h3><p>直接说反向代理是什么，举例说明我也感觉很抽象，没有直接拿实例说的明白，这里我将会用nginx和雷池waf的反向代理来说</p>
+<p>基于hexo的搭建，nginx的配置我是照搬参考博客的<a href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<p>在那里我也有提到，说实话对于nginx我只知道它能实现一些功能，但是具体到底是什么，怎么实现的，我不知道。文章给了两个配置文件</p>
+<p>nginx.conf</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>conf.d-&gt;default.conf</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先看下面default.conf的配置信息，监听IPV4和IPV6的80端口，然后指定虚拟主机的域名&#x2F;IP，然后再指向指定文档根目录，从而实现访问</p>
+<p>访问crispsheep.icu–&gt;发送请求–&gt;服务器接受请求–&gt;nginx处理–&gt;指向指定的文件–&gt;返回响应</p>
+<p>这样你就能看到我的博客内容了</p>
+<p>上面nginx.conf的内容</p>
+<p>我们看这里，这里有个include，是一个文件包含，意思是包含这个目录下所有.conf的文件</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png" alt="image-20241113161140396"></p>
+<p>conf.d-&gt;default.conf的文件内容就被包含进去了</p>
+<p>再说nginx的反向代理，反向代理和上面的default.conf内的一些信息有些类似，下面是一个反向代理的配置信息</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向代理配置</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:9999;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 错误页面配置</span></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>127.0.0.1是本地回环地址，当访问example.com的时候，它会指向proxy_pass后面的服务，也就是你本地的9999端口的服务</p>
+<p>这就是反向代理，在客户端和服务端之间有个服务器负责完成这个操作，这里完成这个操作的就是nginx。</p>
+<p>反向代理的原理是，在客户端和服务器之间添加一个代理服务器，客户端将请求发送给代理服务器，代理服务器将请求转发给服务器，服务器处理请求并返回响应，代理服务器再将响应转发给客户端。</p>
+<p>这里我说两个点</p>
+<p>1、有人可能会问为什么nginx总是监听80端口，这是因为http协议默认的就是80端口，所以访问网页进行通讯走的就是80端口，https则是443端口。</p>
+<p>2、带端口的问题，假设你在服务器上开启了一个web应用服务，端口是9586，如果你没有域名，你每次访问都需要用公网IP+端口才能访问到，如果你有一个域名，就可以通过反向代理的方式，让域名指向这个端口，这样直接域名访问即可。如果服务器上就一个服务，可以直接把公网IP反向代理到这个端口服务，就不需要域名了（IP地址还是没有域名好记忆）</p>
+<p>再说我上面的目标，用二级域名把服务器上的另一个端口服务绑定上去，用nginx的反向代理完全可以实现。</p>
+<p>由于上次被挖矿的原因，我选择了雷池waf</p>
+<h2 id="雷池WAF"><a href="#雷池WAF" class="headerlink" title="雷池WAF"></a>雷池WAF</h2><p>雷池waf安装很方便，一条命令，遇到选项y即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(curl -fsSLk https://waf-ce.chaitin.cn/release/latest/setup.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113170235217.png" alt="image-20241113170235217"></p>
+<p>雷池是基于nginx开发的，作为反向代理接入网络，我之前安装nginx和雷池，一直显示80端口被占用，就是我之前开启nginx的服务导致的，nginx占用了80端口，导致我之前用雷池添加站点80端口不能用，选择其他端口后，如果想经过雷池保护，就需要在域名添加端口号了，雷池添加站点保护的原理就是反向代理，选择需要被保护站点的域名或者IP，然后选择端口，如果这时候不是80端口，比如是666端口，那么只有你输入域名+666端口才能经由雷池，然后再代理到你的上游服务器。</p>
+<p>设置雷池前，由于我的博客的配置文件是监听80端口的，我们需要先停止nginx的服务，让80端口空闲出来</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
+
+<p>然后再修改我博客的配置文件</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>把之前的80端口改成，81（只要是没被占有的端口皆可）</p>
+<p>然后再设置雷池端口（http-80，https-443）</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113171117358.png" alt="image-20241113171117358"></p>
+<p>这里我都是http服务，443那个端口删掉就行</p>
+<p>设置好后再启动nginx</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用的是雷池作为代理服务器进行转发的</p>
+<p>由于雷池和我的web服务都在一个服务器，下面的上游服务器，就填写<a href="http://127.0.0.1:81即可">http://127.0.0.1:81即可</a></p>
+<p>我们来捋一下访问我博客的流程</p>
+<p>基于nginx</p>
+<p>配置文件</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;nginx服务器接受–&gt;指向到指定的文档–&gt;返回响应</p>
+<p>通俗点说就是你访问我博客域名，默认的http协议走80端口，我的配置文件就监听80端口，我收到你的请求之后，指向我本地的博客文件，这样你就能看到了</p>
+<p>基于雷池的反向代理</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;雷池–&gt;雷池反向代理到指定上游服务器的端口服务（127.0.0.1:81）–&gt;上游服务器接收–&gt;指向我的博客的文件</p>
+<p>上面的配置信息修改成81端口，我加了waf之后，你访问我的博客，会先经过雷池，然后雷池把你的请求指向本地的81端口（因为waf和博客在同一台服务器）相当于你访问了我本地的81端口，然后我的配置文件监听的就是81端口，再指向我的博客文件</p>
+<p>至此你应该对反向代理，nginx，雷池waf有了一定的了解，今天我也算是彻底说明白了到底什么是反向代理和具体的原理，希望能帮到你~</p>
+]]></content>
+  </entry>
+  <entry>
     <title>一次挖矿病毒的应急响应</title>
     <url>/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/</url>
     <content><![CDATA[<p>搭建好的博客第二天被挖矿了，先说结论弱口令密码害死人</p>
@@ -440,75 +510,5 @@
       <tags>
         <tag>应急响应</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>nginx反向代理的原理以及雷池waf的设置</title>
-    <url>/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/</url>
-    <content><![CDATA[<p>鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考</p>
-<p>本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正</p>
-<p>先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。</p>
-<p>附上nginx的简介，我们可以看到nginx是一个非常强大的web服务器，有很多功能，反向代理，负载均衡……我主要讲nginx的反向代理功能，一文说懂什么是反向代理</p>
-<h2 id="Nginx-简介"><a href="#Nginx-简介" class="headerlink" title="Nginx 简介"></a>Nginx 简介</h2><p>Nginx（发音同engine x）是一个异步框架的 Web 服务器，也可以用作反向代理，负载平衡器 和 HTTP 缓存。该软件由 <a href="https://zh.wikipedia.org/wiki/%E4%BC%8A%E6%88%88%E7%88%BE%C2%B7%E8%B3%BD%E7%B4%A2%E8%80%B6%E5%A4%AB">Igor Sysoev</a> 创建，并于2004年首次公开发布。同名公司成立于2011年，以提供支持。Nginx 是一款免费的开源软件，根据类 BSD 许可证的条款发布。一大部分Web服务器使用 Nginx ，通常作为负载均衡器。</p>
-<h3 id="nginx和反向代理"><a href="#nginx和反向代理" class="headerlink" title="nginx和反向代理"></a>nginx和反向代理</h3><p>直接说反向代理是什么，举例说明我也感觉很抽象，没有直接拿实例说的明白，这里我将会用nginx和雷池waf的反向代理来说</p>
-<p>基于hexo的搭建，nginx的配置我是照搬参考博客的<a href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
-<p>在那里我也有提到，说实话对于nginx我只知道它能实现一些功能，但是具体到底是什么，怎么实现的，我不知道。文章给了两个配置文件</p>
-<p>nginx.conf</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>conf.d-&gt;default.conf</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>先看下面default.conf的配置信息，监听IPV4和IPV6的80端口，然后指定虚拟主机的域名&#x2F;IP，然后再指向指定文档根目录，从而实现访问</p>
-<p>访问crispsheep.icu–&gt;发送请求–&gt;服务器接受请求–&gt;nginx处理–&gt;指向指定的文件–&gt;返回响应</p>
-<p>这样你就能看到我的博客内容了</p>
-<p>上面nginx.conf的内容</p>
-<p>我们看这里，这里有个include，是一个文件包含，意思是包含这个目录下所有.conf的文件</p>
-<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png" alt="image-20241113161140396"></p>
-<p>conf.d-&gt;default.conf的文件内容就被包含进去了</p>
-<p>再说nginx的反向代理，反向代理和上面的default.conf内的一些信息有些类似，下面是一个反向代理的配置信息</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向代理配置</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:9999;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 错误页面配置</span></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>127.0.0.1是本地回环地址，当访问example.com的时候，它会指向proxy_pass后面的服务，也就是你本地的9999端口的服务</p>
-<p>这就是反向代理，在客户端和服务端之间有个服务器负责完成这个操作，这里完成这个操作的就是nginx。</p>
-<p>反向代理的原理是，在客户端和服务器之间添加一个代理服务器，客户端将请求发送给代理服务器，代理服务器将请求转发给服务器，服务器处理请求并返回响应，代理服务器再将响应转发给客户端。</p>
-<p>这里我说两个点</p>
-<p>1、有人可能会问为什么nginx总是监听80端口，这是因为http协议默认的就是80端口，所以访问网页进行通讯走的就是80端口，https则是443端口。</p>
-<p>2、带端口的问题，假设你在服务器上开启了一个web应用服务，端口是9586，如果你没有域名，你每次访问都需要用公网IP+端口才能访问到，如果你有一个域名，就可以通过反向代理的方式，让域名指向这个端口，这样直接域名访问即可。如果服务器上就一个服务，可以直接把公网IP反向代理到这个端口服务，就不需要域名了（IP地址还是没有域名好记忆）</p>
-<p>再说我上面的目标，用二级域名把服务器上的另一个端口服务绑定上去，用nginx的反向代理完全可以实现。</p>
-<p>由于上次被挖矿的原因，我选择了雷池waf</p>
-<h2 id="雷池WAF"><a href="#雷池WAF" class="headerlink" title="雷池WAF"></a>雷池WAF</h2><p>雷池waf安装很方便，一条命令，遇到选项y即可</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(curl -fsSLk https://waf-ce.chaitin.cn/release/latest/setup.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113170235217.png" alt="image-20241113170235217"></p>
-<p>雷池是基于nginx开发的，作为反向代理接入网络，我之前安装nginx和雷池，一直显示80端口被占用，就是我之前开启nginx的服务导致的，nginx占用了80端口，导致我之前用雷池添加站点80端口不能用，选择其他端口后，如果想经过雷池保护，就需要在域名添加端口号了，雷池添加站点保护的原理就是反向代理，选择需要被保护站点的域名或者IP，然后选择端口，如果这时候不是80端口，比如是666端口，那么只有你输入域名+666端口才能经由雷池，然后再代理到你的上游服务器。</p>
-<p>设置雷池前，由于我的博客的配置文件是监听80端口的，我们需要先停止nginx的服务，让80端口空闲出来</p>
-<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
-
-<p>然后再修改我博客的配置文件</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
-
-<p>把之前的80端口改成，81（只要是没被占有的端口皆可）</p>
-<p>然后再设置雷池端口（http-80，https-443）</p>
-<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113171117358.png" alt="image-20241113171117358"></p>
-<p>这里我都是http服务，443那个端口删掉就行</p>
-<p>设置好后再启动nginx</p>
-<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
-
-<p>这里我们使用的是雷池作为代理服务器进行转发的</p>
-<p>由于雷池和我的web服务都在一个服务器，下面的上游服务器，就填写<a href="http://127.0.0.1:81即可">http://127.0.0.1:81即可</a></p>
-<p>我们来捋一下访问我博客的流程</p>
-<p>基于nginx</p>
-<p>配置文件</p>
-<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>访问–&gt;发送请求–&gt;nginx服务器接受–&gt;指向到指定的文档–&gt;返回响应</p>
-<p>通俗点说就是你访问我博客域名，默认的http协议走80端口，我的配置文件就监听80端口，我收到你的请求之后，指向我本地的博客文件，这样你就能看到了</p>
-<p>基于雷池的反向代理</p>
-<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
-
-<p>访问–&gt;发送请求–&gt;雷池–&gt;雷池反向代理到指定上游服务器的端口服务（127.0.0.1:81）–&gt;上游服务器接收–&gt;指向我的博客的文件</p>
-<p>上面的配置信息修改成81端口，我加了waf之后，你访问我的博客，会先经过雷池，然后雷池把你的请求指向本地的81端口（因为waf和博客在同一台服务器）相当于你访问了我本地的81端口，然后我的配置文件监听的就是81端口，再指向我的博客文件</p>
-<p>至此你应该对反向代理，nginx，雷池waf有了一定的了解，今天我也算是彻底说明白了到底什么是反向代理和具体的原理，希望能帮到你~</p>
-]]></content>
   </entry>
 </search>
