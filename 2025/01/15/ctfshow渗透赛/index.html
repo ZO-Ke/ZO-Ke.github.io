@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="第一章启程得到个压缩包，我以为和给的提示的RSA有关系，没找到密文，爆破得到密码654321  flag:ctfshow{654321} 破解加密通讯提交中心网站 把上面得到的png图片，zsteg看一下，藏了个base64，解码   执行上面这段代码获得  第一次碰见还能把密文藏到库里，出题者创建一个库，你下载执行得到被隐藏的信息 1234567891011121314151617181920W">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTFshow元旦渗透赛第一章">
+<meta property="og:url" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="第一章启程得到个压缩包，我以为和给的提示的RSA有关系，没找到密文，爆破得到密码654321  flag:ctfshow{654321} 破解加密通讯提交中心网站 把上面得到的png图片，zsteg看一下，藏了个base64，解码   执行上面这段代码获得  第一次碰见还能把密文藏到库里，出题者创建一个库，你下载执行得到被隐藏的信息 1234567891011121314151617181920W">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113201551328.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113202045977.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113202055604.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113203827389.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115182443478.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190818615.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190908005.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115191025210.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190951359.png">
+<meta property="article:published_time" content="2025-01-15T11:33:00.000Z">
+<meta property="article:modified_time" content="2025-01-15T11:32:54.910Z">
+<meta property="article:author" content="CrispSheep">
+<meta property="article:tag" content="渗透测试">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113201551328.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>CTFshow元旦渗透赛第一章</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&text=CTFshow元旦渗透赛第一章"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&is_video=false&description=CTFshow元旦渗透赛第一章"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CTFshow元旦渗透赛第一章&body=Check out this article: http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&name=CTFshow元旦渗透赛第一章&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&t=CTFshow元旦渗透赛第一章"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">第一章</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">启程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%B4%E8%A7%A3%E5%8A%A0%E5%AF%86%E9%80%9A%E8%AE%AF"><span class="toc-number">1.2.</span> <span class="toc-text">破解加密通讯</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">第二章</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        CTFshow元旦渗透赛第一章
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-15T11:33:00.000Z" class="dt-published" itemprop="datePublished">2025-01-15</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95/" rel="tag">渗透测试</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><h2 id="启程"><a href="#启程" class="headerlink" title="启程"></a>启程</h2><p>得到个压缩包，我以为和给的提示的RSA有关系，没找到密文，爆破得到密码654321</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113201551328.png" alt="image-20250113201551328"></p>
+<p>flag:ctfshow{654321}</p>
+<h2 id="破解加密通讯"><a href="#破解加密通讯" class="headerlink" title="破解加密通讯"></a>破解加密通讯</h2><p>提交中心网站</p>
+<p>把上面得到的png图片，zsteg看一下，藏了个base64，解码</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113202045977.png" alt="image-20250113202045977"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113202055604.png" alt="image-20250113202055604"></p>
+<p>执行上面这段代码获得</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113203827389.png" alt="image-20250113203827389"></p>
+<p>第一次碰见还能把密文藏到库里，出题者创建一个库，你下载执行得到被隐藏的信息</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">WARNING: </span>Running pip as the <span class="emphasis">&#x27;root&#x27;</span> user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv          </span><br><span class="line"><span class="section">请使用组织分配的私钥解密后使用                                               </span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line">2024-12-16</span><br><span class="line"><span class="section">gHgAsclUVPhWDv4S8Oa8SuRTDaj+V0dI4z2jrQwfvfSFWilWwMKwNULUI48UBLS2shZcm/yv2/e5Hq5VRDfXkdxCYQMdvdnvONtpm2yNiIaLpDV4Rs8fOXJ6kcaeT+mg4RkIIFgx35w4J1KgO72pSP8j1p+R9f9TNMafwJ91XmO4QTcOYkMKQMddKvhbyMXzJkSS0uZqEppNSIUnVX9b7m8PmMjV0uHShvb1Zc8UQWJWUJ3cOxwNasOeMQGxJrZXPkxIxDYzm3f0tXbCgvdgNZ8TQY7u+iCXjOtD6xnUsdSahnPq14BD30CilIfsG0r/klPHfxQ+psmHSX47Ylai0TtgfbHWJJ4lSo0ojMvTx6HYK8zmAoCmg4OGXDbv/IjJgYU1w24na0iXZCNtcjB9MLRNck00c20f/uS64Ss0Ixii8nmfsFOjQBCcIYN+HGmOnj5Uw8DVJrxlOmcfQciG3rzuIvYlbOdGMcyarTy2Ba7iZfoovYZObPscAwhNLWqbU4tuR78aOVxiXTFRY7+Y0x2eRT5sulcvB3vsKuDMlNrxaUgiFUohPBZGNsgQgyCPxxqk0NpUn0bbHLH+vBebjJxaim4AU28ctWW8xv7xpxVttb0EoohtK2cIHr79ep5XrU/rv4R58obD/o+QqI1Mrb4wwpX9tsL7ZbROw/MXJwM=</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">请使用组织分配的私钥解密后使用</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line">2024-04-11</span><br><span class="line"><span class="section">Z93Khatj+AWZcpPwIqu8LzbJ8xb8CuVMI8okE0qwoQD2IC2lixg77mJZireOrbW7zFkDsk1hP67dROJZwVUDrYot2g5GxX/xy7lGjIblUX4iJVUtP4mHqZUgKROaLoh/gippMpP+8Ik2X/QRBx5gdhq0xam+wuVC+77/tyu8Fd/DohKbAMp8aaJsFr/W4mLDZ1gv4JK+2O3l+bAvpodBRTzb0ld5zD2ueYvjTudoDjdanQP1oVTH7pkDO2Vb+SsdIyTi2C410JEOF4Qm8mzVHtiOunOcLVpAlQsM6/LdhqsTNelXl/Myb84NGxwGWVmx6j2QejiL7S1hHeHlmQ9ExHeURPdZAvKhgMCemYXu3BGlFq3ydb5SkqwLFvM4vJ6XUBcWkHT8eijBFF6Y7YgOv9GRvBTnsAQhUBp4W4EAMtXkDdToG+S8ZO7El8Gh8jaWC49n5CuUBRz3z2GeOVbsBamfLV06IO5v78jGHXig4saEFKHvYSIGewyUCVQEGoIR5xOTJBTUTePAdvQjfg28vZZxFB/hIYNDUHkaek1Mg1UH5HWGgsCX1In5hSX/9eBkznEhzeWnJ1yMsYkj+ddN34DLQSrHc83geXMcoW3Ah3cAQG8E8bszvKL3hme+T5rOeENjkOAgYhf84k4YlxDskdwvzyu8HkE9CSaBpDP6lKI=</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">请使用组织分配的私钥解密后使用</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line">2024-03-05</span><br><span class="line"><span class="section">ckDSthpl5DDJMpBE26Jqk8EjaSq7MUntdwLHPouwx6D38un6WQfLJ9wgDyjh9GA/ICJR7WrwWsVinr6y3u9w+ubMZ0mqmtnphzQraagk8NkKc1u1+qGp8llsud3C8mvJWa4GYa9KEhnACDHwppPKJDCfr1HKwPbR0NIi+1Aunmy6DeOKRkFwysnrSco5QiiC9+gdXFhQDmN9KEiYW6Pc3mWVbqFiJgRW3/Df6638oGPm6AUcgRnEWMKiluyN81frM9VNtCeJ64YrU6Rgx4D153YxNNQbLTcyCQMamHTrJnhxPojkuDqbEcU+iiN4offwrQyr4eEu9ecvmyD2w/n7pAOsVnqSzroBujVA+CK6Zq8Uie15mL5yWG9hD5ZcbSwnRmtqK3yl0Xl91hgn1JqcIEKtf+MnMQPr80uoxT3mz8IX8pyVnyyw1x6F+IK1I2G+5w6rUDjhzIbME5XB9hopwcswsXrMo9PP6/5Sz1noJrsu6k6WN8ZM0MyRIav+xuKP1+cYzlPSQZrMo3L4ieHQnBbsoyzGVf9QONMwaooGOrxu88ZWlGe8e7eyCzteeNSVOC2zqtQiwQJIgfp2UwTymA/cEjOICWVzUXwbE5wWUBPCLp2C/XWc82byrOHAFXHLOVKgolVToUpZ5uOvizgk/ahaxdGxGa9CrRyr6sf+goA=</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">show</span> secretMessageResponse</span><br></pre></td></tr></table></figure>
+
+<p>查看库的信息</p>
+<p>找到目录读取加密方式</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115182443478.png" alt="image-20250115182443478"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64,datetime</span><br><span class="line"></span><br><span class="line">message = &#123;</span><br><span class="line">    <span class="string">&quot;inputMessage_20241216&quot;</span> :<span class="string">&#x27;&#x27;&#x27;gHgAsclUVPhWDv4S8Oa8SuRTDaj+V0dI4z2jrQwfvfSFWilWwMKwNULUI48UBLS2shZcm/yv2/e5Hq5VRDfXkdxCYQMdvdnvONtpm2yNiIaLpDV4Rs8fOXJ6kcaeT+mg4RkIIFgx35w4J1KgO72pSP8j1p+R9f9TNMafwJ91XmO4QTcOYkMKQMddKvhbyMXzJkSS0uZqEppNSIUnVX9b7m8PmMjV0uHShvb1Zc8UQWJWUJ3cOxwNasOeMQGxJrZXPkxIxDYzm3f0tXbCgvdgNZ8TQY7u+iCXjOtD6xnUsdSahnPq14BD30CilIfsG0r/klPHfxQ+psmHSX47Ylai0TtgfbHWJJ4lSo0ojMvTx6HYK8zmAoCmg4OGXDbv/IjJgYU1w24na0iXZCNtcjB9MLRNck00c20f/uS64Ss0Ixii8nmfsFOjQBCcIYN+HGmOnj5Uw8DVJrxlOmcfQciG3rzuIvYlbOdGMcyarTy2Ba7iZfoovYZObPscAwhNLWqbU4tuR78aOVxiXTFRY7+Y0x2eRT5sulcvB3vsKuDMlNrxaUgiFUohPBZGNsgQgyCPxxqk0NpUn0bbHLH+vBebjJxaim4AU28ctWW8xv7xpxVttb0EoohtK2cIHr79ep5XrU/rv4R58obD/o+QqI1Mrb4wwpX9tsL7ZbROw/MXJwM=&#x27;&#x27;&#x27;</span>,</span><br><span class="line">    <span class="string">&quot;inputMessage_20240411&quot;</span> : <span class="string">&#x27;&#x27;&#x27;Z93Khatj+AWZcpPwIqu8LzbJ8xb8CuVMI8okE0qwoQD2IC2lixg77mJZireOrbW7zFkDsk1hP67dROJZwVUDrYot2g5GxX/xy7lGjIblUX4iJVUtP4mHqZUgKROaLoh/gippMpP+8Ik2X/QRBx5gdhq0xam+wuVC+77/tyu8Fd/DohKbAMp8aaJsFr/W4mLDZ1gv4JK+2O3l+bAvpodBRTzb0ld5zD2ueYvjTudoDjdanQP1oVTH7pkDO2Vb+SsdIyTi2C410JEOF4Qm8mzVHtiOunOcLVpAlQsM6/LdhqsTNelXl/Myb84NGxwGWVmx6j2QejiL7S1hHeHlmQ9ExHeURPdZAvKhgMCemYXu3BGlFq3ydb5SkqwLFvM4vJ6XUBcWkHT8eijBFF6Y7YgOv9GRvBTnsAQhUBp4W4EAMtXkDdToG+S8ZO7El8Gh8jaWC49n5CuUBRz3z2GeOVbsBamfLV06IO5v78jGHXig4saEFKHvYSIGewyUCVQEGoIR5xOTJBTUTePAdvQjfg28vZZxFB/hIYNDUHkaek1Mg1UH5HWGgsCX1In5hSX/9eBkznEhzeWnJ1yMsYkj+ddN34DLQSrHc83geXMcoW3Ah3cAQG8E8bszvKL3hme+T5rOeENjkOAgYhf84k4YlxDskdwvzyu8HkE9CSaBpDP6lKI=&#x27;&#x27;&#x27;</span>,</span><br><span class="line">    <span class="string">&quot;inputMessage_20240305&quot;</span> : <span class="string">&#x27;&#x27;&#x27;ckDSthpl5DDJMpBE26Jqk8EjaSq7MUntdwLHPouwx6D38un6WQfLJ9wgDyjh9GA/ICJR7WrwWsVinr6y3u9w+ubMZ0mqmtnphzQraagk8NkKc1u1+qGp8llsud3C8mvJWa4GYa9KEhnACDHwppPKJDCfr1HKwPbR0NIi+1Aunmy6DeOKRkFwysnrSco5QiiC9+gdXFhQDmN9KEiYW6Pc3mWVbqFiJgRW3/Df6638oGPm6AUcgRnEWMKiluyN81frM9VNtCeJ64YrU6Rgx4D153YxNNQbLTcyCQMamHTrJnhxPojkuDqbEcU+iiN4offwrQyr4eEu9ecvmyD2w/n7pAOsVnqSzroBujVA+CK6Zq8Uie15mL5yWG9hD5ZcbSwnRmtqK3yl0Xl91hgn1JqcIEKtf+MnMQPr80uoxT3mz8IX8pyVnyyw1x6F+IK1I2G+5w6rUDjhzIbME5XB9hopwcswsXrMo9PP6/5Sz1noJrsu6k6WN8ZM0MyRIav+xuKP1+cYzlPSQZrMo3L4ieHQnBbsoyzGVf9QONMwaooGOrxu88ZWlGe8e7eyCzteeNSVOC2zqtQiwQJIgfp2UwTymA/cEjOICWVzUXwbE5wWUBPCLp2C/XWc82byrOHAFXHLOVKgolVToUpZ5uOvizgk/ahaxdGxGa9CrRyr6sf+goA=&#x27;&#x27;&#x27;</span>,</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">printMessage</span>():</span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> message.items():</span><br><span class="line">        title = key.replace(<span class="string">&#x27;inputMessage_&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\033[1;31m&quot;</span> + <span class="string">&quot;请使用组织分配的私钥解密后使用&quot;</span> + <span class="string">&quot;\033[0m&quot;</span>)</span><br><span class="line">        title = datetime.datetime.strptime(title, <span class="string">&#x27;%Y%m%d&#x27;</span>).strftime(<span class="string">&#x27;%Y-%m-%d&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;----------------------------------------------------------&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(title)</span><br><span class="line">        <span class="built_in">print</span>(value)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;----------------------------------------------------------&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最新流通公钥</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getPublicKey</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    -----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAmziayo9Tddo1FYdrtOsw</span></span><br><span class="line"><span class="string">yjLYJ5frYKEwm4rQTsKU8UcdnnDRgms+ZmStoqlH/qi6x+D1K3fvvioCnGZLFHZw</span></span><br><span class="line"><span class="string">BUqbgT5x+qUmUaVMll9FOT7ZJ05w8n8Ljqa1akzFMU5G7YbCr3vQwN63vwvD9/63</span></span><br><span class="line"><span class="string">TDbXkJrv1fGl2rHpPwp5OPCUeCB3nIFIRCWHpJU7sHJqIP5vzV8KNJtbxgR+dhsz</span></span><br><span class="line"><span class="string">dg+NhoBDUpxoVN5lzSKr2TMOLFLZaQR9AWOV/aHV8gjTkTLDZfc+XlfhxiDMTQdi</span></span><br><span class="line"><span class="string">UTbk/tynpt+JFrDA8vL5/TOmuxgumqgXZIPGrIUbwloTYyHD/XXmvXu5KE8g3eMK</span></span><br><span class="line"><span class="string">gxNxuEKM5bMTESBK9A7Q2Kj3eNp0Rvb5Aleg7h8/YbQemGelY/o5xpUyHgHjsfNQ</span></span><br><span class="line"><span class="string">3j/xhdhVCNVaXZF64V/YVpvC9Cq29F7qI+bl6FlN7zSpuHB3QgNS1uXOmjBCsA7y</span></span><br><span class="line"><span class="string">pZoWmdXeaLIO+I3kP48BBSmue4nidJifiK/kSOcZ0iegRXV1hyZ6pYdDE7hM5V5t</span></span><br><span class="line"><span class="string">5tvayJ31zRQNT2ALAFeCDozVWELHTnphkPkQO+SOPglrVz0S1dXicqRofXWMj7PJ</span></span><br><span class="line"><span class="string">OFkBpWIX0aywMIh1woEAawUs3RM2pfLUNtqUTfodSCmWlwcpGrBWG5NACx7csPFt</span></span><br><span class="line"><span class="string">zWn8oPZfzL346at5DDIwD2kCAwEAAQ==</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">enctryptMessage</span>(<span class="params">message</span>):</span><br><span class="line">    <span class="keyword">import</span> base64</span><br><span class="line">    message_bytes = message.encode(<span class="string">&#x27;utf-8&#x27;</span>)  </span><br><span class="line">    message_base64 = base64.b64encode(message_bytes).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    publicKey = getPublicKey()</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> serialization</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> padding</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes</span><br><span class="line">    public_key = serialization.load_pem_public_key(publicKey, backend=default_backend())</span><br><span class="line">    encrypted = public_key.encrypt(</span><br><span class="line">        message_base64.encode(<span class="string">&#x27;utf-8&#x27;</span>),</span><br><span class="line">        padding.OAEP(</span><br><span class="line">            mgf=padding.MGF1(algorithm=hashes.SHA256()),</span><br><span class="line">            algorithm=hashes.SHA256(),</span><br><span class="line">            label=<span class="literal">None</span></span><br><span class="line">        )</span><br><span class="line">    )</span><br><span class="line">    encrypted_base64 = base64.b64encode(encrypted).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> encrypted_base64</span><br><span class="line"></span><br><span class="line">printMessage()</span><br></pre></td></tr></table></figure>
+
+<p>找个公钥解析网站推出n和e（这个e我做的时候猜的是65537还真是）</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">e</span><span class="operator">=</span><span class="number">65537</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">n</span><span class="operator">=</span><span class="number">6332468885045739207798242375080077355892316665891880211715759509</span></span><br><span class="line"><span class="number">3994025514008605209080197241118207580620027792226491625637695206</span></span><br><span class="line"><span class="number">8104942084262732765302869757002336862151158422906662985191392193</span></span><br><span class="line"><span class="number">4625112891871237543378546847020163969961987899081707281756262252</span></span><br><span class="line"><span class="number">8140625647621607986357475076878716996947515271743090346014970559</span></span><br><span class="line"><span class="number">7463505143799487488630064694962535355825378265518133414832135165</span></span><br><span class="line"><span class="number">9981250042829128658958363792059338950291542877888243170008437712</span></span><br><span class="line"><span class="number">5133143593941038995757255274641093310334721226053335140687658479</span></span><br><span class="line"><span class="number">8128116835102705770834548333327952204414218313396767348386545933</span></span><br><span class="line"><span class="number">7003717067807320811287647328283988796540276949990614458889846521</span></span><br><span class="line"><span class="number">9605771776162366647139022650041904735454600952684919003805581700</span></span><br><span class="line"><span class="number">8252022472857695300387827500818231719929626707573775972451255428</span></span><br><span class="line"><span class="number">0591198406698260860277025465102137918643581832045307760200048667</span></span><br><span class="line"><span class="number">7053654569533032416756977779117517004481202822749496645886400266</span></span><br><span class="line"><span class="number">0598592490354017639158027968836329598282419666463285900175674408</span></span><br><span class="line"><span class="number">0268810527371486113951531943901306283561047843588041585812947331</span></span><br><span class="line"><span class="number">9670347691343405520944180270848572345532298565444740094573471751</span></span><br><span class="line"><span class="number">0509951259155462497189459983874690099575241597111904193711108488</span></span><br><span class="line"><span class="number">6165664866650538846290845643642053197978121486841730575238128406</span></span><br><span class="line"><span class="number">84555544241901417</span></span><br></pre></td></tr></table></figure>
+
+<p>那个提示给的后两组数就是pq</p>
+<p>得到私钥</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">d</span><span class="operator">=</span><span class="number">255494060238307270904376344480014961692638719012943980588351790511526316834981085331720795191975165913416051220234812634864570648409766675192260551751506509523716241344598181462349247820785089026591444660053501261906305947643584072714472782578549436500124340310728805775448735106024990894767052700947375594060596201817529153455346023559945898594239348755052546418848846155358881110182939750390821196911668488114179216382384926036860278813344161481291906950716540115221296877179617588432773959543357536626648010364101250672960094999655265377265631813923749342246934132261730741091371723922305227416677557188283308296236221668815925784512852044291355167731705666340336896234239097284201418078819508782841013506098248607490669283372652309698886330888594401260157111267337618589385328458170871309386675783417913977677592175152532663930748569315846293991784782073744026212234038850487736671990624960666049359427646696567908479413777548419239816695981241578678851908594429943937859946635004227968029219621307338825722289578116044664518758852790207035110719643081246219363264672864916483562061006683514992740110898785579215127202200186207575760049520971437781541536256606142748784987704960904222016122617597238247773464058692994329931242753</span></span><br></pre></td></tr></table></figure>
+
+<p>导出为私钥，得到</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIIJKgIBAAKCAgEAmziayo9Tddo1FYdrtOswyjLYJ5frYKEwm4rQTsKU8UcdnnDR</span><br><span class="line">gms+ZmStoqlH/qi6x+D1K3fvvioCnGZLFHZwBUqbgT5x+qUmUaVMll9FOT7ZJ05w</span><br><span class="line">8n8Ljqa1akzFMU5G7YbCr3vQwN63vwvD9/63TDbXkJrv1fGl2rHpPwp5OPCUeCB3</span><br><span class="line">nIFIRCWHpJU7sHJqIP5vzV8KNJtbxgR+dhszdg+NhoBDUpxoVN5lzSKr2TMOLFLZ</span><br><span class="line">aQR9AWOV/aHV8gjTkTLDZfc+XlfhxiDMTQdiUTbk/tynpt+JFrDA8vL5/TOmuxgu</span><br><span class="line">mqgXZIPGrIUbwloTYyHD/XXmvXu5KE8g3eMKgxNxuEKM5bMTESBK9A7Q2Kj3eNp0</span><br><span class="line">Rvb5Aleg7h8/YbQemGelY/o5xpUyHgHjsfNQ3j/xhdhVCNVaXZF64V/YVpvC9Cq2</span><br><span class="line">9F7qI+bl6FlN7zSpuHB3QgNS1uXOmjBCsA7ypZoWmdXeaLIO+I3kP48BBSmue4ni</span><br><span class="line">dJifiK/kSOcZ0iegRXV1hyZ6pYdDE7hM5V5t5tvayJ31zRQNT2ALAFeCDozVWELH</span><br><span class="line">TnphkPkQO+SOPglrVz0S1dXicqRofXWMj7PJOFkBpWIX0aywMIh1woEAawUs3RM2</span><br><span class="line">pfLUNtqUTfodSCmWlwcpGrBWG5NACx7csPFtzWn8oPZfzL346at5DDIwD2kCAwEA</span><br><span class="line">AQKCAgA+oGYD2DQqVrIYT50rT8FNs5n2z5rOT/rWpvlI7cU+XB0dMhO19SMmGPTd</span><br><span class="line">rkM4AkfqIV+J/Egkh7qp87PTO74SxHldeh5urHd7daAjA6lgYXUoIMP9czjsg2Kq</span><br><span class="line">0vK05ApGB5tBRkmBp9qnIE4fHwxBmdb7pyehQHBUfnfHUah7SsX8ec0Ivji0FhhW</span><br><span class="line">VUfR9zfOvBnL2M67TvuGN4X2jR8EQV4uqE2BZU3LADg+vgBsD+dmBr9lWcQ97To1</span><br><span class="line">LTivANSrvrmLyGfHlNmpIM6NPa9zaRyXn9ucvpAHMaWH4HTwrghVcHpNOAjIK0rb</span><br><span class="line">jJEYp1MvKg5zk0BXrzWTh+mQ3Ov+NXrbdDspmeZsY02SuyPheOBHHHs7cHANPcRH</span><br><span class="line">1Nl/nxXkRF9H+oSOmTQi7wjZbhrEFFCeCK2TuT8vyf0p+lQMPEc+cAFn5rSXnhii</span><br><span class="line">W2Mq6nwx5Nbllr/hj7oVeyGrUZFskvbZnYYVM4NTFqUPBzQbBuQTGGfccZc9OrJx</span><br><span class="line">2qpDZdUknQe9ZI742c2vZRTqY2yZX6InR8JoQbmscke4LRdUMHH6G/PbfkqPXfFy</span><br><span class="line">r5mxscghP+kRFj86dyL03CB039N23xCNezK/AGE/6JzJgwpvUPaYtvnIuhSFQEmH</span><br><span class="line">DGrYYrDXSbwTT0ufM/tIEuHMHXT4DYX3nm94SG8wB/b3zpFdAQKCAQEAnexbL5So</span><br><span class="line">v7N4W7BrZZao8cKEnM6goDpUjqgEnlIG4FF+UVmBzuAYNlLjOXW7fKK6nt5q95R1</span><br><span class="line">AA72FpfOHbZnTTYHm9u1zUecIeuvNVjxi9swhmhMn43pxaQcUfgWSsCrqH+8SrVE</span><br><span class="line">z8Lc7V2lbswx/V94PC8Za7ZLSr+FOz6X7C71sLQR8XI3SkrZIkmL150N8LO4WdKA</span><br><span class="line">tKKIfvz7Lo2xLxpGLNJ3Xf/NW51wMs5BwQNzEUWRUmkgCmeU74m47TCSOj580qLL</span><br><span class="line">T0Hxj1jRhecZOs0DHqDCeHt0hz82EtOcw1TBJKTly3Xj/UjGRpzEmo8rAuU8XoKc</span><br><span class="line">/NkmaZCjpxh/eQKCAQEA+56kjWCgWcjo+QUgp50+BIa5hkFoV16QOCQEsqh+s5rh</span><br><span class="line">VMke7svuo5+U6C/rNFIkpR1iKRPL3LOqJ8B5P7ZAPdhbHAPjdtnUDbPzM1r0RYpj</span><br><span class="line">bJPh4AcRVqhDTWy20Yd7iZN9mHxHSKBZ4Txn20gvkHamPVlPMejsDRpDoauS/euz</span><br><span class="line">n2GlG9GPq7i5vHwQiy6sYZAPm9Eyz+XxsQNiqB32tHnZqYrj/GS64Jx6eaa5MdSC</span><br><span class="line">LIPkHHWAUHzBQ5A8/bNTFf8VAYriR9GnTZF8oSNne6oD62IYVzDH2wWOWSnUKdAd</span><br><span class="line">snaahJLvHQnWbz6itWPWj+2TrjLSnl9Tz7uuhrRjcQKCAQEAhnF+W65yTulKELzL</span><br><span class="line">YWv2ngLchOY/xsiBzgTqEaKBahzWrgjGQslys2SzPuqk14Ft4Ow3IljHlmomRKut</span><br><span class="line">9IuhvBDAP4a3anCJUjNkMMVstYS/9dz7RmY5W2HQHlRXHgKS4NsGAI/7aehZztYH</span><br><span class="line">jaDW+f55zLrIKHPD+3m6weoSyiZcUberAuMagOvhmJgGLmPtRzqpOgbEPYOVMo7K</span><br><span class="line">hCJqclAq5+OxbVvlhxYsO4RuZBQ8tLqF8iO+/DychaS4w2yzQFSMTYH8FZhtPnz9</span><br><span class="line">usI4L1/zRPLVPF7VoIJG1ZZDgeM4nqqnWyQdGTcIXXr+wRobItbnIwqM/ZEca4iQ</span><br><span class="line">WiO3+QKCAQEArbI5E+OFLhXURbs1bJ/OpR8/yR8z4URFOIwcthw8ws2DCZ2A/gXH</span><br><span class="line">aiqKh7I0oryl0Vm0Xnjs/SEFsEVdLg8oz8igNHm2t1/t07vKgkQiZjL/KX/4qEcY</span><br><span class="line">wAKN20/V8FSfgjxPskjwiIExKpwhca2mMArH/Ye+dMy+zti3oU4ovaLNL5Qff1Gt</span><br><span class="line">5TQy+5uFbB8/HmZtb/n9IqkwrCqTG0z79mA7Up+vfJcork82+O2P4Ic7iXFOshqn</span><br><span class="line">BmjonTRf9h6pl4CsRpFSXZOr848gQriHAkY+SGpCNUZWYKq4NnL6pBanuX/IcQZh</span><br><span class="line">jGEzJz5M4fzWrCqsDM/Gt09FMxzzgMfb8QKCAQEAh4vGV/+sD6MsiafBfsfPiegv</span><br><span class="line">oqjUCj6HuXwVBMAM3yvRqLkmWfh2delFnKD2SOVsu11i5pm9AVnQYER6rS7QsIpu</span><br><span class="line">O3WcAIvxbOfbD7A5aQvVAqHQIZDWDWy8eJK80Zq/ZbYWZ7JuOkw3MuYfUji41esO</span><br><span class="line">LvRSjDi9hXpTplRlv0dYZofa4c2vlOyu3MCPk+S0sSOvEpWCsHxbiBZacugfyr4E</span><br><span class="line">/IrE/zH5n94opAULaY7UXvCTQ9WuvDjDHb21SvfcoYLCKOwb1+gRSDJR4vty+4Z1</span><br><span class="line">WnIm+IGyBS2uHBQH1upASOt3LzHZm7l5YBxKvDTjn3smlqMRl5FdI+uRVm4OYQ==</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>在线网站解码得到base64</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190818615.png" alt="image-20250115190818615"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190908005.png" alt="image-20250115190908005"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115191025210.png" alt="image-20250115191025210"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190951359.png" alt="image-20250115190951359"></p>
+<p>flag:ctfshow{<a target="_blank" rel="noopener" href="https://task.ctfer.com}/">https://task.ctfer.com}</a></p>
+<h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><p>好像关站了，死活打不开GG</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">第一章</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">启程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A0%B4%E8%A7%A3%E5%8A%A0%E5%AF%86%E9%80%9A%E8%AE%AF"><span class="toc-number">1.2.</span> <span class="toc-text">破解加密通讯</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0"><span class="toc-number">2.</span> <span class="toc-text">第二章</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&text=CTFshow元旦渗透赛第一章"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&is_video=false&description=CTFshow元旦渗透赛第一章"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=CTFshow元旦渗透赛第一章&body=Check out this article: http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&title=CTFshow元旦渗透赛第一章"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&name=CTFshow元旦渗透赛第一章&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/&t=CTFshow元旦渗透赛第一章"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

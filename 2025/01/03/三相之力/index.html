@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="首先看见是一个png图片，有三个提示reverse反转  Gopher esolang是一种编码  Bitmap RGBA bmp图片和RGBA png图片就先拖到zsteg扫一下试试  有个压缩包，导出来  需要密码并且显示损坏，用winrar修复一下  然后拿stegslolve继续分析 发现在红色最低通道只有这种斑点条纹带，说明这个通道是被修改过的  果然在这里发现了png文件尾的字符IEN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一道misc题目">
+<meta property="og:url" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="首先看见是一个png图片，有三个提示reverse反转  Gopher esolang是一种编码  Bitmap RGBA bmp图片和RGBA png图片就先拖到zsteg扫一下试试  有个压缩包，导出来  需要密码并且显示损坏，用winrar修复一下  然后拿stegslolve继续分析 发现在红色最低通道只有这种斑点条纹带，说明这个通道是被修改过的  果然在这里发现了png文件尾的字符IEN">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155407584.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155503591.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155555545.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155717504.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155806038.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160044894.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160631053.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160837071.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160958208.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161425923.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161657578.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161919417.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162327101.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162539618.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162703999.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162823033.png">
+<meta property="article:published_time" content="2025-01-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-01-03T11:34:24.240Z">
+<meta property="article:author" content="CrispSheep">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155407584.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>一道misc题目</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/15/ctfshow%E6%B8%97%E9%80%8F%E8%B5%9B/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/11/14/getshell%5Bmimikyu%5D/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&text=一道misc题目"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&is_video=false&description=一道misc题目"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一道misc题目&body=Check out this article: http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&name=一道misc题目&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&t=一道misc题目"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        一道misc题目
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-02T16:00:00.000Z" class="dt-published" itemprop="datePublished">2025-01-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/CTF/" rel="tag">CTF</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>首先看见是一个png图片，有三个提示reverse反转  Gopher esolang是一种编码  Bitmap RGBA bmp图片和RGBA</p>
+<p>png图片就先拖到zsteg扫一下试试</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155407584.png" alt="image-20241222155407584"></p>
+<p>有个压缩包，导出来</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155503591.png" alt="image-20241222155503591"></p>
+<p>需要密码并且显示损坏，用winrar修复一下</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155555545.png" alt="image-20241222155555545"></p>
+<p>然后拿stegslolve继续分析</p>
+<p>发现在红色最低通道只有这种斑点条纹带，说明这个通道是被修改过的</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155717504.png" alt="image-20241222155717504"></p>
+<p>果然在这里发现了png文件尾的字符IEND而且是反转的，和第一个提示对上了，把它提取出来</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222155806038.png" alt="image-20241222155806038"></p>
+<p>把这些16进制放到010分析一下，文件头尾是反着的，删掉下面多余的0000</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160044894.png" alt="image-20241222160044894"></p>
+<p>写个脚本逆序一下</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">input</span> = <span class="built_in">open</span>(<span class="string">&#x27;a.txt&#x27;</span>, <span class="string">&#x27;rb&#x27;</span>)</span><br><span class="line">input_all = <span class="built_in">input</span>.<span class="built_in">read</span>()</span><br><span class="line">ss = input_all[::<span class="number">-1</span>]</span><br><span class="line"><span class="built_in">output</span> = <span class="built_in">open</span>(<span class="string">&#x27;1.png&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>)</span><br><span class="line"><span class="built_in">output</span>.<span class="built_in">write</span>(ss)</span><br><span class="line"><span class="built_in">input</span>.<span class="built_in">close</span>()</span><br><span class="line"><span class="built_in">output</span>.<span class="built_in">close</span>()</span><br></pre></td></tr></table></figure>
+
+<p>得到第一个二维码</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160631053.png" alt="image-20241222160631053"></p>
+<p>cyberchef更方便</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160837071.png" alt="image-20241222160837071"></p>
+<p>扫码得到</p>
+<p>key_part1:0d000721_114514_1919810_</p>
+<p>继续分析</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222160958208.png" alt="image-20241222160958208"></p>
+<p>蓝色最低位也有问题</p>
+<p>导出save bin</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161425923.png" alt="image-20241222161425923"></p>
+<p>得到这个，这时候需要用提示三了，删掉后面多余的0000（结尾要留四个0000，这是bmp文件的格式）补上bmp文件头，这里我拿图画生成了一个bmp图片</p>
+<p>把它的头部复制到刚才的文件</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161657578.png" alt="image-20241222161657578"></p>
+<p>找到bmih</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222161919417.png" alt="image-20241222161919417"></p>
+<p>第三个提示就是bitmap转成RGBA，这里的位深度是24，对应RGB三原色通道，一个通道是8位，RGBA比RGB多了个Alpha的色彩空间也占有8位，所以我们要把这个24修改成32</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/mochu7777777/</span>article<span class="regexp">/details/</span><span class="number">120773359</span></span><br></pre></td></tr></table></figure>
+
+<p>根据这篇文章公式</p>
+<p>分辨率(width * height) x (颜色深度&#x2F;8)+ bmp文件头(共14Bytes) + 位图信息头(共40Bytes) + 文件尾(共2bytes: 00 00)  &#x3D; 图像文件大小</p>
+<p>可以推出分辨率，<img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162327101.png" alt="image-20241222162327101"></p>
+<p>分辨率：(400056-56)&#x2F;(24&#x2F;8)&#x3D;10000，组合方式有很多，但是上面那个是key_part1,这个肯定是part2</p>
+<p>我们注意到上面那个二维码的分辨率就是100*100&#x3D;10000，我们把这个bmp也修改成这样试试</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162539618.png" alt="image-20241222162539618"></p>
+<p>成功得到第二张二维码</p>
+<p>扫码得到key_part2:089d7147-6786-42b5-b81e-3b7e050304a6</p>
+<p>拼一起就是密码key：0d000721_114514_1919810_089d7147-6786-42b5-b81e-3b7e050304a6</p>
+<p>解压得到密文</p>
+<p><img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162703999.png" alt="image-20241222162703999"></p>
+<p>这时候用第二个提示，网站<a target="_blank" rel="noopener" href="https://esolangs.org/wiki/Gopher">https://esolangs.org/wiki/Gopher</a></p>
+<p><a target="_blank" rel="noopener" href="https://shubshub.github.io/gopher/">https://shubshub.github.io/gopher/</a></p>
+<p>解码<img src="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/image-20241222162823033.png" alt="image-20241222162823033"></p>
+<p>得到flag:flag{7a874085-53d5-4baf-96ed-40d73013e67b}</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&text=一道misc题目"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&is_video=false&description=一道misc题目"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=一道misc题目&body=Check out this article: http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&title=一道misc题目"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&name=一道misc题目&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/&t=一道misc题目"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

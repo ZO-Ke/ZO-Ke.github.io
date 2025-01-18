@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="从halo跑路再次到hexo​	用了一天的halo，我选择跑路，回归到了hexo，由于个人习惯的原因，hexo更适合我。 ​	下面说一下我的搭建过程（包含常见的问题，不能免密git，服务器ssh端口非22……） 参考文章:https:&#x2F;&#x2F;www.cnblogs.com&#x2F;cheyaoyao&#x2F;p&#x2F;17836522.html 一、本地环境的搭建1、安装node.js和git安装node.js，下面是链接">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从halo跑路再次到hexo">
+<meta property="og:url" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="从halo跑路再次到hexo​	用了一天的halo，我选择跑路，回归到了hexo，由于个人习惯的原因，hexo更适合我。 ​	下面说一下我的搭建过程（包含常见的问题，不能免密git，服务器ssh端口非22……） 参考文章:https:&#x2F;&#x2F;www.cnblogs.com&#x2F;cheyaoyao&#x2F;p&#x2F;17836522.html 一、本地环境的搭建1、安装node.js和git安装node.js，下面是链接">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162016545.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162853037.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163124960.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163153750.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163649769.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164655941.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164640055.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241109213843786.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170217619.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170555314.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110171012001.png">
+<meta property="og:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110173204021.png">
+<meta property="article:published_time" content="2024-11-10T10:11:00.000Z">
+<meta property="article:modified_time" content="2025-01-18T14:31:10.956Z">
+<meta property="article:author" content="CrispSheep">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162016545.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>从halo跑路再次到hexo</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2024/11/11/%E6%8C%96%E7%9F%BF%E6%BA%AF%E6%BA%90/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&text=从halo跑路再次到hexo"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&is_video=false&description=从halo跑路再次到hexo"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从halo跑路再次到hexo&body=Check out this article: http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&name=从halo跑路再次到hexo&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&t=从halo跑路再次到hexo"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8Ehalo%E8%B7%91%E8%B7%AF%E5%86%8D%E6%AC%A1%E5%88%B0hexo"><span class="toc-number">1.</span> <span class="toc-text">从halo跑路再次到hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">一、本地环境的搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85node-js%E5%92%8Cgit"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、安装node.js和git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85hexo"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、安装hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、安装主题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.2.</span> <span class="toc-text">二、服务器环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85nginx"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、安装nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E4%BF%AE%E6%94%B9nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、修改nginx配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%AF%E4%BB%A5%E8%B7%B3%E8%BF%87%E6%88%91%E4%B8%8B%E9%9D%A2%E8%AF%B4%E7%9A%84%E8%BF%99%E4%BA%9B%E7%9B%B4%E6%8E%A5%E5%8E%BB3"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">注意：新服务器可以跳过我下面说的这些直接去3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Node-js-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、Node.js 环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81Git-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text">4、Git 环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E9%85%8D%E7%BD%AESSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">1.2.5.</span> <span class="toc-text">5、配置SSH免密登录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A%E5%A6%82%E6%9E%9C%E8%BF%99%E6%97%B6%E5%80%99%E8%BF%9E%E6%8E%A5%E6%B2%A1%E6%9C%89%E8%AE%A9%E4%BD%A0%E8%BE%93%E5%85%A5git%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%EF%BC%8C%E5%B0%B1%E8%AF%B4%E6%98%8E%E6%88%90%E5%8A%9F%E4%BA%86%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%B7%B3%E8%BD%AC%E5%88%B06%E4%BA%86%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%BF%98%E9%9C%80%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81%E8%AF%B7%E8%B7%9F%E6%88%91%E6%A3%80%E6%9F%A5%E4%B8%8B%E9%9D%A2%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E9%85%8D%E7%BD%AE-Git-%E4%BB%93%E5%BA%93"><span class="toc-number">1.2.6.</span> <span class="toc-text">6、配置 Git 仓库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%83%A8%E7%BD%B2Hexo%E5%8D%9A%E5%AE%A2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">三、部署Hexo博客到服务器</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        从halo跑路再次到hexo
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-10T10:11:00.000Z" class="dt-published" itemprop="datePublished">2024-11-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="从halo跑路再次到hexo"><a href="#从halo跑路再次到hexo" class="headerlink" title="从halo跑路再次到hexo"></a>从halo跑路再次到hexo</h1><p>​	用了一天的halo，我选择跑路，回归到了hexo，由于个人习惯的原因，hexo更适合我。</p>
+<p>​	下面说一下我的搭建过程（包含常见的问题，不能免密git，服务器ssh端口非22……）</p>
+<p>参考文章:<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cheyaoyao/p/17836522.html">https://www.cnblogs.com/cheyaoyao/p/17836522.html</a></p>
+<h2 id="一、本地环境的搭建"><a href="#一、本地环境的搭建" class="headerlink" title="一、本地环境的搭建"></a>一、本地环境的搭建</h2><h3 id="1、安装node-js和git"><a href="#1、安装node-js和git" class="headerlink" title="1、安装node.js和git"></a>1、安装node.js和git</h3><p>安装node.js，下面是链接</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>//nodejs<span class="meta">.org</span>/<span class="built_in">zh</span>-cn/download/package-manager</span><br></pre></td></tr></table></figure>
+
+<p>安装教程，很详细了，我就不过多赘述了，跟着下面这个链接操作</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="regexp">//</span>developer.aliyun.com<span class="regexp">/article/</span><span class="number">1433726</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后cmd查看node安装情况</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">node</span> <span class="title">-v</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本信息就安装成功了</p>
+<p>安装git</p>
+<p>链接</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span><span class="comment">//git-scm.com/</span></span><br></pre></td></tr></table></figure>
+
+<p>cmd查看git安装情况</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本就安装好了，同时鼠标右键会出现Open Git Bash here</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162016545.png" alt="image-20241110162016545"></p>
+<h3 id="2、安装hexo"><a href="#2、安装hexo" class="headerlink" title="2、安装hexo"></a>2、安装hexo</h3><p>1、新建一个文件夹用来存储个人博客 D:\hexo</p>
+<p>进入该文件夹右键选择Open Git Bash here输入</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-<span class="keyword">cli</span></span><br></pre></td></tr></table></figure>
+
+<p>把Hexo命令行工具安装到系统的全局环境中</p>
+<p>再输入以下命令创建一个新的hexo的项目</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+
+<p>最后会在hexo目录下面生成这些文件</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110162853037.png" alt="image-20241110162853037"></p>
+<p>继续在Open Git Bash here输入命令（还是在hexo目录内打开Open Git Bash here）</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">hexo s</span></span><br></pre></td></tr></table></figure>
+
+<p>然后访问<a target="_blank" rel="noopener" href="http://localhost:4000/">http://localhost:4000/</a></p>
+<p>注意不要直接在Open Git Bash here里ctrl+c，这样会直接停掉服务</p>
+<p>右键copy复制（在Open Git Bash here里复制粘贴都用右键完成）</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163124960.png" alt="image-20241110163124960"></p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163153750.png" alt="image-20241110163153750"></p>
+<p>出现这个界面就成功了</p>
+<h3 id="3、安装主题"><a href="#3、安装主题" class="headerlink" title="3、安装主题"></a>3、安装主题</h3><p>我的主题是cactus</p>
+<p>还是在hexo目录下的themes目录打开Open Git Bash here，执行下面的命令（我以cactus主题为例）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/probberechts/hexo-theme-cactus.git themes/cactus</span><br></pre></td></tr></table></figure>
+
+<p>如果想选择其他主题请看</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="regexp">//</span>blog.lixiaomu.fun<span class="regexp">/posts/</span><span class="number">43857</span>/</span><br></pre></td></tr></table></figure>
+
+<p>这些主题各具特色，而且具有一定用户量，出现什么问题上网搜也好搜一点</p>
+<p>安装好主题之后打开根目录的 _config.yml（hexo目录下的_config.yml）</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110163649769.png" alt="image-20241110163649769"></p>
+<p>找到theme，改成你下载的主题即可，主题其他设置去网上搜对应主题美化的博客即可，这里我只说如何选择主题</p>
+<h2 id="二、服务器环境准备"><a href="#二、服务器环境准备" class="headerlink" title="二、服务器环境准备"></a>二、服务器环境准备</h2><h3 id="1、安装nginx"><a href="#1、安装nginx" class="headerlink" title="1、安装nginx"></a>1、安装nginx</h3><p>我的服务器系统是Ubuntu（如果是centos自行去搜索安装命令，很容易找到的）</p>
+<p>命令如下</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-<span class="built_in">get</span> install nginx</span><br></pre></td></tr></table></figure>
+
+<p>查看版本号</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nginx -v</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本号安装成功</p>
+<h3 id="2、修改nginx配置"><a href="#2、修改nginx配置" class="headerlink" title="2、修改nginx配置"></a>2、修改nginx配置</h3><p>创建一个文件用来存放 hexo 的部署文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /data/hexo   </span><br></pre></td></tr></table></figure>
+
+<p>然后找到nginx安装目录</p>
+<p>一般在&#x2F;etc&#x2F;nginx</p>
+<p>切换到nginx的目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /etc/nginx</span><br></pre></td></tr></table></figure>
+
+<p>修改nginx目录下面的配置文件即nginx.conf</p>
+<p>删掉文件内的全部内容换成下面的这些</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">user</span>  nginx;</span><br><span class="line"><span class="attribute">worker_processes</span>  auto;</span><br><span class="line"></span><br><span class="line"><span class="attribute">error_log</span>  /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span>        /var/run/nginx.pid;</span><br><span class="line"></span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">worker_connections</span>  <span class="number">1024</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span>       /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">log_format</span>  main  <span class="string">&#x27;<span class="variable">$remote_addr</span> - <span class="variable">$remote_user</span> [<span class="variable">$time_local</span>] &quot;<span class="variable">$request</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;<span class="variable">$status</span> <span class="variable">$body_bytes_sent</span> &quot;<span class="variable">$http_referer</span>&quot; &#x27;</span></span><br><span class="line">                      <span class="string">&#x27;&quot;<span class="variable">$http_user_agent</span>&quot; &quot;<span class="variable">$http_x_forwarded_for</span>&quot;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">access_log</span>  /var/log/nginx/access.log  main;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">sendfile</span>        <span class="literal">on</span>;</span><br><span class="line">    <span class="comment">#tcp_nopush     on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">keepalive_timeout</span>  <span class="number">65</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#gzip  on;</span></span><br><span class="line"></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>推荐使用finashell工具，直接双击两下就可以直接打开了，不用再使用vim编辑器了</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164655941.png" alt="image-20241110164655941"></p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110164640055.png" alt="image-20241110164640055"></p>
+<p>复制进去后ctrl+s自动上传到服务器</p>
+<p>然后再进入到&#x2F;etc&#x2F;nginx&#x2F;conf.d</p>
+<p>打开default.conf文件</p>
+<p>如果没有vim创建一个</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">vim</span> default.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+
+<p>然后和上面的方法一样把下面这些内容复制进去</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>        <span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>   [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">server_name</span>  公网IP或者你的域名;</span><br><span class="line"></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">root</span>   /data/hexo;</span><br><span class="line">        <span class="attribute">index</span>  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span>   <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span>  /50x.html;</span><br><span class="line">    <span class="section">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="attribute">root</span>   /usr/share/nginx/html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>公网IP或者你的域名修改成你的IP或者域名就行</p>
+<p>然后启动nginx</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl <span class="literal">start</span> nginx</span><br></pre></td></tr></table></figure>
+
+<p>查看nginx的状态</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">systemctl status nginx</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意：新服务器可以跳过我下面说的这些直接去3"><a href="#注意：新服务器可以跳过我下面说的这些直接去3" class="headerlink" title="注意：新服务器可以跳过我下面说的这些直接去3"></a>注意：新服务器可以跳过我下面说的这些直接去3</h4><p>在这里由于我之前搞的服务不知道哪里出问题，80端口被占用，而且nginx启动失败</p>
+<p>启动失败的原因之一是我这个服务器没有nginx账户</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo useradd -r nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>创建一个即可，下面说端口的问题</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">lsof</span> -i:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>查看80端口占用情况</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo pkill -f nginx</span></span><br></pre></td></tr></table></figure>
+
+<p>清除nginx的进程</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241109213843786.png" alt="image-20241109213843786"></p>
+<p>然后再执行</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">lsof</span> -i:<span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候应该就没有进程了，再开启nginx就好了</p>
+<h3 id="3、Node-js-环境配置"><a href="#3、Node-js-环境配置" class="headerlink" title="3、Node.js 环境配置"></a>3、Node.js 环境配置</h3><p>切换到根目录cd 或者 cd ~都可</p>
+<p>安装node.js</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo apt <span class="keyword">install</span> nodejs npm</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nodejs <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>出现版本号即成功</p>
+<h3 id="4、Git-环境配置"><a href="#4、Git-环境配置" class="headerlink" title="4、Git 环境配置"></a>4、Git 环境配置</h3><p>安装git，遇到yes写yes</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-<span class="built_in">get</span> update</span><br><span class="line">sudo apt-<span class="built_in">get</span> install git</span><br></pre></td></tr></table></figure>
+
+<p>查看版本号</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<p>创建git用户</p>
+<p>依次执行下面指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建git用户</span></span><br><span class="line">adduser git   </span><br><span class="line"><span class="comment"># 修改git用户的权限</span></span><br><span class="line"><span class="built_in">chmod</span> 740 /etc/sudoers</span><br><span class="line"><span class="comment"># 进入 sudo 命令文件</span></span><br><span class="line">vim /etc/sudoers</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170217619.png" alt="image-20241110170217619"></p>
+<p>在root下面添加git 后面的ALL&#x3D;(ALL:ALL) ALL  </p>
+<p>和上面的root用户的保存一致即可</p>
+<p>继续执行下面指令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修改文件权限</span></span><br><span class="line"><span class="built_in">chmod</span> 400 /etc/sudoers</span><br><span class="line"><span class="comment"># 设置 git 用户的密码</span></span><br><span class="line">sudo passwd git</span><br></pre></td></tr></table></figure>
+
+<h3 id="5、配置SSH免密登录"><a href="#5、配置SSH免密登录" class="headerlink" title="5、配置SSH免密登录"></a>5、配置SSH免密登录</h3><p>这里我先说明一下，默认的ssh服务端口是22端口，但是我买的这台服务器端口随机不是22端口</p>
+<p>你需要修改ssh的配置文件</p>
+<p>cd &#x2F;etc&#x2F;ssh</p>
+<p>找到ssh目录下的sshd_config文件修改端口为22<img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110170555314.png" alt="image-20241110170555314"></p>
+<p>当然也可以不修改，但是如果不修改，根目录下的_config.yml</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line">  <span class="symbol">type:</span> git</span><br><span class="line">  <span class="symbol">repo:</span> <span class="symbol">ssh:</span>//git<span class="variable">@IP</span><span class="symbol">:port/home/git/hexo</span>.git</span><br><span class="line">  <span class="symbol">branch:</span> master</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>就要修改成这样，这里大家还是跟我修改一下吧，以免下面的步骤还出现问题</p>
+<p>下面我们继续说SSH免密登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 切换到 git 用户</span></span><br><span class="line">su git</span><br><span class="line"><span class="comment"># 在根目录创建.ssh文件夹，存放公钥</span></span><br><span class="line"><span class="built_in">cd</span> ~</span><br><span class="line"><span class="built_in">mkdir</span> .ssh</span><br></pre></td></tr></table></figure>
+
+<p>打开本地计算机的C盘然后选择用户选择你的用户名文件找到.ssh</p>
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110171012001.png" alt="image-20241110171012001"></p>
+<p>打开.ssh文件夹，右键打开Open Git Bash here</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ssh-keygen -t rsa</span></span><br></pre></td></tr></table></figure>
+
+<p>生成RSA密钥对</p>
+<p>给私钥设置权限，执行以下指令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/id_rsa </span><br></pre></td></tr></table></figure>
+
+<p>然后把本地的的id_rsa.pub文件上传到&#x2F;home&#x2F;git&#x2F;.ssh目录下</p>
+<p>然后到&#x2F;home&#x2F;git&#x2F;.ssh目录下新建authorized_keys文件双击打开，把id_rsa.pub文件内容全选复制到authorized_keys文件里</p>
+<p>CTRL+S上传到服务器</p>
+<p>上面的操作命令执行也可以，命令如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/.ssh</span><br><span class="line"><span class="built_in">cp</span> id_rsa.pub authorized_keys</span><br><span class="line"><span class="built_in">cat</span> id_rsa.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+
+<p>然后设置权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置权限</span></span><br><span class="line"><span class="built_in">chmod</span> 600 ~/.ssh/authorized_keys</span><br><span class="line"><span class="built_in">chmod</span> 700 ~/.ssh</span><br></pre></td></tr></table></figure>
+
+<p>然后测试免密登录</p>
+<p>到本地的hexo目录或者任意目录下，右键打开Open Git Bash here</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ssh</span> -v git<span class="variable">@ip</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作"><a href="#注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作" class="headerlink" title="注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作"></a>注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作</h4><p>如果还是让你输入密码连接，exit，退出git用户回到root用户</p>
+<p>切换到  cd &#x2F;etc&#x2F;ssh目录下，打开sshd_config</p>
+<p>找到</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">AuthorizedKeysFile</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2024/11/10/hexo%E6%90%AD%E5%BB%BA/image-20241110173204021.png" alt="image-20241110173204021"></p>
+<p>看一下你的这个前面是不是带#被注释了，如果是就删掉前面的#</p>
+<p>然后再找到PermitRootLogin和PasswordAuthentication设置成yes  </p>
+<p>保存 ctrl+s上传，再次尝试ssh -v git@ip，正常来说就不需要再输入git用户的密码了</p>
+<h3 id="6、配置-Git-仓库"><a href="#6、配置-Git-仓库" class="headerlink" title="6、配置 Git 仓库"></a>6、配置 Git 仓库</h3><p>依然是在git用户下进行</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> ~</span><br><span class="line">git init <span class="params">--bare</span> hexo.git</span><br><span class="line">vim ~<span class="string">/hexo.git/hooks/post-receive</span></span><br></pre></td></tr></table></figure>
+
+<p>输入</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="attribute">--work-tree</span>=/data/hexo <span class="attribute">--git-dir</span>=/home/git/hexo.git checkout -f</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出（ESC+:wq）</p>
+<p>授予钩子文件可执行权限</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">chmod +x ~<span class="regexp">/hexo.git/</span>hooks/post-receive</span><br><span class="line">cd ~</span><br><span class="line">sudo chmod -R <span class="number">777</span> <span class="regexp">/data/</span>hexo</span><br><span class="line"><span class="keyword">exit</span> <span class="comment"># 退出到 root 登录</span></span><br><span class="line">chown -R git:git <span class="regexp">/home/gi</span>t/hexo.git <span class="comment">#设置权限</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="三、部署Hexo博客到服务器"><a href="#三、部署Hexo博客到服务器" class="headerlink" title="三、部署Hexo博客到服务器"></a>三、部署Hexo博客到服务器</h2><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">deploy:</span></span><br><span class="line"><span class="symbol">  type:</span> git</span><br><span class="line"><span class="symbol">  repo:</span> git@公网ip:<span class="keyword">/home/</span>git/hexo.git</span><br><span class="line"><span class="symbol">  branch:</span> master</span><br></pre></td></tr></table></figure>
+
+<p>安装插件hexo-deployer-git 和 hexo-server（在hexo目录下打开cmd安装）</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 用于将 Hexo 生成的静态文件推送到指定的 Git 仓库</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line"><span class="comment"># 用于在本地启动一个 Hexo 服务器，方便在本地预览博客</span></span><br><span class="line">npm <span class="keyword">install</span> hexo-server</span><br></pre></td></tr></table></figure>
+
+<p>配置全局变量</p>
+<p>打开Open Git Bash here</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config <span class="attr">--global</span> user<span class="selector-class">.email</span> <span class="string">&quot;xxxxxxxxxx@xx.com&quot;</span></span><br><span class="line">git config <span class="attr">--global</span> user<span class="selector-class">.name</span> <span class="string">&quot;xxx&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>用户名和邮箱随便填即可</p>
+<p>如果部署到购买的云服务器（阿里云）上，可能出现访问服务器IP没有响应的情况</p>
+<p>点击云服务器，在安全组规则中手动添加一条80端口的规则</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8Ehalo%E8%B7%91%E8%B7%AF%E5%86%8D%E6%AC%A1%E5%88%B0hexo"><span class="toc-number">1.</span> <span class="toc-text">从halo跑路再次到hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9C%AC%E5%9C%B0%E7%8E%AF%E5%A2%83%E7%9A%84%E6%90%AD%E5%BB%BA"><span class="toc-number">1.1.</span> <span class="toc-text">一、本地环境的搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85node-js%E5%92%8Cgit"><span class="toc-number">1.1.1.</span> <span class="toc-text">1、安装node.js和git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E5%AE%89%E8%A3%85hexo"><span class="toc-number">1.1.2.</span> <span class="toc-text">2、安装hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98"><span class="toc-number">1.1.3.</span> <span class="toc-text">3、安装主题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.2.</span> <span class="toc-text">二、服务器环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85nginx"><span class="toc-number">1.2.1.</span> <span class="toc-text">1、安装nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E4%BF%AE%E6%94%B9nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">2、修改nginx配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A%E6%96%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%AF%E4%BB%A5%E8%B7%B3%E8%BF%87%E6%88%91%E4%B8%8B%E9%9D%A2%E8%AF%B4%E7%9A%84%E8%BF%99%E4%BA%9B%E7%9B%B4%E6%8E%A5%E5%8E%BB3"><span class="toc-number">1.2.2.1.</span> <span class="toc-text">注意：新服务器可以跳过我下面说的这些直接去3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81Node-js-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">3、Node.js 环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81Git-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.4.</span> <span class="toc-text">4、Git 环境配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E9%85%8D%E7%BD%AESSH%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95"><span class="toc-number">1.2.5.</span> <span class="toc-text">5、配置SSH免密登录</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A%E5%A6%82%E6%9E%9C%E8%BF%99%E6%97%B6%E5%80%99%E8%BF%9E%E6%8E%A5%E6%B2%A1%E6%9C%89%E8%AE%A9%E4%BD%A0%E8%BE%93%E5%85%A5git%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%EF%BC%8C%E5%B0%B1%E8%AF%B4%E6%98%8E%E6%88%90%E5%8A%9F%E4%BA%86%EF%BC%8C%E5%8F%AF%E4%BB%A5%E8%B7%B3%E8%BD%AC%E5%88%B06%E4%BA%86%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%BF%98%E9%9C%80%E8%BE%93%E5%85%A5%E5%AF%86%E7%A0%81%E8%AF%B7%E8%B7%9F%E6%88%91%E6%A3%80%E6%9F%A5%E4%B8%8B%E9%9D%A2%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.5.1.</span> <span class="toc-text">注意：如果这时候连接没有让你输入git用户密码，就说明成功了，可以跳转到6了，如果还需输入密码请跟我检查下面的操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E9%85%8D%E7%BD%AE-Git-%E4%BB%93%E5%BA%93"><span class="toc-number">1.2.6.</span> <span class="toc-text">6、配置 Git 仓库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E9%83%A8%E7%BD%B2Hexo%E5%8D%9A%E5%AE%A2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">1.3.</span> <span class="toc-text">三、部署Hexo博客到服务器</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&text=从halo跑路再次到hexo"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&is_video=false&description=从halo跑路再次到hexo"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=从halo跑路再次到hexo&body=Check out this article: http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&title=从halo跑路再次到hexo"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&name=从halo跑路再次到hexo&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/10/hexo%E6%90%AD%E5%BB%BA/&t=从halo跑路再次到hexo"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="靶机类型：CTF-WEB入门靶场Pass01 SourceF12查看源码得到flag 常见查看源码方式  F12  右键查看  Ctrl+U   网页地址栏前面加上入view-source Pass02 Response点击去显示Homepage 类似起始页面的意思 仔细看URL是 http:&#x2F;&#x2F;node.hackhub.get-shell.com:49198&#x2F;Pass02&#x2F;inbex.php 是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mimikyu靶场">
+<meta property="og:url" content="http://crispsheep.icu/2024/11/14/getshell[mimikyu]/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="靶机类型：CTF-WEB入门靶场Pass01 SourceF12查看源码得到flag 常见查看源码方式  F12  右键查看  Ctrl+U   网页地址栏前面加上入view-source Pass02 Response点击去显示Homepage 类似起始页面的意思 仔细看URL是 http:&#x2F;&#x2F;node.hackhub.get-shell.com:49198&#x2F;Pass02&#x2F;inbex.php 是">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-11-14T10:33:00.000Z">
+<meta property="article:modified_time" content="2024-11-14T10:34:18.520Z">
+<meta property="article:author" content="CrispSheep">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>mimikyu靶场</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/03/%E4%B8%89%E7%9B%B8%E4%B9%8B%E5%8A%9B/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2024/11/13/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86&%E9%98%B2%E7%81%AB%E5%A2%99&nginx/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&text=mimikyu靶场"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&is_video=false&description=mimikyu靶场"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=mimikyu靶场&body=Check out this article: http://crispsheep.icu/2024/11/14/getshell[mimikyu]/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&name=mimikyu靶场&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&t=mimikyu靶场"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9D%B6%E6%9C%BA%E7%B1%BB%E5%9E%8B%EF%BC%9ACTF-WEB%E5%85%A5%E9%97%A8%E9%9D%B6%E5%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">靶机类型：CTF-WEB入门靶场</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass01-Source"><span class="toc-number">1.0.1.</span> <span class="toc-text">Pass01 Source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass02-Response"><span class="toc-number">1.0.2.</span> <span class="toc-text">Pass02 Response</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass03-GET"><span class="toc-number">1.0.3.</span> <span class="toc-text">Pass03 GET</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass04-robots"><span class="toc-number">1.0.4.</span> <span class="toc-text">Pass04 robots</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass05-Backup"><span class="toc-number">1.0.5.</span> <span class="toc-text">Pass05 Backup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass06-Cookie"><span class="toc-number">1.0.6.</span> <span class="toc-text">Pass06 Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass07-HTML"><span class="toc-number">1.0.7.</span> <span class="toc-text">Pass07 HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass08-XFF-Referer"><span class="toc-number">1.0.8.</span> <span class="toc-text">Pass08 XFF_Referer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass09-PHP"><span class="toc-number">1.0.9.</span> <span class="toc-text">Pass09 PHP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass10-weak-auth"><span class="toc-number">1.0.10.</span> <span class="toc-text">Pass10 weak_auth</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass11-Webshell"><span class="toc-number">1.0.11.</span> <span class="toc-text">Pass11 Webshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass12-Rce"><span class="toc-number">1.0.12.</span> <span class="toc-text">Pass12 Rce</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        mimikyu靶场
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-11-14T10:33:00.000Z" class="dt-published" itemprop="datePublished">2024-11-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="靶机类型：CTF-WEB入门靶场"><a href="#靶机类型：CTF-WEB入门靶场" class="headerlink" title="靶机类型：CTF-WEB入门靶场"></a>靶机类型：CTF-WEB入门靶场</h1><h3 id="Pass01-Source"><a href="#Pass01-Source" class="headerlink" title="Pass01 Source"></a>Pass01 Source</h3><p>F12查看源码得到flag</p>
+<p>常见查看源码方式  F12  右键查看  Ctrl+U  </p>
+<p>网页地址栏前面加上入view-source</p>
+<h3 id="Pass02-Response"><a href="#Pass02-Response" class="headerlink" title="Pass02 Response"></a>Pass02 Response</h3><p>点击去显示Homepage 类似起始页面的意思</p>
+<p>仔细看URL是</p>
+<p><a target="_blank" rel="noopener" href="http://node.hackhub.get-shell.com:49198/Pass02/inbex.php">http://node.hackhub.get-shell.com:49198/Pass02/inbex.php</a></p>
+<p>是inbex   索引页是index.php  直接访问还不行 会重定向到inbex  抓包 拦截响应即可获得flag</p>
+<h3 id="Pass03-GET"><a href="#Pass03-GET" class="headerlink" title="Pass03 GET"></a>Pass03 GET</h3><p>请用GET方式提交一个名为1,值为2的变量</p>
+<p>?1&#x3D;2</p>
+<p>即可</p>
+<h3 id="Pass04-robots"><a href="#Pass04-robots" class="headerlink" title="Pass04 robots"></a>Pass04 robots</h3><p>爬虫协议  访问robots.txt 然后看到disallow 访问f1ag_1s_h3re.php即可</p>
+<h3 id="Pass05-Backup"><a href="#Pass05-Backup" class="headerlink" title="Pass05 Backup"></a>Pass05 Backup</h3><p>考查网站的备份文件</p>
+<p>dirsearch开扫即可</p>
+<p>dirsearch -u url</p>
+<p>扫到个 <a target="_blank" rel="noopener" href="http://www.zip/">www.zip</a></p>
+<p>访问即可下载下来源码  成功得到flag</p>
+<h3 id="Pass06-Cookie"><a href="#Pass06-Cookie" class="headerlink" title="Pass06 Cookie"></a>Pass06 Cookie</h3><p>访问  老师上课讲的夹心饼干 就说cookie</p>
+<p>查看cookie  发现个参数  look&#x3D;cookie.php</p>
+<p>提示我们查看cookie.php  到了cookie.php界面</p>
+<p>又提示我们看response 查看响应  发现有个叫Flag的响应头 得到flag</p>
+<h3 id="Pass07-HTML"><a href="#Pass07-HTML" class="headerlink" title="Pass07 HTML"></a>Pass07 HTML</h3><p>为什么这个按钮不能按</p>
+<p>F12  修改input标签的内容   删掉disabled 按钮即可点击 点击获得flag</p>
+<h3 id="Pass08-XFF-Referer"><a href="#Pass08-XFF-Referer" class="headerlink" title="Pass08 XFF_Referer"></a>Pass08 XFF_Referer</h3><p>ip地址必须为123.123.123.123</p>
+<p>X-Forwarded-For 设置为123.123.123.123</p>
+<p>X-Forwarded-For用于识别客户端的原始IP地址</p>
+<p>必须来自<a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com</a></p>
+<p>修改Referer</p>
+<p><a target="_blank" rel="noopener" href="https://www.google.com/">https://www.google.com</a></p>
+<p>得到flag</p>
+<h3 id="Pass09-PHP"><a href="#Pass09-PHP" class="headerlink" title="Pass09 PHP"></a>Pass09 PHP</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">show_source</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;config.php&quot;</span>);</span><br><span class="line"><span class="variable">$a</span>=@<span class="variable">$_GET</span>[<span class="string">&#x27;a&#x27;</span>];</span><br><span class="line"><span class="variable">$b</span>=@<span class="variable">$_GET</span>[<span class="string">&#x27;b&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$a</span>==<span class="number">0</span> <span class="keyword">and</span> <span class="variable">$a</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">is_numeric</span>(<span class="variable">$b</span>))&#123;</span><br><span class="line">    <span class="keyword">exit</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$b</span>&gt;<span class="number">1234</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$flag2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>get传入?a&#x3D;’1’</p>
+<p>字符串在和数字比较的时，会将字符串转化为数字，如a转换成False，False又和0弱类型比较是相等的</p>
+<p>get再传入b</p>
+<p>b是数字和字符串时，就退出此脚本，另外还要求b的值还得大于1234，因为不能等于数字和字符串还得大于指定的1234,那么就在数字1234后添加字符串，所以构造的payload为：a&#x3D;&#x3D;a&amp;b&#x3D;9999a</p>
+<h3 id="Pass10-weak-auth"><a href="#Pass10-weak-auth" class="headerlink" title="Pass10 weak_auth"></a>Pass10 weak_auth</h3><p>弱口令爆破</p>
+<p>用户名admin</p>
+<p>爆破密码  如果用户名也不确定 直接集束炸弹爆破用户名和密码</p>
+<h3 id="Pass11-Webshell"><a href="#Pass11-Webshell" class="headerlink" title="Pass11 Webshell"></a>Pass11 Webshell</h3><p>已经传入一句话木马了  直接利用</p>
+<p>shell&#x3D;system(ls);  得到flag.txt  然后读取</p>
+<p>shell&#x3D;system(‘tac flag.txt’);</p>
+<h3 id="Pass12-Rce"><a href="#Pass12-Rce" class="headerlink" title="Pass12 Rce"></a>Pass12 Rce</h3><p>远程命令执行 审计代码  发现能执行系统命令的代码</p>
+<p>管道符命令利用即可    </p>
+<p>127.0.0.1 | ls</p>
+<p>得到flag.txt</p>
+<p>127.0.0.1 | tac flag.txt</p>
+<p>得到flag</p>
+<p>使用此管道符“|”可以将两个命令分隔开，“|”左边命令的输出就会作为“|”右边命令的输入，此命令可连续使用，第一个命令的输出会作为第二个命令的输入，第二个命令的输出又会作为第三个命令的输入，依此类推。</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">多命令执行符              格式                        作用</span><br><span class="line">     ;               命令<span class="number">1</span>;命令<span class="number">2</span>             多个命令顺序执行，命令之间无任何逻辑关系</span><br><span class="line">    <span class="meta">&amp;&amp;               命令1&amp;&amp;命令2            逻辑与：当命令1正确执行后，命令2才会正确执行，否则命令2不会执行</span></span><br><span class="line">    <span class="string">||               命令1||命令2            逻辑或：当命令1不正确执行后，命令2才会正确执行，否则命令2不会执行</span></span><br></pre></td></tr></table></figure>
+
+<p>地址<a target="_blank" rel="noopener" href="https://blog.csdn.net/zqg4919/article/details/75417919">https://blog.csdn.net/zqg4919/article/details/75417919</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9D%B6%E6%9C%BA%E7%B1%BB%E5%9E%8B%EF%BC%9ACTF-WEB%E5%85%A5%E9%97%A8%E9%9D%B6%E5%9C%BA"><span class="toc-number">1.</span> <span class="toc-text">靶机类型：CTF-WEB入门靶场</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass01-Source"><span class="toc-number">1.0.1.</span> <span class="toc-text">Pass01 Source</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass02-Response"><span class="toc-number">1.0.2.</span> <span class="toc-text">Pass02 Response</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass03-GET"><span class="toc-number">1.0.3.</span> <span class="toc-text">Pass03 GET</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass04-robots"><span class="toc-number">1.0.4.</span> <span class="toc-text">Pass04 robots</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass05-Backup"><span class="toc-number">1.0.5.</span> <span class="toc-text">Pass05 Backup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass06-Cookie"><span class="toc-number">1.0.6.</span> <span class="toc-text">Pass06 Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass07-HTML"><span class="toc-number">1.0.7.</span> <span class="toc-text">Pass07 HTML</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass08-XFF-Referer"><span class="toc-number">1.0.8.</span> <span class="toc-text">Pass08 XFF_Referer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass09-PHP"><span class="toc-number">1.0.9.</span> <span class="toc-text">Pass09 PHP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass10-weak-auth"><span class="toc-number">1.0.10.</span> <span class="toc-text">Pass10 weak_auth</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass11-Webshell"><span class="toc-number">1.0.11.</span> <span class="toc-text">Pass11 Webshell</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pass12-Rce"><span class="toc-number">1.0.12.</span> <span class="toc-text">Pass12 Rce</span></a></li></ol></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&text=mimikyu靶场"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&is_video=false&description=mimikyu靶场"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=mimikyu靶场&body=Check out this article: http://crispsheep.icu/2024/11/14/getshell[mimikyu]/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&title=mimikyu靶场"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&name=mimikyu靶场&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2024/11/14/getshell[mimikyu]/&t=mimikyu靶场"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
