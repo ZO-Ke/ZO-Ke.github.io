@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="MetInfo 4.0漏洞复现MetInfo米拓企业建站系统主要用于搭建企业网站，采用PHP+MySQL架构，支持SQLite数据库、达梦数据库，全站内置了SEO搜索引擎优化机制，支持用户自定义语言（全球各种语言），支持可视化编辑管理，拥有企业网站常用的功能模块（简介模块、文章模块、产品模块、下载模块、图片模块、招聘模块、在线留言、反馈系统、在线交流、友情链接、网站地图、会员与权限管理、TAG标签">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MetInfo 4.0漏洞复现">
+<meta property="og:url" content="http://crispsheep.icu/2025/01/19/MetInfo%204.0/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="MetInfo 4.0漏洞复现MetInfo米拓企业建站系统主要用于搭建企业网站，采用PHP+MySQL架构，支持SQLite数据库、达梦数据库，全站内置了SEO搜索引擎优化机制，支持用户自定义语言（全球各种语言），支持可视化编辑管理，拥有企业网站常用的功能模块（简介模块、文章模块、产品模块、下载模块、图片模块、招聘模块、在线留言、反馈系统、在线交流、友情链接、网站地图、会员与权限管理、TAG标签">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-01-19T12:36:00.000Z">
+<meta property="article:modified_time" content="2025-01-19T12:36:57.673Z">
+<meta property="article:author" content="CrispSheep">
+<meta property="article:tag" content="漏洞复现">
+<meta name="twitter:card" content="summary">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>MetInfo 4.0漏洞复现</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/18/Mysql%20-%20%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/19/MetInfo%204.0/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&text=MetInfo 4.0漏洞复现"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&is_video=false&description=MetInfo 4.0漏洞复现"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MetInfo 4.0漏洞复现&body=Check out this article: http://crispsheep.icu/2025/01/19/MetInfo%204.0/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&name=MetInfo 4.0漏洞复现&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&t=MetInfo 4.0漏洞复现"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MetInfo-4-0%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">MetInfo 4.0漏洞复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">任意用户密码重置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">文件上传漏洞</span></a></li></ol></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        MetInfo 4.0漏洞复现
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-19T12:36:00.000Z" class="dt-published" itemprop="datePublished">2025-01-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="MetInfo-4-0漏洞复现"><a href="#MetInfo-4-0漏洞复现" class="headerlink" title="MetInfo 4.0漏洞复现"></a>MetInfo 4.0漏洞复现</h1><p>MetInfo米拓企业建站系统主要用于搭建企业网站，采用PHP+MySQL架构，支持SQLite数据库、达梦数据库，全站内置了SEO搜索引擎优化机制，支持用户自定义语言（全球各种语言），支持可视化编辑管理，拥有企业网站常用的功能模块（简介模块、文章模块、产品模块、下载模块、图片模块、招聘模块、在线留言、反馈系统、在线交流、友情链接、网站地图、会员与权限管理、TAG标签），强大的SEO及伪静态设置功能，支持自定义网站颜色风格，支持按栏目自定义Banner图和数据调用，支持手机底部菜单，支持用户自主二次开发，商业模板支持在线升级。系统内置标准的应用插件开发接口，拥有丰富的免费插件和收费插件，如短信接口、robots文件修改、模板制作助手、小程序（微信、百度、支付宝、字节跳动[今日头条、抖音]、360、QQ）、支付接口、商城模块、系统诊所、图片加速、网站广告插件等。无论你是技术大咖还是建站小白，都可以使用MetInfo快速搭建一个功能齐全的响应式专业网站。</p>
+<p>4.0版本存在<strong>任意用户密码重置以及文件上传的漏洞。</strong></p>
+<h2 id="任意用户密码重置"><a href="#任意用户密码重置" class="headerlink" title="任意用户密码重置"></a>任意用户密码重置</h2><p>打开网站先访问robots.txt文件</p>
+<p>![image-20250119102009114](.&#x2F;MetInfo 4.0&#x2F;image-20250119102009114.png)</p>
+<p>管理员后台&#x2F;admin&#x2F;</p>
+<p>用户登录&#x2F;member&#x2F;</p>
+<p>先用户登录，注册一个账户并登录</p>
+<p>![image-20250119102210234](.&#x2F;MetInfo 4.0&#x2F;image-20250119102210234.png)</p>
+<p>点击修改基本信息抓包</p>
+<p>![image-20250119102359569](.&#x2F;MetInfo 4.0&#x2F;image-20250119102359569.png)</p>
+<p>把useid修改成admin</p>
+<p>安全退出这时候admin的密码就被我们修改成了刚才你修改的密码</p>
+<p>这时候访问管理员后台</p>
+<p><a target="_blank" rel="noopener" href="http://node.hackhub.get-shell.com:46694/admin/login/login.php">http://node.hackhub.get-shell.com:46694/admin/login/login.php</a></p>
+<p>![image-20250119102749354](.&#x2F;MetInfo 4.0&#x2F;image-20250119102749354.png)</p>
+<p>![image-20250119102759428](.&#x2F;MetInfo 4.0&#x2F;image-20250119102759428.png)</p>
+<p>成功登录</p>
+<h2 id="文件上传漏洞"><a href="#文件上传漏洞" class="headerlink" title="文件上传漏洞"></a>文件上传漏洞</h2><p>准备一个一句话木马shell.php，然后压缩为zip</p>
+<p>![image-20250119103102644](.&#x2F;MetInfo 4.0&#x2F;image-20250119103102644.png)</p>
+<p>进入网站后台，界面风格，模板管理，点击添加新模板</p>
+<p>![1737253945395](.&#x2F;MetInfo 4.0&#x2F;1737253945395.png)</p>
+<p>上传刚刚准备的shell.zip，上传后会自动将压缩包解压到&#x2F;templates&#x2F;目录下</p>
+<p>蚁剑连接获取权限</p>
+<p>![image-20250119103603836](.&#x2F;MetInfo 4.0&#x2F;image-20250119103603836.png)</p>
+<p>可以看到我写的一句话被自动解压到这里了</p>
+<p>![image-20250119103636622](.&#x2F;MetInfo 4.0&#x2F;image-20250119103636622.png)</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MetInfo-4-0%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">MetInfo 4.0漏洞复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE"><span class="toc-number">1.1.</span> <span class="toc-text">任意用户密码重置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">文件上传漏洞</span></a></li></ol></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/19/MetInfo%204.0/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&text=MetInfo 4.0漏洞复现"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&is_video=false&description=MetInfo 4.0漏洞复现"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MetInfo 4.0漏洞复现&body=Check out this article: http://crispsheep.icu/2025/01/19/MetInfo%204.0/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&title=MetInfo 4.0漏洞复现"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&name=MetInfo 4.0漏洞复现&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/19/MetInfo%204.0/&t=MetInfo 4.0漏洞复现"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

